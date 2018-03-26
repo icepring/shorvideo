@@ -60,4 +60,6 @@
     <dimen name="setting_margin">5dp</dimen>
     <dimen name="switch_min_width">40dp</dimen>
 
+    <dimen name="frames_video_height">60dip</dimen>
+
 </resources>

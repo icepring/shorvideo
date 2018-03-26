@@ -9,6 +9,8 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.tym.shortvideo.MyApplication;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -156,6 +158,12 @@ public class DeviceUtils {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, ctx.getResources().getDisplayMetrics());
     }
 
+    public static int dipToPX(float dip) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip,
+                MyApplication.getContext().getResources()
+                .getDisplayMetrics());
+    }
+
     /**
      * 获取CPU的信息
      *
@@ -207,8 +215,9 @@ public class DeviceUtils {
 
     /** 获取屏幕宽度 */
     @SuppressWarnings("deprecation")
-    public static int getScreenWidth(Context context) {
-        Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+    public static int getScreenWidth() {
+        Display display = ((WindowManager) MyApplication.getContext().getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay();
         return display.getWidth();
     }
 
@@ -217,4 +226,6 @@ public class DeviceUtils {
         Display display = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
         return display.getHeight();
     }
+
+
 }
