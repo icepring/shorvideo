@@ -17,6 +17,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
 
     private static int[] mFramebuffers;
     private static int[] mFrameBufferTextures;
+    
 
     private int mCurrentTextureId;
     protected List<GLImageFilter> mFilters = new ArrayList<>();
