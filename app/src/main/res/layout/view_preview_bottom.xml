@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@android:color/transparent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_gallery_layout_height"
+        android:layout_marginTop="@dimen/bottom_layout_margin">
+
+
+        <com.tym.shortvideo.view.ShutterButton
+            android:id="@+id/btn_take"
+            android:layout_width="@dimen/record_width_height"
+            android:layout_height="@dimen/record_width_height"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center" />
+
+        <Button
+            android:id="@+id/btn_record_delete"
+            android:layout_width="@dimen/button_preview_width_height"
+            android:layout_height="@dimen/button_preview_width_height"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/button_preview_margin"
+            android:layout_toStartOf="@+id/btn_take"
+            android:background="@mipmap/preview_video_delete_black"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/btn_record_done"
+            android:layout_width="@dimen/button_preview_width_height"
+            android:layout_height="@dimen/button_preview_width_height"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/button_preview_margin"
+            android:layout_toEndOf="@+id/btn_take"
+            android:background="@mipmap/preview_video_done_black"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+</LinearLayout>
