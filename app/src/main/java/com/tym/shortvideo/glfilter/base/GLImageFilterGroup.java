@@ -3,7 +3,7 @@ package com.tym.shortvideo.glfilter.base;
 import android.opengl.GLES30;
 
 
-import com.tym.shortvideo.tymtymtym.gpufilter.filter.MagicAmaroFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.type.GLFilterType;
 
 import java.nio.FloatBuffer;
@@ -20,13 +20,13 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
     private static int[] mFrameBufferTextures;
 
     private int mCurrentTextureId;
-    protected List<GLImageFilter> mFilters = new ArrayList<>();
+    protected List<GPUImageFilter> mFilters = new ArrayList<>();
 
     public GLImageFilterGroup() {
 
     }
 
-    public GLImageFilterGroup(List<GLImageFilter> filters) {
+    public GLImageFilterGroup(List<GPUImageFilter> filters) {
         mFilters = filters;
     }
 
@@ -71,7 +71,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
         int size = mFilters.size();
         mCurrentTextureId = textureId;
         for (int i = 0; i < size; i++) {
-            GLImageFilter filter = mFilters.get(i);
+            GPUImageFilter filter = mFilters.get(i);
             if (i < size - 1) {
                 GLES30.glViewport(0, 0, mImageWidth, mImageHeight);
                 GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, mFramebuffers[i]);
@@ -96,7 +96,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
         int size = mFilters.size();
         mCurrentTextureId = textureId;
         for (int i = 0; i < size; i++) {
-            GLImageFilter filter = mFilters.get(i);
+            GPUImageFilter filter = mFilters.get(i);
             if (i < size - 1) {
                 GLES30.glViewport(0, 0, mImageWidth, mImageHeight);
                 GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, mFramebuffers[i]);
@@ -152,7 +152,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
     @Override
     public void release() {
         if (mFilters != null) {
-            for (GLImageFilter filter : mFilters) {
+            for (GPUImageFilter filter : mFilters) {
                 filter.release();
             }
             mFilters.clear();
@@ -275,7 +275,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
      *
      * @param filters
      */
-    public void replaceWidthFilters(List<GLImageFilter> filters) {
+    public void replaceWidthFilters(List<GPUImageFilter> filters) {
         for (int i = 0; i < mFilters.size(); i++) {
             mFilters.get(i).release();
         }

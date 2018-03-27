@@ -6,6 +6,7 @@ import android.opengl.GLES30;
 import com.tym.shortvideo.glfilter.base.GLImageFilter;
 import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
 import com.tym.shortvideo.glfilter.camera.GLCameraFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.type.GLFilterGroupType;
 import com.tym.shortvideo.type.GLFilterType;
 import com.tym.shortvideo.type.ScaleType;
@@ -32,7 +33,7 @@ public final class RenderManager {
     // 实时滤镜组
     private GLImageFilterGroup mRealTimeFilter;
     // 显示输出
-    private GLImageFilter mDisplayFilter;
+    private GPUImageFilter mDisplayFilter;
 
     // 当前的TextureId
     private int mCurrentTextureId;

@@ -195,12 +195,14 @@ public class GPUImageFilter {
     }
 
     public boolean drawFrame(final int textureId) {
-        return false;
+        onDrawFrame(textureId);
+        return true;
     }
 
     public boolean drawFrame(final int textureId, final FloatBuffer cubeBuffer,
                              final FloatBuffer textureBuffer) {
-        return false;
+        onDrawFrame(textureId,cubeBuffer,textureBuffer);
+        return true;
     }
 
     public int onDrawFrame(final int textureId) {

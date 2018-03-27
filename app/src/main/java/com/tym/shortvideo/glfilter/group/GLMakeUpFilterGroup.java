@@ -6,6 +6,7 @@ import com.tym.shortvideo.camerarender.FilterManager;
 import com.tym.shortvideo.glfilter.base.GLImageFilter;
 import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
 import com.tym.shortvideo.glfilter.beauty.GLRealtimeBeautyFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.type.GLFilterIndex;
 import com.tym.shortvideo.type.GLFilterType;
 
@@ -32,13 +33,13 @@ public class GLMakeUpFilterGroup extends GLImageFilterGroup {
         this(initFilters());
     }
 
-    private GLMakeUpFilterGroup(List<GLImageFilter> filters) {
+    private GLMakeUpFilterGroup(List<GPUImageFilter> filters) {
         super(filters);
     }
 
 
-    private static List<GLImageFilter> initFilters() {
-        List<GLImageFilter> filters = new ArrayList<GLImageFilter>();
+    private static List<GPUImageFilter> initFilters() {
+        List<GPUImageFilter> filters = new ArrayList<>();
         filters.add(BeautyfyIndex, FilterManager.getFilter(GLFilterType.REALTIMEBEAUTY));
         filters.add(ColorIndex, FilterManager.getFilter(GLFilterType.SKETCH));
         filters.add(FaceStretchIndex, FilterManager.getFilter(GLFilterType.FACESTRETCH));

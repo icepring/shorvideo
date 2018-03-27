@@ -2,9 +2,9 @@ package com.tym.shortvideo.glfilter.group;
 
 
 import com.tym.shortvideo.camerarender.FilterManager;
-import com.tym.shortvideo.glfilter.base.GLImageFilter;
 import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
 import com.tym.shortvideo.glfilter.beauty.GLRealtimeBeautyFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.type.GLFilterIndex;
 import com.tym.shortvideo.type.GLFilterType;
 
@@ -31,16 +31,19 @@ public class GLDefaultFilterGroup extends GLImageFilterGroup {
         this(initFilters());
     }
 
-    private GLDefaultFilterGroup(List<GLImageFilter> filters) {
+    private GLDefaultFilterGroup(List<GPUImageFilter> filters) {
         mFilters = filters;
     }
 
-    private static List<GLImageFilter> initFilters() {
-        List<GLImageFilter> filters = new ArrayList<>();
+    private static List<GPUImageFilter> initFilters() {
+        List<GPUImageFilter> filters = new ArrayList<>();
         filters.add(BeautyfyIndex, FilterManager.getFilter(GLFilterType.REALTIMEBEAUTY));
         filters.add(ColorIndex, FilterManager.getFilter(GLFilterType.WHITENORREDDEN));
         filters.add(FaceStretchIndex, FilterManager.getFilter(GLFilterType.FACESTRETCH));
         filters.add(StickersIndex, FilterManager.getFilter(GLFilterType.STICKER));
+        for (GPUImageFilter filter:filters){
+            filter.init();
+        }
         return filters;
     }
 

@@ -2,7 +2,6 @@ package com.tym.shortvideo.camerarender;
 
 import com.tym.shortvideo.glfilter.advanced.GLSketchFilter;
 import com.tym.shortvideo.glfilter.base.GLDisplayFilter;
-import com.tym.shortvideo.glfilter.base.GLImageFilter;
 import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
 import com.tym.shortvideo.glfilter.beauty.GLRealtimeBeautyFilter;
 import com.tym.shortvideo.glfilter.beauty.WhitenOrReddenFilter;
@@ -40,6 +39,7 @@ import com.tym.shortvideo.glfilter.image.GLMirrorFilter;
 import com.tym.shortvideo.glfilter.image.GLSaturationFilter;
 import com.tym.shortvideo.glfilter.image.GLSharpnessFilter;
 import com.tym.shortvideo.glfilter.sticker.GLStickerFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.type.GLFilterGroupType;
 import com.tym.shortvideo.type.GLFilterIndex;
 import com.tym.shortvideo.type.GLFilterType;
@@ -54,6 +54,7 @@ import java.util.HashMap;
 public final class FilterManager {
 
     private static HashMap<GLFilterType, GLFilterIndex> mIndexMap = new HashMap<>();
+
     static {
         mIndexMap.put(GLFilterType.NONE, GLFilterIndex.NoneIndex);
 
@@ -112,9 +113,10 @@ public final class FilterManager {
         mIndexMap.put(GLFilterType.WHITENORREDDEN, GLFilterIndex.ColorIndex);
     }
 
-    private FilterManager() {}
+    private FilterManager() {
+    }
 
-    public static GLImageFilter getFilter(GLFilterType type) {
+    public static GPUImageFilter getFilter(GLFilterType type) {
         switch (type) {
 
             // 图片基本属性编辑滤镜
@@ -150,6 +152,7 @@ public final class FilterManager {
 
             // 白皙还是红润
             case WHITENORREDDEN:
+//                return new MagicAmaroFilter();
                 return new WhitenOrReddenFilter();
             // 实时磨皮
             case REALTIMEBEAUTY:
@@ -259,6 +262,7 @@ public final class FilterManager {
 
     /**
      * 获取滤镜组
+     *
      * @return
      */
     public static GLImageFilterGroup getFilterGroup() {
@@ -280,6 +284,7 @@ public final class FilterManager {
 
     /**
      * 获取层级
+     *
      * @param Type
      * @return
      */

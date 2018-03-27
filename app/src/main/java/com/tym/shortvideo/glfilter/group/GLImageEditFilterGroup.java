@@ -10,6 +10,7 @@ import com.tym.shortvideo.glfilter.image.GLExposureFilter;
 import com.tym.shortvideo.glfilter.image.GLHueFilter;
 import com.tym.shortvideo.glfilter.image.GLSaturationFilter;
 import com.tym.shortvideo.glfilter.image.GLSharpnessFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.type.GLFilterIndex;
 import com.tym.shortvideo.type.GLFilterType;
 
@@ -34,7 +35,7 @@ public class GLImageEditFilterGroup extends GLImageFilterGroup {
         this(initFilters());
     }
 
-    public GLImageEditFilterGroup(List<GLImageFilter> filters) {
+    public GLImageEditFilterGroup(List<GPUImageFilter> filters) {
         super(filters);
     }
 
@@ -42,8 +43,8 @@ public class GLImageEditFilterGroup extends GLImageFilterGroup {
      * 初始化滤镜
      * @return
      */
-    private static List<GLImageFilter> initFilters() {
-        List<GLImageFilter> filters = new ArrayList<GLImageFilter>();
+    private static List<GPUImageFilter> initFilters() {
+        List<GPUImageFilter> filters = new ArrayList<>();
 
         filters.add(BRIGHTNESS, FilterManager.getFilter(GLFilterType.BRIGHTNESS)); // 亮度
         filters.add(CONTRAST, FilterManager.getFilter(GLFilterType.CONTRAST)); // 对比度
