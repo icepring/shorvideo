@@ -25,11 +25,10 @@ import com.tym.shortvideo.interfaces.ProgressVideoListener;
 import com.tym.shortvideo.interfaces.RangeSeekBarListener;
 import com.tym.shortvideo.interfaces.SingleCallback;
 import com.tym.shortvideo.interfaces.TrimVideoListener;
-import com.tym.shortvideo.tymtest.BackgroundExecutor;
-import com.tym.shortvideo.tymtest.DeviceUtils;
-import com.tym.shortvideo.tymtest.FileUtils;
-import com.tym.shortvideo.tymtest.TrimVideoUtil;
-import com.tym.shortvideo.tymtest.UiThreadExecutor;
+import com.tym.shortvideo.utils.BackgroundExecutor;
+import com.tym.shortvideo.utils.DeviceUtils;
+import com.tym.shortvideo.utils.TrimVideoUtil;
+import com.tym.shortvideo.utils.UiThreadExecutor;
 
 import java.io.File;
 import java.lang.ref.WeakReference;

@@ -1,12 +1,12 @@
 package com.tym.shortvideo.glfilter.group;
 
 
-import com.tym.shortvideo.camerarender.FilterManager;
+import com.tym.shortvideo.recodrender.FilterManager;
 import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
 import com.tym.shortvideo.glfilter.beauty.GLRealtimeBeautyFilter;
-import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
-import com.tym.shortvideo.type.GLFilterIndex;
-import com.tym.shortvideo.type.GLFilterType;
+import com.tym.shortvideo.glfilter.base.GPUImageFilter;
+import com.tym.shortvideo.glfilter.helper.type.GLFilterIndex;
+import com.tym.shortvideo.glfilter.helper.type.GLFilterType;
 
 import java.util.ArrayList;
 import java.util.List;

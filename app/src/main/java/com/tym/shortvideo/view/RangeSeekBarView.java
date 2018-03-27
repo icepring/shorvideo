@@ -12,8 +12,8 @@ import android.view.View;
 
 import com.tym.shortvideo.R;
 import com.tym.shortvideo.interfaces.RangeSeekBarListener;
-import com.tym.shortvideo.tymtest.DateUtil;
-import com.tym.shortvideo.tymtest.DeviceUtils;
+import com.tym.shortvideo.utils.DateUtil;
+import com.tym.shortvideo.utils.DeviceUtils;
 
 import java.util.ArrayList;
 import java.util.List;

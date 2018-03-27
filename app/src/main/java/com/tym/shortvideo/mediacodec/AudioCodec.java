@@ -11,7 +11,7 @@ import android.util.Log;
 
 
 import com.tym.shortvideo.mediacodec.jni.AudioJniUtils;
-import com.tym.shortvideo.tymtest.FileUtils;
+import com.tym.shortvideo.utils.FileUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.File;

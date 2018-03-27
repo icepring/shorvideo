@@ -6,9 +6,9 @@ import android.opengl.GLES30;
 import android.opengl.Matrix;
 
 
-import com.tym.shortvideo.tymtest.BitmapUtils;
-import com.tym.shortvideo.tymtest.MatrixHelper;
-import com.tym.shortvideo.type.GlUtil;
+import com.tym.shortvideo.utils.BitmapUtils;
+import com.tym.shortvideo.utils.MatrixHelper;
+import com.tym.shortvideo.glfilter.helper.type.GlUtil;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;

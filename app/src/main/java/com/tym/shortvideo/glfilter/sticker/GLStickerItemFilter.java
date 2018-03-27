@@ -5,10 +5,10 @@ import android.opengl.GLES30;
 import android.opengl.Matrix;
 
 
-import com.tym.shortvideo.camerarender.ParamsManager;
-import com.tym.shortvideo.tymtest.BitmapUtils;
-import com.tym.shortvideo.type.GlUtil;
-import com.tym.shortvideo.type.StickerType;
+import com.tym.shortvideo.recodrender.ParamsManager;
+import com.tym.shortvideo.utils.BitmapUtils;
+import com.tym.shortvideo.glfilter.helper.type.GlUtil;
+import com.tym.shortvideo.glfilter.helper.type.StickerType;
 
 import java.nio.FloatBuffer;
 

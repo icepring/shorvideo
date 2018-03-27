@@ -3,8 +3,7 @@ package com.tym.shortvideo.glfilter.base;
 import android.opengl.GLES30;
 
 
-import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
-import com.tym.shortvideo.type.GLFilterType;
+import com.tym.shortvideo.glfilter.helper.type.GLFilterType;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;

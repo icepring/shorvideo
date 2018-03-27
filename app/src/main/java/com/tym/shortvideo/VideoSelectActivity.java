@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.tym.shortvideo.interfaces.SingleCallback;
 import com.tym.shortvideo.media.VideoInfo;
-import com.tym.shortvideo.tymtest.TrimVideoUtil;
+import com.tym.shortvideo.utils.TrimVideoUtil;
 import com.tym.shortvideo.view.SpacesItemDecoration;
 
 import java.util.ArrayList;

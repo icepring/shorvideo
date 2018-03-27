@@ -2,7 +2,6 @@ package com.tym.shortvideo.glfilter.color;
 
 
 import com.tym.shortvideo.glfilter.base.GLImageFilter;
-import com.tym.shortvideo.type.GlUtil;
 
 /**
  * 黑白

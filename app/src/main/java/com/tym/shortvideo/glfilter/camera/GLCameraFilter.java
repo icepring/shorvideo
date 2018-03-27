@@ -6,8 +6,8 @@ import android.opengl.Matrix;
 
 
 import com.tym.shortvideo.glfilter.base.GLImageFilter;
-import com.tym.shortvideo.type.GlUtil;
-import com.tym.shortvideo.type.TextureRotationUtils;
+import com.tym.shortvideo.glfilter.helper.type.GlUtil;
+import com.tym.shortvideo.glfilter.helper.type.TextureRotationUtils;
 
 import java.nio.FloatBuffer;
 

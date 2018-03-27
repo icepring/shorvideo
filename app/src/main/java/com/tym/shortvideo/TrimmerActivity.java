@@ -11,7 +11,7 @@ import android.util.Log;
 
 
 import com.tym.shortvideo.interfaces.TrimVideoListener;
-import com.tym.shortvideo.tymtest.TrimVideoUtil;
+import com.tym.shortvideo.utils.TrimVideoUtil;
 import com.tym.shortvideo.view.VideoTrimmerView;
 
 import java.io.File;

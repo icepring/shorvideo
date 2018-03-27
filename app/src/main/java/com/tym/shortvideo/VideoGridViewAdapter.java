@@ -13,9 +13,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tym.shortvideo.interfaces.SingleCallback;
 import com.tym.shortvideo.media.VideoInfo;
-import com.tym.shortvideo.tymtest.DateUtil;
-import com.tym.shortvideo.tymtest.DeviceUtils;
-import com.tym.shortvideo.tymtest.TrimVideoUtil;
+import com.tym.shortvideo.utils.DateUtil;
+import com.tym.shortvideo.utils.DeviceUtils;
+import com.tym.shortvideo.utils.TrimVideoUtil;
 
 import java.util.ArrayList;
 

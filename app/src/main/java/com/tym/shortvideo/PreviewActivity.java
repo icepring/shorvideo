@@ -15,16 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.tym.shortvideo.camerarender.ParamsManager;
 import com.tym.shortvideo.media.MediaPlayerWrapper;
 import com.tym.shortvideo.media.VideoInfo;
 import com.tym.shortvideo.mediacodec.VideoClipper;
-import com.tym.shortvideo.tymtest.FileUtils;
-import com.tym.shortvideo.tymtymtym.gpufilter.SlideGpuFilterGroup;
-import com.tym.shortvideo.tymtymtym.gpufilter.helper.MagicFilterType;
+import com.tym.shortvideo.utils.FileUtils;
+import com.tym.shortvideo.glfilter.helper.SlideGpuFilterGroup;
+import com.tym.shortvideo.glfilter.helper.MagicFilterType;
 import com.tym.shortvideo.view.VideoPreviewView;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;

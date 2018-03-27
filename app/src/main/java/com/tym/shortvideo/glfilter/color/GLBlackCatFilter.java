@@ -4,7 +4,7 @@ import android.opengl.GLES30;
 
 
 import com.tym.shortvideo.glfilter.base.GLImageFilter;
-import com.tym.shortvideo.type.GlUtil;
+import com.tym.shortvideo.glfilter.helper.type.GlUtil;
 
 /**
  * 黑猫滤镜

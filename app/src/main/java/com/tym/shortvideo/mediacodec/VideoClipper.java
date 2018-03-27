@@ -14,16 +14,13 @@ import android.util.Log;
 
 
 import com.tym.shortvideo.MyApplication;
-import com.tym.shortvideo.camerarender.ParamsManager;
 import com.tym.shortvideo.media.VideoInfo;
-import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
-import com.tym.shortvideo.tymtymtym.gpufilter.helper.MagicFilterFactory;
-import com.tym.shortvideo.tymtymtym.gpufilter.helper.MagicFilterType;
+import com.tym.shortvideo.glfilter.base.GPUImageFilter;
+import com.tym.shortvideo.glfilter.helper.MagicFilterFactory;
+import com.tym.shortvideo.glfilter.helper.MagicFilterType;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

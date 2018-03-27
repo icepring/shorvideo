@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.tym.shortvideo.R;
-import com.tym.shortvideo.tymtest.DeviceUtils;
+import com.tym.shortvideo.utils.DeviceUtils;
 
 import java.util.ArrayList;
 import java.util.List;

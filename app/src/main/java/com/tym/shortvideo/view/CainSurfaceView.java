@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.tym.shortvideo.R;
-import com.tym.shortvideo.tymtest.CameraUtils;
+import com.tym.shortvideo.utils.CameraUtils;
 
 import java.util.List;
 

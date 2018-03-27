@@ -11,8 +11,8 @@ import android.view.Surface;
 
 import com.tym.shortvideo.media.MediaPlayerWrapper;
 import com.tym.shortvideo.media.VideoInfo;
-import com.tym.shortvideo.tymtymtym.gpufilter.SlideGpuFilterGroup;
-import com.tym.shortvideo.tymtymtym.gpufilter.VideoDrawer;
+import com.tym.shortvideo.glfilter.helper.SlideGpuFilterGroup;
+import com.tym.shortvideo.glfilter.helper.VideoDrawer;
 
 import java.io.IOException;
 import java.util.List;
