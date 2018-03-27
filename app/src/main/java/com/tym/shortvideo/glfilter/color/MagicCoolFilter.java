@@ -3,11 +3,17 @@ package com.tym.shortvideo.glfilter.color;
 import android.opengl.GLES20;
 
 import com.tym.shortvideo.R;
-import com.tym.shortvideo.glfilter.base.GPUImageFilter;
-import com.tym.shortvideo.glfilter.helper.OpenGlUtils;
+import com.tym.shortvideo.filter.base.GPUImageFilter;
+import com.tym.shortvideo.filter.helper.OpenGlUtils;
 
 import java.nio.ByteBuffer;
 
+/**
+ * @Author Jliuer
+ * @Date 2018/3/27/22:51
+ * @Email Jliuer@aliyun.com
+ * @Description 冷色调
+ */
 public class MagicCoolFilter extends GPUImageFilter {
 	private int[] mToneCurveTexture = {-1};
 	private int mToneCurveTextureUniformLocation;

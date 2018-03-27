@@ -7,8 +7,8 @@ import android.opengl.Matrix;
 
 import com.tym.shortvideo.recodrender.ParamsManager;
 import com.tym.shortvideo.utils.BitmapUtils;
-import com.tym.shortvideo.glfilter.helper.type.GlUtil;
-import com.tym.shortvideo.glfilter.helper.type.StickerType;
+import com.tym.shortvideo.filter.helper.type.GlUtil;
+import com.tym.shortvideo.filter.helper.type.StickerType;
 
 import java.nio.FloatBuffer;
 

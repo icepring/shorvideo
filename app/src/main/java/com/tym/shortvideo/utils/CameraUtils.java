@@ -9,7 +9,7 @@ import android.util.Size;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import com.tym.shortvideo.glfilter.helper.type.CalculateType;
+import com.tym.shortvideo.filter.helper.type.CalculateType;
 
 import java.io.IOException;
 import java.util.ArrayList;

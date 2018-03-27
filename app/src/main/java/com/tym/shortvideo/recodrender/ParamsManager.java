@@ -3,7 +3,7 @@ package com.tym.shortvideo.recodrender;
 import android.content.Context;
 import android.os.Environment;
 
-import com.tym.shortvideo.glfilter.helper.type.GLType;
+import com.tym.shortvideo.filter.helper.type.GLType;
 
 
 /**

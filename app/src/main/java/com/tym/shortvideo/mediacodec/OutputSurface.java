@@ -23,8 +23,8 @@ import android.view.Surface;
 
 import com.tym.shortvideo.MyApplication;
 import com.tym.shortvideo.media.VideoInfo;
-import com.tym.shortvideo.glfilter.helper.VideoDrawer;
-import com.tym.shortvideo.glfilter.base.GPUImageFilter;
+import com.tym.shortvideo.filter.helper.VideoDrawer;
+import com.tym.shortvideo.filter.base.GPUImageFilter;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;

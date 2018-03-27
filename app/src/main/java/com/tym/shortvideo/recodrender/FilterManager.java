@@ -1,10 +1,9 @@
 package com.tym.shortvideo.recodrender;
 
+import com.tym.shortvideo.filter.advanced.MagicBeautyFilter;
 import com.tym.shortvideo.glfilter.advanced.GLSketchFilter;
-import com.tym.shortvideo.glfilter.base.GLDisplayFilter;
-import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
-import com.tym.shortvideo.glfilter.beauty.GLRealtimeBeautyFilter;
-import com.tym.shortvideo.glfilter.beauty.WhitenOrReddenFilter;
+import com.tym.shortvideo.filter.base.GLDisplayFilter;
+import com.tym.shortvideo.filter.base.gpuvideo.GLImageFilterGroup;
 import com.tym.shortvideo.glfilter.color.GLAmaroFilter;
 import com.tym.shortvideo.glfilter.color.GLAnitqueFilter;
 import com.tym.shortvideo.glfilter.color.GLBlackCatFilter;
@@ -28,7 +27,8 @@ import com.tym.shortvideo.glfilter.color.GLRomanceFilter;
 import com.tym.shortvideo.glfilter.color.GLSakuraFilter;
 import com.tym.shortvideo.glfilter.color.GLSunsetFilter;
 import com.tym.shortvideo.glfilter.color.GLWhiteCatFilter;
-import com.tym.shortvideo.glfilter.group.GLDefaultFilterGroup;
+import com.tym.shortvideo.glfilter.color.MagicSkinWhitenFilter;
+import com.tym.shortvideo.filter.base.gpuvideo.GLDefaultFilterGroup;
 import com.tym.shortvideo.glfilter.group.GLMakeUpFilterGroup;
 import com.tym.shortvideo.glfilter.image.GLBrightnessFilter;
 import com.tym.shortvideo.glfilter.image.GLContrastFilter;
@@ -39,10 +39,10 @@ import com.tym.shortvideo.glfilter.image.GLMirrorFilter;
 import com.tym.shortvideo.glfilter.image.GLSaturationFilter;
 import com.tym.shortvideo.glfilter.image.GLSharpnessFilter;
 import com.tym.shortvideo.glfilter.sticker.GLStickerFilter;
-import com.tym.shortvideo.glfilter.base.GPUImageFilter;
-import com.tym.shortvideo.glfilter.helper.type.GLFilterGroupType;
-import com.tym.shortvideo.glfilter.helper.type.GLFilterIndex;
-import com.tym.shortvideo.glfilter.helper.type.GLFilterType;
+import com.tym.shortvideo.filter.base.GPUImageFilter;
+import com.tym.shortvideo.filter.helper.type.GLFilterGroupType;
+import com.tym.shortvideo.filter.helper.type.GLFilterIndex;
+import com.tym.shortvideo.filter.helper.type.GLFilterType;
 
 import java.util.HashMap;
 
@@ -153,10 +153,12 @@ public final class FilterManager {
             // 白皙还是红润
             case WHITENORREDDEN:
 //                return new MagicAmaroFilter();
-                return new WhitenOrReddenFilter();
+                return new MagicSkinWhitenFilter();
+//                return new WhitenOrReddenFilter();
             // 实时磨皮
             case REALTIMEBEAUTY:
-                return new GLRealtimeBeautyFilter();
+//                return new GLRealtimeBeautyFilter();
+                return new MagicBeautyFilter();
 
             // AMARO
             case AMARO:

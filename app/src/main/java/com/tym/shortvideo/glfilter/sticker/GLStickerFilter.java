@@ -1,7 +1,7 @@
 package com.tym.shortvideo.glfilter.sticker;
 
 
-import com.tym.shortvideo.glfilter.base.GLImageFilter;
+import com.tym.shortvideo.filter.base.GLImageFilter;
 
 /**
  * 贴纸滤镜，贴纸在经过透视变换、人脸在侧脸、抬头、低头等都会产生一个姿态角，

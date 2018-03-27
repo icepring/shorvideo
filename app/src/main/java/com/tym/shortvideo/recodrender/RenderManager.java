@@ -3,13 +3,15 @@ package com.tym.shortvideo.recodrender;
 import android.opengl.GLES30;
 
 
-import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
-import com.tym.shortvideo.glfilter.camera.GLCameraFilter;
-import com.tym.shortvideo.glfilter.base.GPUImageFilter;
-import com.tym.shortvideo.glfilter.helper.type.GLFilterGroupType;
-import com.tym.shortvideo.glfilter.helper.type.GLFilterType;
-import com.tym.shortvideo.glfilter.helper.type.ScaleType;
-import com.tym.shortvideo.glfilter.helper.type.TextureRotationUtils;
+import com.tym.shortvideo.filter.base.GLDisplayFilter;
+import com.tym.shortvideo.filter.base.gpuvideo.GLDefaultFilterGroup;
+import com.tym.shortvideo.filter.base.gpuvideo.GLImageFilterGroup;
+import com.tym.shortvideo.filter.base.camera.GLCameraFilter;
+import com.tym.shortvideo.filter.base.GPUImageFilter;
+import com.tym.shortvideo.filter.helper.type.GLFilterGroupType;
+import com.tym.shortvideo.filter.helper.type.GLFilterType;
+import com.tym.shortvideo.filter.helper.type.ScaleType;
+import com.tym.shortvideo.filter.helper.type.TextureRotationUtils;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -93,9 +95,9 @@ public final class RenderManager {
         // 相机输入流
         mCameraFilter = new GLCameraFilter();
         // 渲染滤镜组
-        mRealTimeFilter = FilterManager.getFilterGroup();
+        mRealTimeFilter = new GLDefaultFilterGroup();
         // 显示输出
-        mDisplayFilter = FilterManager.getFilter(GLFilterType.NONE);
+        mDisplayFilter =  new GLDisplayFilter();
     }
 
     /**

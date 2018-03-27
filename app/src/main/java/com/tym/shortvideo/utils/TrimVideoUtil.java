@@ -9,11 +9,11 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
+import com.tym.shortvideo.filter.helper.MagicFilterType;
 import com.tym.shortvideo.interfaces.SingleCallback;
 import com.tym.shortvideo.interfaces.TrimVideoListener;
 import com.tym.shortvideo.media.VideoInfo;
 import com.tym.shortvideo.mediacodec.VideoClipper;
-import com.tym.shortvideo.glfilter.helper.MagicFilterType;
 
 import java.io.IOException;
 import java.util.ArrayList;

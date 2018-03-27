@@ -5,8 +5,8 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.view.SurfaceHolder;
 
-import com.tym.shortvideo.glfilter.helper.type.GLFilterGroupType;
-import com.tym.shortvideo.glfilter.helper.type.GLFilterType;
+import com.tym.shortvideo.filter.helper.type.GLFilterGroupType;
+import com.tym.shortvideo.filter.helper.type.GLFilterType;
 
 
 /**

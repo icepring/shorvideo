@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 
 import com.tym.shortvideo.R;
-import com.tym.shortvideo.glfilter.helper.type.GLFilterType;
+import com.tym.shortvideo.filter.helper.type.GLFilterType;
 import com.tym.shortvideo.view.SquareImageView;
 
 import java.lang.ref.WeakReference;

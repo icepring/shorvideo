@@ -2,7 +2,7 @@ package com.tym.shortvideo.recodrender;
 
 
 
-import com.tym.shortvideo.glfilter.helper.type.GLFilterType;
+import com.tym.shortvideo.filter.helper.type.GLFilterType;
 
 import java.util.ArrayList;
 import java.util.List;

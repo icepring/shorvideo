@@ -3,11 +3,11 @@ package com.tym.shortvideo.glfilter.color;
 import android.opengl.GLES30;
 
 import com.tym.shortvideo.recodrender.ParamsManager;
-import com.tym.shortvideo.glfilter.base.GLImageFilter;
-import com.tym.shortvideo.glfilter.helper.type.GlUtil;
+import com.tym.shortvideo.filter.base.GLImageFilter;
+import com.tym.shortvideo.filter.helper.type.GlUtil;
 
 /**
- * 童话滤镜
+ *
  * Created by cain.huang on 2017/11/16.
  */
 

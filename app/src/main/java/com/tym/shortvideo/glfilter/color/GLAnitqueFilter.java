@@ -2,8 +2,8 @@ package com.tym.shortvideo.glfilter.color;
 
 import android.opengl.GLES30;
 
-import com.tym.shortvideo.glfilter.base.GLImageFilter;
-import com.tym.shortvideo.glfilter.helper.type.GlUtil;
+import com.tym.shortvideo.filter.base.GLImageFilter;
+import com.tym.shortvideo.filter.helper.type.GlUtil;
 
 
 /**
@@ -71,10 +71,20 @@ public class GLAnitqueFilter extends GLImageFilter {
         this(VERTEX_SHADER, FRAGMENT_SHADER);
     }
 
+    @Override
+    public void init() {
+        super.init();
+        mCurveTextureLoc = GLES30.glGetUniformLocation(mProgramHandle, "curveTexture");
+    }
+
+    @Override
+    protected void onInitialized() {
+        super.onInitialized();
+        createTexture();
+    }
+
     public GLAnitqueFilter(String vertexShader, String fragmentShader) {
         super(vertexShader, fragmentShader);
-        mCurveTextureLoc = GLES30.glGetUniformLocation(mProgramHandle, "curveTexture");
-        createTexture();
     }
 
 

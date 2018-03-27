@@ -15,12 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.tym.shortvideo.filter.helper.MagicFilterType;
 import com.tym.shortvideo.media.MediaPlayerWrapper;
 import com.tym.shortvideo.media.VideoInfo;
 import com.tym.shortvideo.mediacodec.VideoClipper;
 import com.tym.shortvideo.utils.FileUtils;
-import com.tym.shortvideo.glfilter.helper.SlideGpuFilterGroup;
-import com.tym.shortvideo.glfilter.helper.MagicFilterType;
+import com.tym.shortvideo.filter.helper.SlideGpuFilterGroup;
 import com.tym.shortvideo.view.VideoPreviewView;
 
 import java.io.IOException;

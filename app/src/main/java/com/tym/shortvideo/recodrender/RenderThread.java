@@ -14,13 +14,13 @@ import android.util.Size;
 import android.view.SurfaceHolder;
 
 
-import com.tym.shortvideo.glfilter.gles.EglCore;
-import com.tym.shortvideo.glfilter.gles.WindowSurface;
+import com.tym.shortvideo.filter.helper.gles.EglCore;
+import com.tym.shortvideo.filter.helper.gles.WindowSurface;
 import com.tym.shortvideo.utils.CameraInfo;
 import com.tym.shortvideo.utils.CameraUtils;
-import com.tym.shortvideo.glfilter.helper.type.GLFilterGroupType;
-import com.tym.shortvideo.glfilter.helper.type.GLFilterType;
-import com.tym.shortvideo.glfilter.helper.type.GlUtil;
+import com.tym.shortvideo.filter.helper.type.GLFilterGroupType;
+import com.tym.shortvideo.filter.helper.type.GLFilterType;
+import com.tym.shortvideo.filter.helper.type.GlUtil;
 
 import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;

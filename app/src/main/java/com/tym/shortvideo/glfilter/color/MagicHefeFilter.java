@@ -4,10 +4,15 @@ import android.opengl.GLES20;
 
 import com.tym.shortvideo.MyApplication;
 import com.tym.shortvideo.R;
-import com.tym.shortvideo.glfilter.base.GPUImageFilter;
-import com.tym.shortvideo.glfilter.helper.OpenGlUtils;
+import com.tym.shortvideo.filter.base.GPUImageFilter;
+import com.tym.shortvideo.filter.helper.OpenGlUtils;
 
-
+/**
+ * @Author Jliuer
+ * @Date 2018/3/27/22:52
+ * @Email Jliuer@aliyun.com
+ * @Description 酵母
+ */
 public class MagicHefeFilter extends GPUImageFilter {
 	private int[] inputTextureHandles = {-1,-1,-1,-1};
 	private int[] inputTextureUniformLocations = {-1,-1,-1,-1};

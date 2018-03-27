@@ -2,7 +2,7 @@ package com.tym.shortvideo.glfilter.image;
 
 import android.opengl.GLES30;
 
-import com.tym.shortvideo.glfilter.base.GLImageFilter;
+import com.tym.shortvideo.filter.base.GLImageFilter;
 /**
  * 色调
  * 色调是色彩的类别，比如红绿蓝，取决于彩色光的光谱成分。

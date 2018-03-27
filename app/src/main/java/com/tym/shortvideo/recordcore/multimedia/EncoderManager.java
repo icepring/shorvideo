@@ -6,11 +6,11 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.tym.shortvideo.recodrender.ParamsManager;
-import com.tym.shortvideo.glfilter.gles.EglCore;
-import com.tym.shortvideo.glfilter.gles.WindowSurface;
-import com.tym.shortvideo.glfilter.base.GLDisplayFilter;
-import com.tym.shortvideo.glfilter.helper.type.GlUtil;
-import com.tym.shortvideo.glfilter.helper.type.ScaleType;
+import com.tym.shortvideo.filter.helper.gles.EglCore;
+import com.tym.shortvideo.filter.helper.gles.WindowSurface;
+import com.tym.shortvideo.filter.base.GLDisplayFilter;
+import com.tym.shortvideo.filter.helper.type.GlUtil;
+import com.tym.shortvideo.filter.helper.type.ScaleType;
 
 import java.io.File;
 import java.io.IOException;

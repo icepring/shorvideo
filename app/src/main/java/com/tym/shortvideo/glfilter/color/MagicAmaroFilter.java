@@ -3,14 +3,14 @@ package com.tym.shortvideo.glfilter.color;
 import android.opengl.GLES30;
 
 import com.tym.shortvideo.recodrender.ParamsManager;
-import com.tym.shortvideo.glfilter.base.GPUImageFilter;
-import com.tym.shortvideo.glfilter.helper.type.GlUtil;
+import com.tym.shortvideo.filter.base.GPUImageFilter;
+import com.tym.shortvideo.filter.helper.type.GlUtil;
 
 /**
  * @Author Jliuer
  * @Date 2018/03/26/17:02
  * @Email Jliuer@aliyun.com
- * @Description
+ * @Description 阿马罗
  */
 public class MagicAmaroFilter extends GPUImageFilter {
 

@@ -5,11 +5,12 @@ import android.opengl.GLES20;
 
 
 import com.tym.shortvideo.R;
-import com.tym.shortvideo.glfilter.helper.OpenGlUtils;
+import com.tym.shortvideo.filter.base.GPUImageFilter;
+import com.tym.shortvideo.filter.helper.OpenGlUtils;
 
 import java.nio.FloatBuffer;
 
-public class MagicCameraInputFilter extends GPUImageFilter{
+public class MagicCameraInputFilter extends GPUImageFilter {
 
     private float[] mTextureTransformMatrix;
     private int mTextureTransformMatrixLocation;

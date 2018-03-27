@@ -2,11 +2,11 @@ package com.tym.shortvideo.glfilter.color;
 
 import android.opengl.GLES30;
 
-import com.tym.shortvideo.glfilter.base.GLImageFilter;
-import com.tym.shortvideo.glfilter.helper.type.GlUtil;
+import com.tym.shortvideo.filter.base.GLImageFilter;
+import com.tym.shortvideo.filter.helper.type.GlUtil;
 
 /**
- * 翡翠滤镜
+ *
  * Created by cain on 2017/11/15.
  */
 
