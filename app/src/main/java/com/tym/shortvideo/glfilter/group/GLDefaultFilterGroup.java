@@ -6,6 +6,7 @@ import com.tym.shortvideo.glfilter.base.GLImageFilter;
 import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
 import com.tym.shortvideo.glfilter.beauty.GLRealtimeBeautyFilter;
 import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.filter.MagicAmaroFilter;
 import com.tym.shortvideo.type.GLFilterIndex;
 import com.tym.shortvideo.type.GLFilterType;
 
@@ -42,10 +43,10 @@ public class GLDefaultFilterGroup extends GLImageFilterGroup {
 
     private static List<GPUImageFilter> initFilters() {
         List<GPUImageFilter> filters = new ArrayList<>();
-        filters.add(BeautyfyIndex, FilterManager.getFilter(GLFilterType.SOURCE));
-        filters.add(ColorIndex, FilterManager.getFilter(GLFilterType.SOURCE));
-        filters.add(FaceStretchIndex, FilterManager.getFilter(GLFilterType.SOURCE));
-        filters.add(StickersIndex, FilterManager.getFilter(GLFilterType.SOURCE));
+//        filters.add(BeautyfyIndex, FilterManager.getFilter(GLFilterType.SOURCE));
+        filters.add(0, new MagicAmaroFilter());
+//        filters.add(FaceStretchIndex, FilterManager.getFilter(GLFilterType.SOURCE));
+//        filters.add(StickersIndex, FilterManager.getFilter(GLFilterType.SOURCE));
         return filters;
     }
 

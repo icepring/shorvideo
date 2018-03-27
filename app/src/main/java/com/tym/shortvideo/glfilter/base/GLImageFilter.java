@@ -6,6 +6,7 @@ import android.opengl.GLES30;
 import android.opengl.Matrix;
 
 
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.tymtymtym.gpufilter.utils.OpenGlUtils;
 import com.tym.shortvideo.type.GlUtil;
 import com.tym.shortvideo.type.TextureRotationUtils;
@@ -19,7 +20,7 @@ import java.util.LinkedList;
  * Created by cain on 2017/7/9.
  */
 
-public class GLImageFilter {
+public class GLImageFilter extends GPUImageFilter{
 
     protected static final String VERTEX_SHADER =
             "uniform mat4 uMVPMatrix;                                   \n" +
@@ -93,6 +94,7 @@ public class GLImageFilter {
      * @param width
      * @param height
      */
+    @Override
     public void onInputSizeChanged(int width, int height) {
         mImageWidth = width;
         mImageHeight = height;
@@ -103,6 +105,7 @@ public class GLImageFilter {
      * @param width
      * @param height
      */
+    @Override
     public void onDisplayChanged(int width, int height) {
         mDisplayWidth = width;
         mDisplayHeight = height;
@@ -112,6 +115,7 @@ public class GLImageFilter {
      * 绘制Frame
      * @param textureId
      */
+    @Override
     public boolean drawFrame(int textureId) {
         return drawFrame(textureId, mVertexArray, mTexCoordArray);
     }
@@ -122,8 +126,9 @@ public class GLImageFilter {
      * @param vertexBuffer
      * @param textureBuffer
      */
+    @Override
     public boolean drawFrame(int textureId, FloatBuffer vertexBuffer,
-                          FloatBuffer textureBuffer) {
+                             FloatBuffer textureBuffer) {
         GLES30.glUseProgram(mProgramHandle);
         runPendingOnDrawTasks();
         // 绑定数据
@@ -173,6 +178,7 @@ public class GLImageFilter {
      * 获取Texture类型
      * GLES30.TEXTURE_2D / GLES11Ext.GL_TEXTURE_EXTERNAL_OES等
      */
+    @Override
     public int getTextureType() {
         return GLES30.GL_TEXTURE_2D;
     }
@@ -180,6 +186,7 @@ public class GLImageFilter {
     /**
      * 调用drawArrays之前，方便添加其他属性
      */
+    @Override
     public void onDrawArraysBegin() {
 
     }
@@ -187,6 +194,7 @@ public class GLImageFilter {
     /**
      * drawArrays调用之后，方便销毁其他属性
      */
+    @Override
     public void onDrawArraysAfter() {
 
     }
@@ -194,6 +202,7 @@ public class GLImageFilter {
     /**
      * 释放资源
      */
+    @Override
     public void release() {
         GLES30.glDeleteProgram(mProgramHandle);
         mProgramHandle = -1;
@@ -202,6 +211,7 @@ public class GLImageFilter {
     /**
      * 初始化单位矩阵
      */
+    @Override
     public void initIdentityMatrix() {
         Matrix.setIdentityM(mMVPMatrix, 0);
         Matrix.setIdentityM(mTexMatrix, 0);
@@ -211,6 +221,7 @@ public class GLImageFilter {
      * 设置变换矩阵
      * @param matrix
      */
+    @Override
     public void setMVPMatrix(float[] matrix) {
         if (!Arrays.equals(mMVPMatrix, matrix)) {
             mMVPMatrix = matrix;
@@ -218,6 +229,7 @@ public class GLImageFilter {
     }
 
     ///------------------ 统一变量(uniform)设置 ------------------------///
+    @Override
     protected void setInteger(final int location, final int intValue) {
         runOnDraw(new Runnable() {
             @Override
@@ -227,6 +239,7 @@ public class GLImageFilter {
         });
     }
 
+    @Override
     protected void setFloat(final int location, final float floatValue) {
         runOnDraw(new Runnable() {
             @Override
@@ -236,6 +249,7 @@ public class GLImageFilter {
         });
     }
 
+    @Override
     protected void setFloatVec2(final int location, final float[] arrayValue) {
         runOnDraw(new Runnable() {
             @Override
@@ -245,6 +259,7 @@ public class GLImageFilter {
         });
     }
 
+    @Override
     protected void setFloatVec3(final int location, final float[] arrayValue) {
         runOnDraw(new Runnable() {
             @Override
@@ -254,6 +269,7 @@ public class GLImageFilter {
         });
     }
 
+    @Override
     protected void setFloatVec4(final int location, final float[] arrayValue) {
         runOnDraw(new Runnable() {
             @Override
@@ -263,6 +279,7 @@ public class GLImageFilter {
         });
     }
 
+    @Override
     protected void setFloatArray(final int location, final float[] arrayValue) {
         runOnDraw(new Runnable() {
             @Override
@@ -272,6 +289,7 @@ public class GLImageFilter {
         });
     }
 
+    @Override
     protected void setPoint(final int location, final PointF point) {
         runOnDraw(new Runnable() {
 
@@ -285,6 +303,7 @@ public class GLImageFilter {
         });
     }
 
+    @Override
     protected void setUniformMatrix3f(final int location, final float[] matrix) {
         runOnDraw(new Runnable() {
 
@@ -295,6 +314,7 @@ public class GLImageFilter {
         });
     }
 
+    @Override
     protected void setUniformMatrix4f(final int location, final float[] matrix) {
         runOnDraw(new Runnable() {
 
@@ -305,12 +325,14 @@ public class GLImageFilter {
         });
     }
 
+    @Override
     protected void runOnDraw(final Runnable runnable) {
         synchronized (mRunOnDraw) {
             mRunOnDraw.addLast(runnable);
         }
     }
 
+    @Override
     protected void runPendingOnDrawTasks() {
         while (!mRunOnDraw.isEmpty()) {
             mRunOnDraw.removeFirst().run();

@@ -3,6 +3,7 @@ package com.tym.shortvideo.camerarender;
 import android.opengl.GLES30;
 
 
+import com.tym.shortvideo.glfilter.base.GLDisplayFilter;
 import com.tym.shortvideo.glfilter.base.GLImageFilter;
 import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
 import com.tym.shortvideo.glfilter.camera.GLCameraFilter;
@@ -96,7 +97,7 @@ public final class RenderManager {
         // 渲染滤镜组
         mRealTimeFilter = FilterManager.getFilterGroup();
         // 显示输出
-        mDisplayFilter = FilterManager.getFilter(GLFilterType.NONE);
+        mDisplayFilter = new GLDisplayFilter();
     }
 
     /**
@@ -238,7 +239,7 @@ public final class RenderManager {
             mRealTimeFilter.onDisplaySizeChanged(width, height);
         }
         if (mDisplayFilter != null) {
-            mDisplayFilter.onDisplaySizeChanged(width, height);
+            mDisplayFilter.onDisplayChanged(width, height);
         }
     }
 
@@ -317,7 +318,7 @@ public final class RenderManager {
         // 显示输出，需要调整视口大小
         if (mDisplayFilter != null) {
             GLES30.glViewport(0, 0, mDisplayWidth, mDisplayHeight);
-            mDisplayFilter.onDrawFrame(mCurrentTextureId);
+            mDisplayFilter.drawFrame(mCurrentTextureId);
         }
     }
 

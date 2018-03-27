@@ -8,7 +8,7 @@ import android.util.Log;
 import com.tym.shortvideo.camerarender.ParamsManager;
 import com.tym.shortvideo.gles.EglCore;
 import com.tym.shortvideo.gles.WindowSurface;
-import com.tym.shortvideo.glfilter.base.GLDisplayFilter;
+import com.tym.shortvideo.glfilter.advanced.GLDisplayFilter;
 import com.tym.shortvideo.type.GlUtil;
 import com.tym.shortvideo.type.ScaleType;
 
@@ -297,7 +297,7 @@ public class EncoderManager {
     public void drawRecordingFrame(int textureId) {
         if (mRecordFilter != null) {
             GLES30.glViewport(0, 0, mVideoWidth, mVideoHeight);
-            mRecordFilter.onDrawFrame(textureId);
+            mRecordFilter.drawFrame(textureId);
         }
     }
 
@@ -306,7 +306,7 @@ public class EncoderManager {
      */
     public void releaseRecordingFilter() {
         if (mRecordFilter != null) {
-            mRecordFilter.destroy();
+            mRecordFilter.release();
             mRecordFilter = null;
         }
     }

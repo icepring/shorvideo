@@ -255,7 +255,7 @@ public final class FilterManager {
             case NONE:      // 没有滤镜
             case SOURCE:    // 原图
             default:
-                return new GLDisplayFilter();
+                return null;
         }
     }
 
