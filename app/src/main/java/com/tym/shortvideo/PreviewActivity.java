@@ -9,7 +9,9 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -41,6 +43,13 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
     private boolean resumed;
     private boolean isDestroy;
     private boolean isPlaying = false;
+
+    private TextView mFpsView;
+    private TextView mConfim;
+    private Button mBtnLocal;
+    private Button mBtnSwitch;
+    private Button mBtnLvjing;
+    private Button mBtnBeauty;
 
     int startPoint;
 
@@ -78,7 +87,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
 
                     FileUtils.updateMediaStore(PreviewActivity.this, outputPath, fileName);
 
-                    TrimmerActivity.go(PreviewActivity.this,outputPath);
+                    TrimmerActivity.go(PreviewActivity.this, outputPath);
 
                     //TODO　已经渲染完毕了　
 
@@ -100,15 +109,21 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
 
     private void initView() {
         mVideoView = (VideoPreviewView) findViewById(R.id.videoView);
-        ImageView back = (ImageView) findViewById(R.id.iv_back);
-        ImageView confirm = (ImageView) findViewById(R.id.iv_confirm);
-        ImageView close = (ImageView) findViewById(R.id.iv_close);
-        mBeauty = (ImageView) findViewById(R.id.iv_beauty);
 
-        back.setOnClickListener(this);
-        confirm.setOnClickListener(this);
-        close.setOnClickListener(this);
-        mBeauty.setOnClickListener(this);
+
+        mBtnSwitch = findViewById(R.id.btn_switch);
+        mBtnSwitch.setOnClickListener(this);
+
+        mConfim = findViewById(R.id.tv_confrim);
+        mConfim.setOnClickListener(this);
+        mBtnSwitch.setVisibility(View.GONE);
+        mBtnLvjing = findViewById(R.id.btn_lvjing);
+        mBtnLvjing.setOnClickListener(this);
+        mBtnLvjing.setVisibility(View.GONE);
+        mBtnLvjing.setVisibility(View.GONE);
+        mBtnBeauty = findViewById(R.id.btn_beauty);
+        mBtnBeauty.setOnClickListener(this);
+
         mVideoView.setOnFilterChangeListener(this);
         mVideoView.setOnTouchListener(this);
         setLoadingCancelable(false);
@@ -160,22 +175,22 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_back:
-            case R.id.iv_close:
-                if (isLoading()) {
-                    endLoading();
-                }
-                finish();
-                break;
-            case R.id.iv_beauty:
+//            case R.id.iv_back:
+//            case R.id.iv_close:
+//                if (isLoading()) {
+//                    endLoading();
+//                }
+//                finish();
+//                break;
+            case R.id.btn_beauty:
                 mVideoView.switchBeauty();
-                if (mBeauty.isSelected()) {
-                    mBeauty.setSelected(false);
+                if (mBtnBeauty.isSelected()) {
+                    mBtnBeauty.setSelected(false);
                 } else {
-                    mBeauty.setSelected(true);
+                    mBtnBeauty.setSelected(true);
                 }
                 break;
-            case R.id.iv_confirm:
+            case R.id.tv_confrim:
                 if (isLoading()) {
                     return;
                 }

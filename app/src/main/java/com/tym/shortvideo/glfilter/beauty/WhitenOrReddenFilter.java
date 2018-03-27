@@ -66,7 +66,7 @@ public class WhitenOrReddenFilter extends GLImageFilter {
         mReddenLoc = GLES30.glGetUniformLocation(mProgramHandle, "redden");
         mWhitenLoc = GLES30.glGetUniformLocation(mProgramHandle, "whitening");
         mPinkingLoc = GLES30.glGetUniformLocation(mProgramHandle, "pinking");
-        setReddenValue(0.0f);
+        setReddenValue(1.0f);
         setWhitenValue(1.0f);
         setPinkingValue(1.0f);
     }

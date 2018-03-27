@@ -38,7 +38,7 @@ public class GLDefaultFilterGroup extends GLImageFilterGroup {
     private static List<GLImageFilter> initFilters() {
         List<GLImageFilter> filters = new ArrayList<>();
         filters.add(BeautyfyIndex, FilterManager.getFilter(GLFilterType.REALTIMEBEAUTY));
-        filters.add(ColorIndex, FilterManager.getFilter(GLFilterType.SOURCE));
+        filters.add(ColorIndex, FilterManager.getFilter(GLFilterType.WHITENORREDDEN));
         filters.add(FaceStretchIndex, FilterManager.getFilter(GLFilterType.FACESTRETCH));
         filters.add(StickersIndex, FilterManager.getFilter(GLFilterType.STICKER));
         return filters;

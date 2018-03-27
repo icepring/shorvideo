@@ -78,10 +78,6 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     private static final boolean VERBOSE = true;
     private static final int REQUEST_PREVIEW = 0x200;
 
-    // 十秒还是三分钟
-    private static final int RECORD_TEN_SECOND = 10000;
-    private static final int RECORD_THREE_MINUTE = 180000;
-
     private static final int MSG_SEND_FPS_HANDLE = 0x010;
 
     private static final int REQUEST_CAMERA = 0x01;
@@ -109,33 +105,18 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     private AspectFrameLayout mAspectLayout;
     private CainSurfaceView mCameraSurfaceView;
     // fps显示
+
     private TextView mFpsView;
-
     private Button mBtnLocal;
-    private Button mBtnViewPhoto;
-
     private Button mBtnSwitch;
     private Button mBtnLvjing;
     private Button mBtnBeauty;
 
-    // Seekbar的最大值
-    private static final int SeekBarMax = 100;
-    // 调整数值的SeekBar
-    private SeekBar mValueBar;
-    private ImageView mValueArrow;
-    private TextView mValueName;
-    // 是否显示调整数值View
-    private boolean mShowValueView = false;
-
     // 倒计时
     private TextView mCountDownView;
 
-    // 底部layout 和 Button
-    private LinearLayout mBottomLayout;
-    private Button mBtnStickers;
     private ShutterButton mBtnShutter;
     private ProgressView mProgressView;
-    private Button mBtnFilters;
 
     private Button mBtnRecordDelete;
     private Button mBtnRecordPreview;
@@ -149,10 +130,6 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
     // 显示贴纸
     private boolean isShowingStickers = false;
-
-    // 底部指示器
-    private List<String> mIndicatorText = new ArrayList<>();
-
 
     // 当前长宽比类型，默认16:9
     private AspectRatioType mCurrentRatioType = AspectRatioType.Ratio_16_9;
@@ -212,7 +189,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         mAspectLayout.setAspectRatio(mCurrentRatio);
         mCameraSurfaceView = new CainSurfaceView(this);
         mCameraSurfaceView.getHolder().addCallback(this);
-        mCameraSurfaceView.addScroller(this);
+//        mCameraSurfaceView.addScroller(this);
         mCameraSurfaceView.addClickListener(this);
         mAspectLayout.addView(mCameraSurfaceView);
         mAspectLayout.requestLayout();
@@ -249,6 +226,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         mBtnSwitch.setOnClickListener(this);
         mBtnLvjing = findViewById(R.id.btn_lvjing);
         mBtnLvjing.setOnClickListener(this);
+        mBtnLvjing.setVisibility(View.GONE);
         mBtnBeauty = findViewById(R.id.btn_beauty);
         mBtnBeauty.setOnClickListener(this);
 
@@ -264,11 +242,9 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         mBtnRecordPreview = findViewById(R.id.btn_record_done);
         mBtnRecordPreview.setOnClickListener(this);
 
-
-        mBottomLayout = findViewById(R.id.layout_bottom);
         adjustBottomView();
 
-        initEffectListView();
+//        initEffectListView();
         DrawerManager.getInstance().setBeautifyLevel(0);
         onIndicatorChanged(2);
     }
@@ -1025,29 +1001,6 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         if (mCameraSurfaceView != null) {
             DrawerManager.getInstance().switchCamera();
         }
-    }
-
-    /**
-     * 显示或者隐藏改变数值视图
-     */
-    private void showOrDismissValueChangeView() {
-        mShowValueView = !mShowValueView;
-        if (mShowValueView) {
-            mValueArrow.setBackgroundResource(android.R.drawable.arrow_down_float);
-            mValueBar.setVisibility(View.VISIBLE);
-            mValueName.setVisibility(View.VISIBLE);
-        } else {
-            mValueArrow.setBackgroundResource(android.R.drawable.arrow_up_float);
-            mValueBar.setVisibility(View.GONE);
-            mValueName.setVisibility(View.GONE);
-        }
-    }
-
-    /**
-     * 显示贴纸列表
-     */
-    private void showStickers() {
-
     }
 
     /**

@@ -3,6 +3,7 @@ package com.tym.shortvideo.glfilter.base;
 import android.opengl.GLES30;
 
 
+import com.tym.shortvideo.tymtymtym.gpufilter.filter.MagicAmaroFilter;
 import com.tym.shortvideo.type.GLFilterType;
 
 import java.nio.FloatBuffer;
@@ -17,7 +18,6 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
 
     private static int[] mFramebuffers;
     private static int[] mFrameBufferTextures;
-    
 
     private int mCurrentTextureId;
     protected List<GLImageFilter> mFilters = new ArrayList<>();
@@ -41,8 +41,8 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
             mFilters.get(i).onInputSizeChanged(width, height);
         }
         // 先销毁原来的Framebuffers
-        if(mFramebuffers != null && (mImageWidth != width
-                || mImageHeight != height || mFramebuffers.length != size-1)) {
+        if (mFramebuffers != null && (mImageWidth != width
+                || mImageHeight != height || mFramebuffers.length != size - 1)) {
             destroyFramebuffer();
             mImageWidth = width;
             mImageWidth = height;
@@ -145,6 +145,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
             }
             GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
         }
+
         return mCurrentTextureId;
     }
 
@@ -174,6 +175,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
 
     /**
      * 创建Framebuffer
+     *
      * @param start
      * @param size
      */
@@ -220,6 +222,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
 
     /**
      * 添加新滤镜
+     *
      * @param filters
      */
     public void addFilters(List<GLImageFilter> filters) {
@@ -229,12 +232,14 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
 
     /**
      * 设置美颜等级
+     *
      * @param percent
      */
     public abstract void setBeautifyLevel(float percent);
 
     /**
      * 切换滤镜
+     *
      * @param type
      */
     public abstract void changeFilter(GLFilterType type);
@@ -267,6 +272,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
 
     /**
      * 替换滤镜组
+     *
      * @param filters
      */
     public void replaceWidthFilters(List<GLImageFilter> filters) {
@@ -296,6 +302,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
 
     /**
      * 获取当前滤镜TextureId
+     *
      * @return
      */
     public int getCurrentTextureId() {

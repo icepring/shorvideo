@@ -9,52 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <include
+        layout="@layout/view_preview_top"/>
 
-        <FrameLayout
-            android:id="@+id/fl_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="10dp">
+    <TextView
+        android:text="完成"
+        android:id="@+id/tv_confrim"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:gravity="center"
+        android:background="@drawable/round"
+        android:layout_width="70dp"
+        android:layout_height="70dp"/>
 
-            <ImageView
-                android:id="@+id/iv_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:scaleType="centerInside"
-                android:src="@mipmap/editor_record_close" />
-        </FrameLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="centerInside"
-                android:src="@mipmap/editor_record_back"/>
-            <ImageView
-                android:id="@+id/iv_beauty"
-                android:layout_centerHorizontal="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/selector_beauty"/>
-            <ImageView
-                android:id="@+id/iv_confirm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:scaleType="centerInside"
-                android:src="@mipmap/editor_img_confirm"/>
-        </RelativeLayout>
-    </RelativeLayout>
 </FrameLayout>
