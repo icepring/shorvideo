@@ -19,6 +19,7 @@ package com.tym.shortvideo.tymtymtym.gpufilter.basefilter;
 import android.graphics.PointF;
 import android.opengl.GLES20;
 import android.opengl.GLES30;
+import android.opengl.Matrix;
 
 
 import com.tym.shortvideo.tymtymtym.gpufilter.utils.OpenGlUtils;
@@ -28,20 +29,22 @@ import com.tym.shortvideo.tymtymtym.gpufilter.utils.TextureRotationUtil;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class GPUImageFilter {
-    public static final String NO_FILTER_VERTEX_SHADER = "" +
-            "attribute vec4 position;\n" +
-            "attribute vec4 inputTextureCoordinate;\n" +
-            " \n" +
-            "varying vec2 textureCoordinate;\n" +
-            " \n" +
-            "void main()\n" +
-            "{\n" +
-            "    gl_Position = position;\n" +
-            "    textureCoordinate = inputTextureCoordinate.xy;\n" +
-            "}";
+    public static final String NO_FILTER_VERTEX_SHADER =
+            "uniform mat4 uMVPMatrix;                                   \n" +
+                    "attribute vec4 position;\n" +
+                    "attribute vec4 inputTextureCoordinate;\n" +
+                    " \n" +
+                    "varying vec2 textureCoordinate;\n" +
+                    " \n" +
+                    "void main()\n" +
+                    "{\n" +
+                    "    gl_Position = uMVPMatrix * position;\n" +
+                    "    textureCoordinate = inputTextureCoordinate.xy;\n" +
+                    "}";
     public static final String NO_FILTER_FRAGMENT_SHADER = "" +
             "varying highp vec2 textureCoordinate;\n" +
             " \n" +
@@ -52,6 +55,13 @@ public class GPUImageFilter {
             "     gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\n" +
             "}";
 
+    protected int muMVPMatrixLoc;
+
+    // 变换矩阵
+    protected float[] mMVPMatrix = new float[16];
+    // 缩放矩阵
+    protected float[] mTexMatrix = new float[16];
+
     private final LinkedList<Runnable> mRunOnDraw;  //用做记录操作顺序的列表
     private final String mVertexShader;
     private final String mFragmentShader;
@@ -60,13 +70,16 @@ public class GPUImageFilter {
     protected int mGLUniformTexture;                //Texture
     protected int mGLAttribTextureCoordinate;       //Texture坐标
 
+    // 渲染的Image的宽高
     protected int mIntputWidth;
     protected int mIntputHeight;
     protected boolean mIsInitialized;
     protected FloatBuffer mGLCubeBuffer;            //顶点坐标buffer
     protected FloatBuffer mGLTextureBuffer;         //纹理坐标buffer
+
+    // 显示输出的宽高
     protected int mOutputWidth, mOutputHeight;
-    
+
     public GPUImageFilter() {
         this(NO_FILTER_VERTEX_SHADER, NO_FILTER_FRAGMENT_SHADER);
     }
@@ -75,7 +88,7 @@ public class GPUImageFilter {
         mRunOnDraw = new LinkedList<>();
         mVertexShader = vertexShader;
         mFragmentShader = fragmentShader;
-        
+
         mGLCubeBuffer = ByteBuffer.allocateDirect(TextureRotationUtil.CUBE.length * 4)
                 .order(ByteOrder.nativeOrder())
                 .asFloatBuffer();
@@ -93,12 +106,34 @@ public class GPUImageFilter {
         onInitialized();
     }
 
+    /**
+     * 设置变换矩阵
+     *
+     * @param matrix
+     */
+    public void setMVPMatrix(float[] matrix) {
+        if (!Arrays.equals(mMVPMatrix, matrix)) {
+            mMVPMatrix = matrix;
+        }
+    }
+
+
+    /**
+     * 初始化单位矩阵
+     */
+    public void initIdentityMatrix() {
+        Matrix.setIdentityM(mMVPMatrix, 0);
+        Matrix.setIdentityM(mTexMatrix, 0);
+    }
+
     protected void onInit() {
         mGLProgId = OpenGlUtils.loadProgram(mVertexShader, mFragmentShader);
         mGLAttribPosition = GLES20.glGetAttribLocation(mGLProgId, "position");
         mGLUniformTexture = GLES20.glGetUniformLocation(mGLProgId, "inputImageTexture");
+        muMVPMatrixLoc = GLES30.glGetUniformLocation(mGLProgId, "uMVPMatrix");
         mGLAttribTextureCoordinate = GLES20.glGetAttribLocation(mGLProgId,
                 "inputTextureCoordinate");
+        initIdentityMatrix();
         mIsInitialized = true;
     }
 
@@ -125,7 +160,7 @@ public class GPUImageFilter {
     }
 
     public int onDrawFrame(final int textureId, final FloatBuffer cubeBuffer,
-                       final FloatBuffer textureBuffer) {
+                           final FloatBuffer textureBuffer) {
         GLES20.glUseProgram(mGLProgId);
         runPendingOnDrawTasks();
         if (!mIsInitialized) {
@@ -139,6 +174,12 @@ public class GPUImageFilter {
         GLES20.glVertexAttribPointer(mGLAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0,
                 textureBuffer);
         GLES20.glEnableVertexAttribArray(mGLAttribTextureCoordinate);
+
+        GLES30.glUniformMatrix4fv(muMVPMatrixLoc, 1, false, mMVPMatrix, 0);
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
+        GLES30.glBindTexture(getTextureType(), textureId);
+        GLES30.glUniform1i(mGLUniformTexture, 0);
+
         if (textureId != OpenGlUtils.NO_TEXTURE) {
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
             GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);
@@ -152,39 +193,56 @@ public class GPUImageFilter {
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
         return OpenGlUtils.ON_DRAWN;
     }
-    
+
+    public boolean drawFrame(final int textureId) {
+        return false;
+    }
+
+    public boolean drawFrame(final int textureId, final FloatBuffer cubeBuffer,
+                             final FloatBuffer textureBuffer) {
+        return false;
+    }
+
     public int onDrawFrame(final int textureId) {
-		GLES20.glUseProgram(mGLProgId);
-		runPendingOnDrawTasks();
-		if (!mIsInitialized) {
+        GLES20.glUseProgram(mGLProgId);
+        runPendingOnDrawTasks();
+        if (!mIsInitialized) {
             return OpenGlUtils.NOT_INIT;
         }
-		
-		mGLCubeBuffer.position(0);
-		GLES20.glVertexAttribPointer(mGLAttribPosition, 2, GLES20.GL_FLOAT, false, 0, mGLCubeBuffer);
-		GLES20.glEnableVertexAttribArray(mGLAttribPosition);
-		mGLTextureBuffer.position(0);
-		GLES20.glVertexAttribPointer(mGLAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0,
-		     mGLTextureBuffer);
-		GLES20.glEnableVertexAttribArray(mGLAttribTextureCoordinate);
 
-		if (textureId != OpenGlUtils.NO_TEXTURE) {
+        mGLCubeBuffer.position(0);
+        GLES20.glVertexAttribPointer(mGLAttribPosition, 2, GLES20.GL_FLOAT, false, 0, mGLCubeBuffer);
+        GLES20.glEnableVertexAttribArray(mGLAttribPosition);
+        mGLTextureBuffer.position(0);
+        GLES20.glVertexAttribPointer(mGLAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0,
+                mGLTextureBuffer);
+        GLES20.glEnableVertexAttribArray(mGLAttribTextureCoordinate);
+
+        GLES30.glUniformMatrix4fv(muMVPMatrixLoc, 1, false, mMVPMatrix, 0);
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
+        GLES30.glBindTexture(getTextureType(), textureId);
+        GLES30.glUniform1i(mGLUniformTexture, 0);
+
+        if (textureId != OpenGlUtils.NO_TEXTURE) {
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-		    GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);
-		    GLES20.glUniform1i(mGLUniformTexture, 0);
-		}
-		onDrawArraysPre();
-		GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
-		GLES20.glDisableVertexAttribArray(mGLAttribPosition);
-		GLES20.glDisableVertexAttribArray(mGLAttribTextureCoordinate);
-		onDrawArraysAfter();
-		GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-		return OpenGlUtils.ON_DRAWN;
-	}
-    
-    protected void onDrawArraysPre() {}
-    protected void onDrawArraysAfter() {}
-    
+            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureId);
+            GLES20.glUniform1i(mGLUniformTexture, 0);
+        }
+        onDrawArraysPre();
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
+        GLES20.glDisableVertexAttribArray(mGLAttribPosition);
+        GLES20.glDisableVertexAttribArray(mGLAttribTextureCoordinate);
+        onDrawArraysAfter();
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
+        return OpenGlUtils.ON_DRAWN;
+    }
+
+    protected void onDrawArraysPre() {
+    }
+
+    protected void onDrawArraysAfter() {
+    }
+
     protected void runPendingOnDrawTasks() {
         while (!mRunOnDraw.isEmpty()) {
             mRunOnDraw.removeFirst().run();
@@ -313,7 +371,19 @@ public class GPUImageFilter {
     }
 
     public void onDisplaySizeChanged(final int width, final int height) {
-    	mOutputWidth = width;
-    	mOutputHeight = height;
+        mOutputWidth = width;
+        mOutputHeight = height;
+    }
+
+    public void onDisplayChanged(final int width, final int height) {
+        onDisplaySizeChanged(width, height);
+    }
+
+    public void onDrawArraysBegin() {
+        onDrawArraysPre();
+    }
+
+    public void release() {
+        destroy();
     }
 }
