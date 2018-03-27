@@ -13,8 +13,8 @@ import java.util.List;
 public class VideoListManager {
 
     // 十秒时长
-    public static final int DURATION_TEN_SECOND = 4 * 1000;
-    public static final int DURATION_THREE_SECOND = 1 * 1000;
+    public static final int DURATION_TEN_SECOND = 10 * 1000;
+    public static final int DURATION_THREE_SECOND = 3 * 1000;
     // 三分钟时长
     public static final int DURATION_THREE_MINUTE = 180 * 1000;
 

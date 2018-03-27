@@ -1,23 +1,29 @@
 package com.tym.shortvideo.mediacodec;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaMuxer;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
 
+import com.tym.shortvideo.MyApplication;
+import com.tym.shortvideo.camerarender.ParamsManager;
 import com.tym.shortvideo.media.VideoInfo;
 import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.tymtymtym.gpufilter.helper.MagicFilterFactory;
 import com.tym.shortvideo.tymtymtym.gpufilter.helper.MagicFilterType;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,6 +37,8 @@ import static android.media.MediaExtractor.SEEK_TO_PREVIOUS_SYNC;
 public class VideoClipper {
     final int TIMEOUT_USEC = 0;
     private String mInputVideoPath;
+    private Uri mInputVideo;
+    private Context mContext;
     private String mOutputVideoPath;
 
     MediaCodec videoDecoder;
@@ -80,6 +88,15 @@ public class VideoClipper {
 
     public void setInputVideoPath(String inputPath) {
         mInputVideoPath = inputPath;
+        mInputVideo = Uri.parse(inputPath);
+        mContext = MyApplication.getContext();
+        initVideoInfo();
+    }
+
+    public void setInputVideoPath(Context context, Uri inputPath) {
+        mInputVideo = inputPath;
+        mInputVideoPath = inputPath.getPath();
+        mContext = context;
         initVideoInfo();
     }
 
@@ -91,16 +108,18 @@ public class VideoClipper {
     public void setOnVideoCutFinishListener(OnVideoCutFinishListener listener) {
         this.listener = listener;
     }
+
     /**
      * 设置滤镜
-     * */
+     */
     public void setFilter(GPUImageFilter filter) {
-        if (filter == null ) {
+        if (filter == null) {
             mFilter = null;
             return;
         }
         mFilter = filter;
     }
+
     public void setFilterType(MagicFilterType type) {
         if (type == null || type == MagicFilterType.NONE) {
             mFilter = null;
@@ -111,8 +130,8 @@ public class VideoClipper {
 
     /**
      * 开启美颜
-     * */
-    public void showBeauty(){
+     */
+    public void showBeauty() {
         isOpenBeauty = true;
     }
 
@@ -179,14 +198,19 @@ public class VideoClipper {
     };
 
     private void initVideoInfo() {
-        MediaMetadataRetriever retr = new MediaMetadataRetriever();
-        retr.setDataSource(mInputVideoPath);
-        String width = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
-        String height = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
-        String rotation = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
-        videoWidth = Integer.parseInt(width);
-        videoHeight = Integer.parseInt(height);
-        videoRotation = Integer.parseInt(rotation);
+        try {
+            MediaMetadataRetriever retr = new MediaMetadataRetriever();
+            retr.setDataSource(mContext, mInputVideo);
+            String width = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
+            String height = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
+            String rotation = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+            videoWidth = Integer.parseInt(width);
+            videoHeight = Integer.parseInt(height);
+            videoRotation = Integer.parseInt(rotation);
+        } catch (Throwable e) {
+            Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+        }
+
     }
 
     private void initAudioCodec() {
@@ -211,10 +235,10 @@ public class VideoClipper {
         boolean inputDone = false;
         boolean decodeDone = false;
         extractor.seekTo(firstSampleTime + startPosition, SEEK_TO_PREVIOUS_SYNC);
-        int decodeinput=0;
-        int encodeinput=0;
-        int encodeoutput=0;
-        long lastEncodeOutputTimeStamp=-1;
+        int decodeinput = 0;
+        int encodeinput = 0;
+        int encodeoutput = 0;
+        long lastEncodeOutputTimeStamp = -1;
         while (!done) {
             if (!inputDone) {
                 int inputIndex = decoder.dequeueInputBuffer(TIMEOUT_USEC);
@@ -226,7 +250,7 @@ public class VideoClipper {
                     if ((dur < duration) && readSampleData > 0) {
                         decoder.queueInputBuffer(inputIndex, 0, readSampleData, extractor.getSampleTime(), 0);
                         decodeinput++;
-                        System.out.println("videoCliper audio decodeinput"+decodeinput+" dataSize"+readSampleData+" sampeTime"+extractor.getSampleTime());
+                        System.out.println("videoCliper audio decodeinput" + decodeinput + " dataSize" + readSampleData + " sampeTime" + extractor.getSampleTime());
                         extractor.advance();
                     } else {
                         decoder.queueInputBuffer(inputIndex, 0, 0, 0, MediaCodec.BUFFER_FLAG_END_OF_STREAM);
@@ -248,11 +272,11 @@ public class VideoClipper {
                 } else {
                     boolean canEncode = (info.size != 0 && info.presentationTimeUs - firstSampleTime > startPosition);
                     boolean endOfStream = (info.flags & MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0;
-                    if (canEncode&&!endOfStream) {
+                    if (canEncode && !endOfStream) {
                         ByteBuffer decoderOutputBuffer = decoderOutputBuffers[index];
 
                         int encodeInputIndex = encoder.dequeueInputBuffer(TIMEOUT_USEC);
-                        if(encodeInputIndex>=0){
+                        if (encodeInputIndex >= 0) {
                             ByteBuffer encoderInputBuffer = encoderInputBuffers[encodeInputIndex];
                             encoderInputBuffer.clear();
                             if (info.size < 4096) {//这里看起来应该是16位单声道转16位双声道
@@ -270,16 +294,16 @@ public class VideoClipper {
                                 encoderInputBuffer.put(stereoBytes);
                                 encoder.queueInputBuffer(encodeInputIndex, 0, stereoBytes.length, info.presentationTimeUs, 0);
                                 encodeinput++;
-                                System.out.println("videoCliper audio encodeInput"+encodeinput+" dataSize"+info.size+" sampeTime"+info.presentationTimeUs);
-                            }else{
+                                System.out.println("videoCliper audio encodeInput" + encodeinput + " dataSize" + info.size + " sampeTime" + info.presentationTimeUs);
+                            } else {
                                 encoderInputBuffer.put(decoderOutputBuffer);
                                 encoder.queueInputBuffer(encodeInputIndex, info.offset, info.size, info.presentationTimeUs, 0);
                                 encodeinput++;
-                                System.out.println("videoCliper audio encodeInput"+encodeinput+" dataSize"+info.size+" sampeTime"+info.presentationTimeUs);
+                                System.out.println("videoCliper audio encodeInput" + encodeinput + " dataSize" + info.size + " sampeTime" + info.presentationTimeUs);
                             }
                         }
                     }
-                    if(endOfStream){
+                    if (endOfStream) {
                         int encodeInputIndex = encoder.dequeueInputBuffer(TIMEOUT_USEC);
                         encoder.queueInputBuffer(encodeInputIndex, 0, 0, 0, MediaCodec.BUFFER_FLAG_END_OF_STREAM);
                         System.out.println("videoCliper audio encodeInput end");
@@ -310,12 +334,12 @@ public class VideoClipper {
                     if (outputInfo.presentationTimeUs == 0 && !done) {
                         continue;
                     }
-                    if (outputInfo.size != 0&&outputInfo.presentationTimeUs>0) {
+                    if (outputInfo.size != 0 && outputInfo.presentationTimeUs > 0) {
                         /*encodedData.position(outputInfo.offset);
                         encodedData.limit(outputInfo.offset + outputInfo.size);*/
-                        if(!muxStarted){
-                            synchronized (lock){
-                                if(!muxStarted){
+                        if (!muxStarted) {
+                            synchronized (lock) {
+                                if (!muxStarted) {
                                     try {
                                         lock.wait();
                                     } catch (InterruptedException e) {
@@ -324,11 +348,11 @@ public class VideoClipper {
                                 }
                             }
                         }
-                        if(outputInfo.presentationTimeUs>lastEncodeOutputTimeStamp){//为了避免有问题的数据
+                        if (outputInfo.presentationTimeUs > lastEncodeOutputTimeStamp) {//为了避免有问题的数据
                             encodeoutput++;
-                            System.out.println("videoCliper audio encodeOutput"+encodeoutput+" dataSize"+outputInfo.size+" sampeTime"+outputInfo.presentationTimeUs);
+                            System.out.println("videoCliper audio encodeOutput" + encodeoutput + " dataSize" + outputInfo.size + " sampeTime" + outputInfo.presentationTimeUs);
                             mMediaMuxer.writeSampleData(muxAudioTrack, encodedData, outputInfo);
-                            lastEncodeOutputTimeStamp=outputInfo.presentationTimeUs;
+                            lastEncodeOutputTimeStamp = outputInfo.presentationTimeUs;
                         }
                     }
 
@@ -366,7 +390,7 @@ public class VideoClipper {
         outputSurface.isBeauty(isOpenBeauty);
 
         if (mFilter != null) {
-            Log.e("hero","---gpuFilter 不为null哟----设置进outputSurface里面");
+            Log.e("hero", "---gpuFilter 不为null哟----设置进outputSurface里面");
             outputSurface.addGpuFilter(mFilter);
         }
 
@@ -463,9 +487,9 @@ public class VideoClipper {
                     if (outputInfo.size != 0) {
                         encodedData.position(outputInfo.offset);
                         encodedData.limit(outputInfo.offset + outputInfo.size);
-                        if(!muxStarted){
-                            synchronized (lock){
-                                if(!muxStarted){
+                        if (!muxStarted) {
+                            synchronized (lock) {
+                                if (!muxStarted) {
                                     try {
                                         lock.wait();
                                     } catch (InterruptedException e) {
@@ -512,8 +536,8 @@ public class VideoClipper {
         }
         mVideoExtractor.release();
         mAudioExtractor.release();
-        mMediaMuxer.stop();
-        mMediaMuxer.release();
+//        mMediaMuxer.stop();
+//        mMediaMuxer.release();
         if (outputSurface != null) {
             outputSurface.release();
         }

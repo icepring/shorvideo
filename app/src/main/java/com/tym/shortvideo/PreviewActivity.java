@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 
+import com.tym.shortvideo.camerarender.ParamsManager;
 import com.tym.shortvideo.media.MediaPlayerWrapper;
 import com.tym.shortvideo.media.VideoInfo;
 import com.tym.shortvideo.mediacodec.VideoClipper;
@@ -21,6 +22,7 @@ import com.tym.shortvideo.tymtymtym.gpufilter.SlideGpuFilterGroup;
 import com.tym.shortvideo.tymtymtym.gpufilter.helper.MagicFilterType;
 import com.tym.shortvideo.view.VideoPreviewView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -70,18 +72,18 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
                     isPlaying = false;
                     break;
                 case VIDEO_CUT_FINISH:
-                    Toast.makeText(PreviewActivity.this, "视频保存地址   "+outputPath, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PreviewActivity.this, "视频保存地址   " + outputPath, Toast.LENGTH_SHORT).show();
                     endLoading();
+                    String fileName = (String) msg.obj;
 
-                    Intent intent = new Intent(PreviewActivity.this,
-                            PreviewActivity.class);
-                    intent.putExtra("path", outputPath);
-                    startActivity(intent);
+                    FileUtils.updateMediaStore(PreviewActivity.this, outputPath, fileName);
+
+                    TrimmerActivity.go(PreviewActivity.this,outputPath);
 
                     //TODO　已经渲染完毕了　
 
                     break;
-                    default:
+                default:
             }
         }
     };
@@ -112,6 +114,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         setLoadingCancelable(false);
 
     }
+
     private void initData() {
         Intent intent = getIntent();
         //选择的视频的本地播放地址
@@ -121,10 +124,11 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         mVideoView.setVideoPath(srcList);
         mVideoView.setIMediaCallback(this);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(this,R.string.change_filter, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.change_filter, Toast.LENGTH_SHORT).show();
         if (resumed) {
             mVideoView.start();
         }
@@ -148,59 +152,60 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void onBackPressed() {
-        if(!isLoading()){
+        if (!isLoading()) {
             super.onBackPressed();
         }
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_back:
             case R.id.iv_close:
-                if (isLoading()){
+                if (isLoading()) {
                     endLoading();
                 }
                 finish();
                 break;
             case R.id.iv_beauty:
                 mVideoView.switchBeauty();
-                if (mBeauty.isSelected()){
+                if (mBeauty.isSelected()) {
                     mBeauty.setSelected(false);
-                }else {
+                } else {
                     mBeauty.setSelected(true);
                 }
                 break;
             case R.id.iv_confirm:
-                if (isLoading()){
+                if (isLoading()) {
                     return;
                 }
                 mVideoView.pause();
-                showLoading("视频处理中",false);
+                showLoading("视频处理中", false);
 
                 VideoClipper clipper = new VideoClipper();
-                if (mBeauty.isSelected()){
+                if (mBeauty.isSelected()) {
                     clipper.showBeauty();
                 }
                 clipper.setInputVideoPath(mPath);
-                outputPath = FileUtils.getPath("tym/tym/", System.currentTimeMillis() + "");
+                final String fileName = "tym_" + System.currentTimeMillis() + ".mp4";
+                outputPath = FileUtils.getPath("tym/tym/", fileName);
                 clipper.setFilterType(filterType);
                 clipper.setOutputVideoPath(outputPath);
                 clipper.setOnVideoCutFinishListener(new VideoClipper.OnVideoCutFinishListener() {
                     @Override
                     public void onFinish() {
-                        mHandler.sendEmptyMessage(VIDEO_CUT_FINISH);
+                        mHandler.sendMessage(mHandler.obtainMessage(VIDEO_CUT_FINISH, fileName));
                     }
                 });
                 try {
-                    clipper.clipVideo(0,mVideoView.getVideoDuration()*1000);
+                    clipper.clipVideo(0, mVideoView.getVideoDuration() * 1000);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
 
                 break;
-                default:
+            default:
 
         }
     }
@@ -230,6 +235,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
     public void onVideoChanged(VideoInfo info) {
 
     }
+
     private Runnable update = new Runnable() {
         @Override
         public void run() {
@@ -258,7 +264,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(PreviewActivity.this,"滤镜切换为---"+type, Toast.LENGTH_SHORT).show();
+                Toast.makeText(PreviewActivity.this, "滤镜切换为---" + type, Toast.LENGTH_SHORT).show();
             }
         });
     }

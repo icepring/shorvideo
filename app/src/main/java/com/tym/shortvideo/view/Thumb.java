@@ -73,10 +73,10 @@ public class Thumb {
             Thumb th = new Thumb();
             th.setIndex(i);
             if (i == 0) {
-                int resImageLeft = R.drawable.video_trim_handle;
+                int resImageLeft = R.mipmap.video_trim_handle;
                 th.setBitmap(BitmapFactory.decodeResource(resources, resImageLeft));
             } else {
-                int resImageRight = R.drawable.video_trim_handle;
+                int resImageRight = R.mipmap.video_trim_handle;
                 th.setBitmap(BitmapFactory.decodeResource(resources, resImageRight));
             }
 

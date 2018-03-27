@@ -249,6 +249,10 @@ public class ProgressView extends View {
         }
     }
 
+    public List<Float> getSplitList() {
+        return mSplitList;
+    }
+
     /**
      * 设置删除模式
      */

@@ -13,4 +13,9 @@
     <string name="audio_mix_select_two">选择第二个音频</string>
     <string name="change_filter">左右滑动切换滤镜哟...</string>
     <string name="confirm_to_editor_video">点击确定分离音频</string>
+
+    <string name="trimmed_done">视频裁剪完成！</string>
+    <string name="trimming">正在裁剪视频...</string>
+    <string name="compressing">正在压缩视频...</string>
+    <string name="compressed_done">视频压缩完成！</string>
 </resources>

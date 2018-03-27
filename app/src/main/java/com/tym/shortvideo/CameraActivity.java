@@ -110,8 +110,8 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     private CainSurfaceView mCameraSurfaceView;
     // fps显示
     private TextView mFpsView;
-    // 顶部Button
-    private Button mBtnSetting;
+
+    private Button mBtnLocal;
     private Button mBtnViewPhoto;
 
     private Button mBtnSwitch;
@@ -199,8 +199,8 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         if (mCameraEnable && mStorageWriteEnable) {
             initView();
         } else {
-            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.CAMERA,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE }, REQUEST_CAMERA);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA);
         }
     }
 
@@ -208,6 +208,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     private void initView() {
         mCurrentRatio = CameraUtils.getCurrentRatio();
         mAspectLayout = findViewById(R.id.layout_aspect);
+
         mAspectLayout.setAspectRatio(mCurrentRatio);
         mCameraSurfaceView = new CainSurfaceView(this);
         mCameraSurfaceView.getHolder().addCallback(this);
@@ -224,44 +225,47 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                 public void handleMessage(Message msg) {
                     switch (msg.what) {
                         case FrameRateMeter.MSG_GAIN_FPS:
-                            mFpsView.setText("fps = " + (float)msg.obj);
+                            mFpsView.setText("fps = " + (float) msg.obj);
                             break;
 
                         case MSG_SEND_FPS_HANDLE:
                             if (!DrawerManager.getInstance().hasSetFpsHandle()) {
-                                DrawerManager.getInstance().setFpsHandler((Handler)msg.obj);
+                                DrawerManager.getInstance().setFpsHandler((Handler) msg.obj);
                                 sendMessageDelayed(mFpsHandler.obtainMessage(MSG_SEND_FPS_HANDLE, msg.obj),
                                         1000);
                             } else {
                                 removeMessages(MSG_SEND_FPS_HANDLE);
                             }
                             break;
-                            default:
+                        default:
                     }
                 }
             };
         }
+        mBtnLocal = findViewById(R.id.btn_local);
+        mBtnLocal.setOnClickListener(this);
+
         mBtnSwitch = findViewById(R.id.btn_switch);
         mBtnSwitch.setOnClickListener(this);
         mBtnLvjing = findViewById(R.id.btn_lvjing);
         mBtnLvjing.setOnClickListener(this);
-        mBtnBeauty =  findViewById(R.id.btn_beauty);
+        mBtnBeauty = findViewById(R.id.btn_beauty);
         mBtnBeauty.setOnClickListener(this);
 
         mCountDownView = findViewById(R.id.tv_countdown);
 
-        mBtnShutter =  findViewById(R.id.btn_take);
-        mProgressView =  findViewById(R.id.tym_test);
+        mBtnShutter = findViewById(R.id.btn_take);
+        mProgressView = findViewById(R.id.tym_test);
         mBtnShutter.setGestureListener(this);
         mBtnShutter.setOnClickListener(this);
 
-        mBtnRecordDelete =  findViewById(R.id.btn_record_delete);
+        mBtnRecordDelete = findViewById(R.id.btn_record_delete);
         mBtnRecordDelete.setOnClickListener(this);
         mBtnRecordPreview = findViewById(R.id.btn_record_done);
         mBtnRecordPreview.setOnClickListener(this);
 
 
-        mBottomLayout =  findViewById(R.id.layout_bottom);
+        mBottomLayout = findViewById(R.id.layout_bottom);
         adjustBottomView();
 
         initEffectListView();
@@ -314,22 +318,22 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
     private void requestCameraPermission() {
         ActivityCompat.requestPermissions(this,
-                new String[]{ Manifest.permission.CAMERA }, REQUEST_CAMERA);
+                new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
     }
 
     private void requestStorageWritePermission() {
         ActivityCompat.requestPermissions(this,
-                new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE }, REQUEST_STORAGE);
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_STORAGE);
     }
 
     private void requestRecordPermission() {
         ActivityCompat.requestPermissions(this,
-                new String[]{ Manifest.permission.RECORD_AUDIO }, REQUEST_RECORD);
+                new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD);
     }
 
     private void requestLocationPermission() {
         ActivityCompat.requestPermissions(this,
-                new String[] {
+                new String[]{
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION,
                 },
@@ -374,7 +378,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                     mLocationEnable = true;
                 }
                 break;
-                default:
+            default:
         }
     }
 
@@ -397,18 +401,18 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         }
         // 是否需要显示Fps
         if (mShowFps) {
-            if (mFpsHandler==null){
+            if (mFpsHandler == null) {
                 mFpsHandler = new Handler() {
                     @Override
                     public void handleMessage(Message msg) {
                         switch (msg.what) {
                             case FrameRateMeter.MSG_GAIN_FPS:
-                                mFpsView.setText("fps = " + (float)msg.obj);
+                                mFpsView.setText("fps = " + (float) msg.obj);
                                 break;
 
                             case MSG_SEND_FPS_HANDLE:
                                 if (!DrawerManager.getInstance().hasSetFpsHandle()) {
-                                    DrawerManager.getInstance().setFpsHandler((Handler)msg.obj);
+                                    DrawerManager.getInstance().setFpsHandler((Handler) msg.obj);
                                     sendMessageDelayed(mFpsHandler.obtainMessage(MSG_SEND_FPS_HANDLE, msg.obj),
                                             1000);
                                 } else {
@@ -494,6 +498,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     private BroadcastReceiver mHomePressReceiver = new BroadcastReceiver() {
         private final String SYSTEM_DIALOG_REASON_KEY = "reason";
         private final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
+
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -560,6 +565,9 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                 switchCamera();
                 break;
 
+            case R.id.btn_local:
+                startActivity(new Intent(this, VideoSelectActivity.class));
+                break;
 
             // 显示滤镜
             case R.id.btn_lvjing:
@@ -584,7 +592,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btn_record_done:
                 previewRecordVideo();
                 break;
-                default:
+            default:
         }
     }
 
@@ -662,6 +670,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
     /**
      * 点击SurfaceView
+     *
      * @param x x轴坐标
      * @param y y轴坐标
      */
@@ -671,7 +680,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
             mEffectListView.setVisibility(View.GONE);
         }
         // 设置聚焦区域
-        DrawerManager.getInstance().setFocusAres(CameraUtils.getFocusArea((int)x, (int)y,
+        DrawerManager.getInstance().setFocusAres(CameraUtils.getFocusArea((int) x, (int) y,
                 mCameraSurfaceView.getWidth(), mCameraSurfaceView.getHeight(), FocusSize));
     }
 
@@ -775,6 +784,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         mBtnShutter.addSplitView();
         mProgressView.setDeleteMode(false);
         mProgressView.addSplitView();
+        mBtnLocal.setVisibility(View.GONE);
     }
 
     @Override
@@ -924,6 +934,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     synchronized private void deleteRecordedVideo(boolean clearAll) {
         // 处于删除模式，则删除文件
         if (mBtnShutter.isDeleteMode()) {
+
             // 删除视频，判断是否清除所有
             if (clearAll) {
                 // 清除所有分割线
@@ -952,6 +963,10 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                 // 复位状态
                 mNeedToWaitStop = false;
                 mOnRecording = false;
+            }
+
+            if (mProgressView.getSplitList().size() == 0) {
+                mBtnLocal.setVisibility(View.VISIBLE);
             }
 
         } else { // 没有进入删除模式则进入删除模式
@@ -1062,7 +1077,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
             // 请求录音权限
             if (!mRecordSoundEnable) {
                 ActivityCompat.requestPermissions(this,
-                        new String[]{ Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD);
+                        new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD);
             }
         }
 
@@ -1079,8 +1094,9 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
      * 合并视频
      */
     private void combineVideo() {
+        final String fileName = "CainCamera_" + System.currentTimeMillis() + ".mp4";
         final String path = ParamsManager.AlbumPath
-                + "CainCamera_" + System.currentTimeMillis() + ".mp4";
+                + fileName;
         final File file = new File(path);
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
@@ -1096,7 +1112,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(CameraActivity.this,"开始合并",Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(CameraActivity.this, "开始合并", Toast.LENGTH_SHORT).show();
                                     }
                                 });
 
@@ -1120,14 +1136,10 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
                                 VideoListManager.getInstance().removeAllSubVideo();
                                 // 更更新媒体库
-                                ContentValues values = new ContentValues();
-                                values.put(MediaStore.Images.Media.DATA, path);
-                                values.put(MediaStore.Images.Media.DISPLAY_NAME, file.getName());
-                                getContentResolver().insert(
-                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                                FileUtils.updateMediaStore(CameraActivity.this, path, fileName);
                                 // 跳转至视频编辑页面
 
-
+//                                TrimmerActivity.go(CameraActivity.this,path);
 
                                 Intent intent = new Intent(CameraActivity.this,
                                         PreviewActivity.class);
@@ -1137,4 +1149,6 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                             }
                         });
     }
+
+
 }

@@ -42,6 +42,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".PreviewActivity"/>
+        <activity android:name=".TrimmerActivity"/>
+        <activity android:name=".VideoSelectActivity"/>
         <!--<activity android:name=".CameraActivity"/>-->
     </application>
 

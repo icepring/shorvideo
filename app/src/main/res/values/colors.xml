@@ -44,7 +44,6 @@
     <color name="full_progress_color">#50000000</color>
     <color name="transparent">#00000000</color>
 
-    <color name="red">#aacc0000</color>
     <color name="background_video_color">#2f3031</color>
     <color name="background_progress_color">#6C6D6D</color>
     <color name="progress_color">#aacc0000</color>

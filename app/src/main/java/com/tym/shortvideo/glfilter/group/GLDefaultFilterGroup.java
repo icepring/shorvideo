@@ -46,6 +46,11 @@ public class GLDefaultFilterGroup extends GLImageFilterGroup {
 
     @Override
     public void setBeautifyLevel(float percent) {
+        if (beauty == 0) {
+            percent = 1;
+        } else {
+            percent = 0;
+        }
         beauty = percent;
         ((GLRealtimeBeautyFilter) mFilters.get(BeautyfyIndex)).setSmoothOpacity(percent);
     }
