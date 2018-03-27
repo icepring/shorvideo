@@ -288,7 +288,7 @@ public class EncoderManager {
             mRecordFilter = new GLDisplayFilter();
         }
         mRecordFilter.onInputSizeChanged(mTextureWidth, mTextureHeight);
-        mRecordFilter.onDisplayChanged(mVideoWidth, mVideoHeight);
+        mRecordFilter.onDisplaySizeChanged(mVideoWidth, mVideoHeight);
     }
 
     /**
@@ -297,7 +297,7 @@ public class EncoderManager {
     public void drawRecordingFrame(int textureId) {
         if (mRecordFilter != null) {
             GLES30.glViewport(0, 0, mVideoWidth, mVideoHeight);
-            mRecordFilter.drawFrame(textureId);
+            mRecordFilter.onDrawFrame(textureId);
         }
     }
 
@@ -306,7 +306,7 @@ public class EncoderManager {
      */
     public void releaseRecordingFilter() {
         if (mRecordFilter != null) {
-            mRecordFilter.release();
+            mRecordFilter.destroy();
             mRecordFilter = null;
         }
     }

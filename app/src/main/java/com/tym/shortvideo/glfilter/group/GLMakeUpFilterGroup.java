@@ -3,14 +3,15 @@ package com.tym.shortvideo.glfilter.group;
 
 
 import com.tym.shortvideo.camerarender.FilterManager;
-import com.tym.shortvideo.glfilter.base.GLImageFilter;
 import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
 import com.tym.shortvideo.glfilter.beauty.GLRealtimeBeautyFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.type.GLFilterIndex;
 import com.tym.shortvideo.type.GLFilterType;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * 彩妆滤镜组
@@ -32,13 +33,13 @@ public class GLMakeUpFilterGroup extends GLImageFilterGroup {
         this(initFilters());
     }
 
-    private GLMakeUpFilterGroup(List<GLImageFilter> filters) {
+    private GLMakeUpFilterGroup(List<GPUImageFilter> filters) {
         super(filters);
     }
 
 
-    private static List<GLImageFilter> initFilters() {
-        List<GLImageFilter> filters = new ArrayList<GLImageFilter>();
+    private static List<GPUImageFilter> initFilters() {
+        List<GPUImageFilter> filters = new ArrayList<GPUImageFilter>();
         filters.add(BeautyfyIndex, FilterManager.getFilter(GLFilterType.REALTIMEBEAUTY));
         filters.add(ColorIndex, FilterManager.getFilter(GLFilterType.SKETCH));
         filters.add(FaceStretchIndex, FilterManager.getFilter(GLFilterType.FACESTRETCH));
@@ -48,7 +49,7 @@ public class GLMakeUpFilterGroup extends GLImageFilterGroup {
 
     @Override
     public void setBeautifyLevel(float percent) {
-        ((GLRealtimeBeautyFilter)mFilters.get(BeautyfyIndex)).setSmoothOpacity(percent);
+//        ((GLRealtimeBeautyFilter)mFilters.get(BeautyfyIndex)).setSmoothOpacity(percent);
     }
 
     @Override
@@ -73,11 +74,11 @@ public class GLMakeUpFilterGroup extends GLImageFilterGroup {
      */
     private void changeBeautyFilter(GLFilterType type) {
         if (mFilters != null) {
-            mFilters.get(BeautyfyIndex).release();
+            mFilters.get(BeautyfyIndex).destroy();
             mFilters.set(BeautyfyIndex, FilterManager.getFilter(type));
             // 设置宽高
-            mFilters.get(BeautyfyIndex).onInputSizeChanged(mImageWidth, mImageHeight);
-            mFilters.get(BeautyfyIndex).onDisplayChanged(mDisplayWidth, mDisplayHeight);
+            mFilters.get(BeautyfyIndex).onInputSizeChanged(mIntputWidth, mIntputHeight);
+            mFilters.get(BeautyfyIndex).onDisplaySizeChanged(mOutputWidth, mOutputHeight);
         }
     }
 
@@ -87,11 +88,11 @@ public class GLMakeUpFilterGroup extends GLImageFilterGroup {
      */
     private void changeColorFilter(GLFilterType type) {
         if (mFilters != null) {
-            mFilters.get(ColorIndex).release();
+            mFilters.get(ColorIndex).destroy();
             mFilters.set(ColorIndex, FilterManager.getFilter(type));
             // 设置宽高
-            mFilters.get(ColorIndex).onInputSizeChanged(mImageWidth, mImageHeight);
-            mFilters.get(ColorIndex).onDisplayChanged(mDisplayWidth, mDisplayHeight);
+            mFilters.get(ColorIndex).onInputSizeChanged(mIntputWidth, mIntputHeight);
+            mFilters.get(ColorIndex).onDisplaySizeChanged(mOutputWidth, mOutputHeight);
         }
     }
 
@@ -101,11 +102,11 @@ public class GLMakeUpFilterGroup extends GLImageFilterGroup {
      */
     private void changeFaceStretchFilter(GLFilterType type) {
         if (mFilters != null) {
-            mFilters.get(FaceStretchIndex).release();
+            mFilters.get(FaceStretchIndex).destroy();
             mFilters.set(FaceStretchIndex, FilterManager.getFilter(type));
             // 设置宽高
-            mFilters.get(FaceStretchIndex).onInputSizeChanged(mImageWidth, mImageHeight);
-            mFilters.get(FaceStretchIndex).onDisplayChanged(mDisplayWidth, mDisplayHeight);
+            mFilters.get(FaceStretchIndex).onInputSizeChanged(mIntputWidth, mIntputHeight);
+            mFilters.get(FaceStretchIndex).onDisplaySizeChanged(mOutputWidth, mOutputHeight);
         }
     }
 
@@ -123,11 +124,11 @@ public class GLMakeUpFilterGroup extends GLImageFilterGroup {
      */
     private void changeMakeupFilter(GLFilterType type) {
         if (mFilters != null) {
-            mFilters.get(MakeupIndex).release();
+            mFilters.get(MakeupIndex).destroy();
             mFilters.set(MakeupIndex, FilterManager.getFilter(type));
             // 设置宽高
-            mFilters.get(MakeupIndex).onInputSizeChanged(mImageWidth, mImageHeight);
-            mFilters.get(MakeupIndex).onDisplayChanged(mDisplayWidth, mDisplayHeight);
+            mFilters.get(MakeupIndex).onInputSizeChanged(mIntputWidth, mIntputHeight);
+            mFilters.get(MakeupIndex).onDisplaySizeChanged(mOutputWidth, mOutputHeight);
         }
     }
 }

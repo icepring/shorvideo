@@ -1,9 +1,13 @@
 package com.tym.shortvideo.glfilter.base;
 
+import android.opengl.GLES20;
 import android.opengl.GLES30;
 
 
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.utils.OpenGlUtils;
 import com.tym.shortvideo.type.GLFilterType;
+import com.tym.shortvideo.type.GlUtil;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -13,20 +17,20 @@ import java.util.List;
  * 滤镜组基类
  * Created by cain on 17-7-17.
  */
-public abstract class GLImageFilterGroup extends GLImageFilter {
+public abstract class GLImageFilterGroup extends GPUImageFilter {
 
     private static int[] mFramebuffers;
     private static int[] mFrameBufferTextures;
     
 
     private int mCurrentTextureId;
-    protected List<GLImageFilter> mFilters = new ArrayList<>();
+    protected List<GPUImageFilter> mFilters = new ArrayList<>();
 
     public GLImageFilterGroup() {
 
     }
 
-    public GLImageFilterGroup(List<GLImageFilter> filters) {
+    public GLImageFilterGroup(List<GPUImageFilter> filters) {
         mFilters = filters;
     }
 
@@ -41,75 +45,76 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
             mFilters.get(i).onInputSizeChanged(width, height);
         }
         // 先销毁原来的Framebuffers
-        if(mFramebuffers != null && (mImageWidth != width
-                || mImageHeight != height || mFramebuffers.length != size-1)) {
+        if(mFramebuffers != null && (mIntputWidth != width
+                || mIntputHeight != height || mFramebuffers.length != size-1)) {
             destroyFramebuffer();
-            mImageWidth = width;
-            mImageWidth = height;
+            mIntputWidth = width;
+            mIntputWidth = height;
         }
         initFramebuffer(width, height);
     }
 
     @Override
-    public void onDisplayChanged(int width, int height) {
-        super.onDisplayChanged(width, height);
+    public void onDisplaySizeChanged(int width, int height) {
+        super.onDisplaySizeChanged(width, height);
         // 更新显示的的视图大小
         if (mFilters.size() <= 0) {
             return;
         }
         int size = mFilters.size();
         for (int i = 0; i < size; i++) {
-            mFilters.get(i).onDisplayChanged(width, height);
+            mFilters.get(i).onDisplaySizeChanged(width, height);
         }
     }
 
     @Override
-    public boolean drawFrame(int textureId) {
+    public int onDrawFrame(int textureId) {
         if (mFramebuffers == null || mFrameBufferTextures == null || mFilters.size() <= 0) {
-            return false;
+            return -1;
         }
         int size = mFilters.size();
         mCurrentTextureId = textureId;
         for (int i = 0; i < size; i++) {
-            GLImageFilter filter = mFilters.get(i);
+            GPUImageFilter filter = mFilters.get(i);
             if (i < size - 1) {
-                GLES30.glViewport(0, 0, mImageWidth, mImageHeight);
+
+                GLES30.glViewport(0, 0, mIntputWidth, mIntputHeight);
                 GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, mFramebuffers[i]);
                 GLES30.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-                if (filter.drawFrame(mCurrentTextureId)) {
+                if (filter.onDrawFrame(mCurrentTextureId)==OpenGlUtils.ON_DRAWN) {
                     mCurrentTextureId = mFrameBufferTextures[i];
                 }
                 GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
             } else {
-                GLES30.glViewport(0, 0, mDisplayWidth, mDisplayHeight);
-                filter.drawFrame(mCurrentTextureId);
+                GLES30.glViewport(0, 0, mOutputWidth, mOutputHeight);
+                filter.onDrawFrame(mCurrentTextureId);
             }
         }
-        return true;
+        return 1;
     }
 
     @Override
-    public boolean drawFrame(int textureId, FloatBuffer vertexBuffer, FloatBuffer textureBuffer) {
+    public int onDrawFrame(int textureId, FloatBuffer vertexBuffer, FloatBuffer textureBuffer) {
         if (mFramebuffers == null || mFrameBufferTextures == null || mFilters.size() <= 0) {
-            return false;
+            return OpenGlUtils.NOT_INIT;
         }
         int size = mFilters.size();
         mCurrentTextureId = textureId;
         for (int i = 0; i < size; i++) {
-            GLImageFilter filter = mFilters.get(i);
+            GPUImageFilter filter = mFilters.get(i);
             if (i < size - 1) {
-                GLES30.glViewport(0, 0, mImageWidth, mImageHeight);
+                GLES30.glViewport(0, 0, mIntputWidth, mIntputHeight);
                 GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, mFramebuffers[i]);
                 GLES30.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-                filter.drawFrame(mCurrentTextureId, vertexBuffer, textureBuffer);
+                filter.onDrawFrame(mCurrentTextureId, vertexBuffer, textureBuffer);
                 GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
                 mCurrentTextureId = mFrameBufferTextures[i];
             } else {
-                GLES30.glViewport(0, 0, mDisplayWidth, mDisplayHeight);
-                filter.drawFrame(mCurrentTextureId, vertexBuffer, textureBuffer);
+                GLES30.glViewport(0, 0, mOutputWidth, mOutputHeight);
+                filter.onDrawFrame(mCurrentTextureId, vertexBuffer, textureBuffer);
             }
         }
-        return true;
+        return OpenGlUtils.ON_DRAWN;
     }
 
     public int drawFrameBuffer(int textureId) {
@@ -118,11 +123,11 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
         }
         int size = mFilters.size();
         mCurrentTextureId = textureId;
-        GLES30.glViewport(0, 0, mImageWidth, mImageHeight);
+        GLES30.glViewport(0, 0, mIntputWidth, mIntputHeight);
         for (int i = 0; i < size; i++) {
             GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, mFramebuffers[i]);
             GLES30.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            if (mFilters.get(i).drawFrame(mCurrentTextureId)) {
+            if (mFilters.get(i).onDrawFrame(mCurrentTextureId)==OpenGlUtils.ON_DRAWN) {
                 mCurrentTextureId = mFrameBufferTextures[i];
             }
             GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
@@ -136,11 +141,11 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
         }
         int size = mFilters.size();
         mCurrentTextureId = textureId;
-        GLES30.glViewport(0, 0, mImageWidth, mImageHeight);
+        GLES30.glViewport(0, 0, mIntputWidth, mIntputHeight);
         for (int i = 0; i < size; i++) {
             GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, mFramebuffers[i]);
             GLES30.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            if (mFilters.get(i).drawFrame(mCurrentTextureId, vertexBuffer, textureBuffer)) {
+            if (mFilters.get(i).onDrawFrame(mCurrentTextureId, vertexBuffer, textureBuffer)==OpenGlUtils.ON_DRAWN) {
                 mCurrentTextureId = mFrameBufferTextures[i];
             }
             GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
@@ -149,10 +154,10 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
     }
 
     @Override
-    public void release() {
+    protected void onDestroy() {
         if (mFilters != null) {
-            for (GLImageFilter filter : mFilters) {
-                filter.release();
+            for (GPUImageFilter filter : mFilters) {
+                filter.destroy();
             }
             mFilters.clear();
         }
@@ -185,7 +190,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
             GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mFrameBufferTextures[i]);
 
             GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RGBA,
-                    mImageWidth, mImageHeight, 0, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, null);
+                    mIntputWidth, mIntputHeight, 0, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, null);
             GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
                     GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
             GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
@@ -222,7 +227,7 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
      * 添加新滤镜
      * @param filters
      */
-    public void addFilters(List<GLImageFilter> filters) {
+    public void addFilters(List<GPUImageFilter> filters) {
         mFilters.addAll(filters);
         addFrambuffers();
     }
@@ -269,9 +274,9 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
      * 替换滤镜组
      * @param filters
      */
-    public void replaceWidthFilters(List<GLImageFilter> filters) {
+    public void replaceWidthFilters(List<GPUImageFilter> filters) {
         for (int i = 0; i < mFilters.size(); i++) {
-            mFilters.get(i).release();
+            mFilters.get(i).destroy();
         }
         mFilters.clear();
         mFilters = filters;

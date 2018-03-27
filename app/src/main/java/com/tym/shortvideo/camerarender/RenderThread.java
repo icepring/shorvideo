@@ -380,8 +380,6 @@ public class RenderThread extends HandlerThread implements SurfaceTexture.OnFram
     private void draw() {
         // 绘制
         RenderManager.getInstance().drawFrame(mCameraTextureId);
-
-
     }
 
 

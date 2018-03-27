@@ -10,6 +10,7 @@ import com.tym.shortvideo.glfilter.image.GLExposureFilter;
 import com.tym.shortvideo.glfilter.image.GLHueFilter;
 import com.tym.shortvideo.glfilter.image.GLSaturationFilter;
 import com.tym.shortvideo.glfilter.image.GLSharpnessFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.type.GLFilterIndex;
 import com.tym.shortvideo.type.GLFilterType;
 
@@ -34,7 +35,7 @@ public class GLImageEditFilterGroup extends GLImageFilterGroup {
         this(initFilters());
     }
 
-    public GLImageEditFilterGroup(List<GLImageFilter> filters) {
+    public GLImageEditFilterGroup(List<GPUImageFilter> filters) {
         super(filters);
     }
 
@@ -42,8 +43,8 @@ public class GLImageEditFilterGroup extends GLImageFilterGroup {
      * 初始化滤镜
      * @return
      */
-    private static List<GLImageFilter> initFilters() {
-        List<GLImageFilter> filters = new ArrayList<GLImageFilter>();
+    private static List<GPUImageFilter> initFilters() {
+        List<GPUImageFilter> filters = new ArrayList<>();
 
         filters.add(BRIGHTNESS, FilterManager.getFilter(GLFilterType.BRIGHTNESS)); // 亮度
         filters.add(CONTRAST, FilterManager.getFilter(GLFilterType.CONTRAST)); // 对比度
@@ -60,7 +61,7 @@ public class GLImageEditFilterGroup extends GLImageFilterGroup {
      * 设置图片亮度
      */
     public void setBrightness(float brightness) {
-        ((GLBrightnessFilter)mFilters.get(BRIGHTNESS)).setBrightness(brightness);
+//        ((GLBrightnessFilter)mFilters.get(BRIGHTNESS)).setBrightness(brightness);
     }
 
     /**
@@ -68,7 +69,7 @@ public class GLImageEditFilterGroup extends GLImageFilterGroup {
      * @param contrast
      */
     public void setContrast(float contrast) {
-        ((GLContrastFilter)mFilters.get(CONTRAST)).setContrast(contrast);
+//        ((GLContrastFilter)mFilters.get(CONTRAST)).setContrast(contrast);
     }
 
     /**
@@ -76,7 +77,7 @@ public class GLImageEditFilterGroup extends GLImageFilterGroup {
      * @param exposure
      */
     public void setExposure(float exposure) {
-        ((GLExposureFilter)mFilters.get(EXPOSURE)).setExposure(exposure);
+//        ((GLExposureFilter)mFilters.get(EXPOSURE)).setExposure(exposure);
     }
 
     /**
@@ -84,7 +85,7 @@ public class GLImageEditFilterGroup extends GLImageFilterGroup {
      * @param hue
      */
     public void setHue(float hue) {
-        ((GLHueFilter)mFilters.get(HUE)).setHue(hue);
+//        ((GLHueFilter)mFilters.get(HUE)).setHue(hue);
     }
 
     /**
@@ -92,7 +93,7 @@ public class GLImageEditFilterGroup extends GLImageFilterGroup {
      * @param saturation
      */
     public void setSaturation(float saturation) {
-        ((GLSaturationFilter)mFilters.get(SATURATION)).setSaturationLevel(saturation);
+//        ((GLSaturationFilter)mFilters.get(SATURATION)).setSaturationLevel(saturation);
     }
 
     /**
@@ -100,7 +101,7 @@ public class GLImageEditFilterGroup extends GLImageFilterGroup {
      * @param sharpness
      */
     public void setSharpness(float sharpness) {
-        ((GLSharpnessFilter)mFilters.get(SHARPNESS)).setSharpness(sharpness);
+//        ((GLSharpnessFilter)mFilters.get(SHARPNESS)).setSharpness(sharpness);
     }
 
     @Override
@@ -113,10 +114,10 @@ public class GLImageEditFilterGroup extends GLImageFilterGroup {
         GLFilterIndex index = FilterManager.getIndex(type);
         if (index == GLFilterIndex.ColorIndex) {
             if (mFilters != null) {
-                mFilters.get(FILTERS).release();
+                mFilters.get(FILTERS).destroy();
                 mFilters.set(FILTERS, FilterManager.getFilter(type));
-                mFilters.get(FILTERS).onInputSizeChanged(mImageWidth, mImageHeight);
-                mFilters.get(FILTERS).onDisplayChanged(mDisplayWidth, mDisplayHeight);
+                mFilters.get(FILTERS).onInputSizeChanged(mIntputWidth, mIntputHeight);
+                mFilters.get(FILTERS).onDisplaySizeChanged(mOutputWidth, mOutputHeight);
             }
         }
     }

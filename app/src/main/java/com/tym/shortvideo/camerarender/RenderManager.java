@@ -6,6 +6,7 @@ import android.opengl.GLES30;
 import com.tym.shortvideo.glfilter.base.GLImageFilter;
 import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
 import com.tym.shortvideo.glfilter.camera.GLCameraFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.type.GLFilterGroupType;
 import com.tym.shortvideo.type.GLFilterType;
 import com.tym.shortvideo.type.ScaleType;
@@ -32,7 +33,7 @@ public final class RenderManager {
     // 实时滤镜组
     private GLImageFilterGroup mRealTimeFilter;
     // 显示输出
-    private GLImageFilter mDisplayFilter;
+    private GPUImageFilter mDisplayFilter;
 
     // 当前的TextureId
     private int mCurrentTextureId;
@@ -171,7 +172,7 @@ public final class RenderManager {
             mCameraFilter = null;
         }
         if (mRealTimeFilter != null) {
-            mRealTimeFilter.release();
+            mRealTimeFilter.destroy();
             mRealTimeFilter = null;
         }
     }
@@ -234,10 +235,10 @@ public final class RenderManager {
             mCameraFilter.onDisplayChanged(width, height);
         }
         if (mRealTimeFilter != null) {
-            mRealTimeFilter.onDisplayChanged(width, height);
+            mRealTimeFilter.onDisplaySizeChanged(width, height);
         }
         if (mDisplayFilter != null) {
-            mDisplayFilter.onDisplayChanged(width, height);
+            mDisplayFilter.onDisplaySizeChanged(width, height);
         }
     }
 
@@ -268,11 +269,11 @@ public final class RenderManager {
     public void changeFilterGroup(GLFilterGroupType type) {
         synchronized (mSyncObject) {
             if (mRealTimeFilter != null) {
-                mRealTimeFilter.release();
+                mRealTimeFilter.destroy();
             }
             mRealTimeFilter = FilterManager.getFilterGroup(type);
             mRealTimeFilter.onInputSizeChanged(mTextureWidth, mTextureHeight);
-            mRealTimeFilter.onDisplayChanged(mDisplayWidth, mDisplayHeight);
+            mRealTimeFilter.onDisplaySizeChanged(mDisplayWidth, mDisplayHeight);
         }
     }
 
@@ -316,7 +317,7 @@ public final class RenderManager {
         // 显示输出，需要调整视口大小
         if (mDisplayFilter != null) {
             GLES30.glViewport(0, 0, mDisplayWidth, mDisplayHeight);
-            mDisplayFilter.drawFrame(mCurrentTextureId);
+            mDisplayFilter.onDrawFrame(mCurrentTextureId);
         }
     }
 

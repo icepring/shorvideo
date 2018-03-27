@@ -15,5 +15,6 @@ public enum MagicFilterType {
     HUDSON,
     INKWELL,
     N1977,
+    WHITENORREDDEN,
     NASHVILLE,
 }

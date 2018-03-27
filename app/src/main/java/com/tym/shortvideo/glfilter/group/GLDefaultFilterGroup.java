@@ -5,6 +5,7 @@ import com.tym.shortvideo.camerarender.FilterManager;
 import com.tym.shortvideo.glfilter.base.GLImageFilter;
 import com.tym.shortvideo.glfilter.base.GLImageFilterGroup;
 import com.tym.shortvideo.glfilter.beauty.GLRealtimeBeautyFilter;
+import com.tym.shortvideo.tymtymtym.gpufilter.basefilter.GPUImageFilter;
 import com.tym.shortvideo.type.GLFilterIndex;
 import com.tym.shortvideo.type.GLFilterType;
 
@@ -29,25 +30,29 @@ public class GLDefaultFilterGroup extends GLImageFilterGroup {
 
     public GLDefaultFilterGroup() {
         this(initFilters());
+        int size = mFilters.size();
+        for (int i = 0; i < size; i++) {
+            mFilters.get(i).init();
+        }
     }
 
-    private GLDefaultFilterGroup(List<GLImageFilter> filters) {
+    private GLDefaultFilterGroup(List<GPUImageFilter> filters) {
         mFilters = filters;
     }
 
-    private static List<GLImageFilter> initFilters() {
-        List<GLImageFilter> filters = new ArrayList<>();
-        filters.add(BeautyfyIndex, FilterManager.getFilter(GLFilterType.REALTIMEBEAUTY));
+    private static List<GPUImageFilter> initFilters() {
+        List<GPUImageFilter> filters = new ArrayList<>();
+        filters.add(BeautyfyIndex, FilterManager.getFilter(GLFilterType.SOURCE));
         filters.add(ColorIndex, FilterManager.getFilter(GLFilterType.SOURCE));
-        filters.add(FaceStretchIndex, FilterManager.getFilter(GLFilterType.FACESTRETCH));
-        filters.add(StickersIndex, FilterManager.getFilter(GLFilterType.STICKER));
+        filters.add(FaceStretchIndex, FilterManager.getFilter(GLFilterType.SOURCE));
+        filters.add(StickersIndex, FilterManager.getFilter(GLFilterType.SOURCE));
         return filters;
     }
 
     @Override
     public void setBeautifyLevel(float percent) {
         beauty = percent;
-        ((GLRealtimeBeautyFilter) mFilters.get(BeautyfyIndex)).setSmoothOpacity(percent);
+//        ((GLRealtimeBeautyFilter) mFilters.get(BeautyfyIndex)).setSmoothOpacity(percent);
     }
 
     public float getBeauty() {
@@ -77,11 +82,11 @@ public class GLDefaultFilterGroup extends GLImageFilterGroup {
      */
     private void changeBeautyFilter(GLFilterType type) {
         if (mFilters != null) {
-            mFilters.get(BeautyfyIndex).release();
+            mFilters.get(BeautyfyIndex).destroy();
             mFilters.set(BeautyfyIndex, FilterManager.getFilter(type));
             // 设置宽高
-            mFilters.get(BeautyfyIndex).onInputSizeChanged(mImageWidth, mImageHeight);
-            mFilters.get(BeautyfyIndex).onDisplayChanged(mDisplayWidth, mDisplayHeight);
+            mFilters.get(BeautyfyIndex).onInputSizeChanged(mIntputWidth, mIntputHeight);
+            mFilters.get(BeautyfyIndex).onDisplaySizeChanged(mOutputWidth, mOutputHeight);
         }
     }
 
@@ -92,11 +97,11 @@ public class GLDefaultFilterGroup extends GLImageFilterGroup {
      */
     private void changeColorFilter(GLFilterType type) {
         if (mFilters != null) {
-            mFilters.get(ColorIndex).release();
+            mFilters.get(ColorIndex).destroy();
             mFilters.set(ColorIndex, FilterManager.getFilter(type));
             // 设置宽高
-            mFilters.get(ColorIndex).onInputSizeChanged(mImageWidth, mImageHeight);
-            mFilters.get(ColorIndex).onDisplayChanged(mDisplayWidth, mDisplayHeight);
+            mFilters.get(ColorIndex).onInputSizeChanged(mIntputWidth, mIntputHeight);
+            mFilters.get(ColorIndex).onDisplaySizeChanged(mOutputWidth, mOutputHeight);
         }
     }
 
@@ -107,11 +112,11 @@ public class GLDefaultFilterGroup extends GLImageFilterGroup {
      */
     private void changeFaceStretchFilter(GLFilterType type) {
         if (mFilters != null) {
-            mFilters.get(FaceStretchIndex).release();
+            mFilters.get(FaceStretchIndex).destroy();
             mFilters.set(FaceStretchIndex, FilterManager.getFilter(type));
             // 设置宽高
-            mFilters.get(FaceStretchIndex).onInputSizeChanged(mImageWidth, mImageHeight);
-            mFilters.get(FaceStretchIndex).onDisplayChanged(mDisplayWidth, mDisplayHeight);
+            mFilters.get(FaceStretchIndex).onInputSizeChanged(mIntputWidth, mIntputHeight);
+            mFilters.get(FaceStretchIndex).onDisplaySizeChanged(mOutputWidth, mOutputHeight);
         }
     }
 
@@ -122,11 +127,11 @@ public class GLDefaultFilterGroup extends GLImageFilterGroup {
      */
     private void changeStickerFilter(GLFilterType type) {
         if (mFilters != null) {
-            mFilters.get(StickersIndex).release();
+            mFilters.get(StickersIndex).destroy();
             mFilters.set(StickersIndex, FilterManager.getFilter(type));
             // 设置宽高
-            mFilters.get(StickersIndex).onInputSizeChanged(mImageWidth, mImageHeight);
-            mFilters.get(StickersIndex).onDisplayChanged(mDisplayWidth, mDisplayHeight);
+            mFilters.get(StickersIndex).onInputSizeChanged(mIntputWidth, mIntputHeight);
+            mFilters.get(StickersIndex).onDisplaySizeChanged(mOutputWidth, mOutputHeight);
         }
     }
 
