@@ -131,9 +131,9 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
     private void initData() {
         Intent intent = getIntent();
         //选择的视频的本地播放地址
-        mPath = intent.getStringExtra("path");
-        ArrayList<String> srcList = new ArrayList<>();
-        srcList.add(mPath);
+//        mPath = intent.getStringExtra("path");
+        ArrayList<String> srcList = intent.getStringArrayListExtra("path");
+//        srcList.add(mPath);
         mVideoView.setVideoPath(srcList);
         mVideoView.setIMediaCallback(this);
     }

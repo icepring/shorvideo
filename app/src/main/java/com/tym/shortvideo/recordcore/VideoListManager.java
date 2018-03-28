@@ -179,7 +179,7 @@ public class VideoListManager {
      */
     public List<String> getSubVideoPathList() {
         if (mVideoList == null || mVideoList.isEmpty()) {
-            return new ArrayList<String>();
+            return new ArrayList<>();
         }
         List<String> mediaPaths = new ArrayList<String>();
         for (int i = 0; i < mVideoList.size(); i++) {

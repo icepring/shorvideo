@@ -135,14 +135,14 @@ public class ProgressView extends View {
         public void dispatchMessage(Message msg) {
             switch (msg.what) {
                 case HANDLER_INVALIDATE_ACTIVE:
-                    invalidate();
+                    postInvalidate();
                     mActiveState = !mActiveState;
                     if (!mStop) {
                         sendEmptyMessageDelayed(0, 300);
                     }
                     break;
                 case HANDLER_INVALIDATE_RECORDING:
-                    invalidate();
+                    postInvalidate();
                     if (mProgressChanged) {
                         sendEmptyMessageDelayed(0, 50);
                     }
@@ -163,6 +163,8 @@ public class ProgressView extends View {
 
         canvas.drawRect(left, 0.0F, width * mCurrentLenght, height,
                 mProgressPaint);
+
+        Log.d("onDraw:",mCurrentLenght+"");
 
         if (isDeleteMode()) {
             if (mSplitList.size() > 0) {
@@ -212,7 +214,7 @@ public class ProgressView extends View {
     public void setProgress(float progress) {
         mProgress = progress;
         mCurrentLenght = progress / mMaxDuration;
-        invalidate();
+        postInvalidate();
         // 满进度回调
         if (mCurrentLenght >= 1) {
 
@@ -225,7 +227,7 @@ public class ProgressView extends View {
     public void addSplitView() {
         Log.d("addSplitView", "mGrithPro = " + mCurrentLenght);
         mSplitList.add(mCurrentLenght);
-        invalidate();
+        postInvalidate();
     }
 
     /**
@@ -235,7 +237,7 @@ public class ProgressView extends View {
         if (mDeleteMode && mSplitList.size() > 0) {
             mSplitList.remove(mSplitList.size() - 1);
             mDeleteMode = false;
-            invalidate();
+            postInvalidate();
         }
     }
 
@@ -245,7 +247,7 @@ public class ProgressView extends View {
     public void cleanSplitView() {
         if (mSplitList.size() > 0) {
             mSplitList.clear();
-            invalidate();
+            postInvalidate();
         }
     }
 
@@ -258,7 +260,7 @@ public class ProgressView extends View {
      */
     public void setDeleteMode(boolean deleteMode) {
         mDeleteMode = deleteMode;
-        invalidate();
+        postInvalidate();
     }
 
     /**

@@ -60,6 +60,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 public class CameraActivity extends AppCompatActivity implements View.OnClickListener,
         SurfaceHolder.Callback, CainSurfaceView.OnClickListener, CainSurfaceView.OnTouchScroller, RenderStateChangedListener,
@@ -957,10 +958,19 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
             // 销毁录制线程
             RecordManager.getInstance().destoryThread();
             mNeedToWaitStop = false;
-            combineVideo();
+//            combineVideo();
             // 隐藏删除和预览按钮
             mBtnRecordPreview.setVisibility(View.GONE);
             mBtnRecordDelete.setVisibility(View.GONE);
+
+
+            Intent intent = new Intent(CameraActivity.this,
+                    PreviewActivity.class);
+            ArrayList<String> arrayList=new ArrayList<>(VideoListManager.getInstance()
+                    .getSubVideoPathList());
+            intent.putStringArrayListExtra("path", arrayList);
+            startActivity(intent);
+            finish();
         }
     }
 
