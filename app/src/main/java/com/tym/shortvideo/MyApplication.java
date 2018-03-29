@@ -4,9 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
-/**
- * Created by qqche_000 on 2017/8/6.
- */
+import com.tym.shortvideo.recodrender.ParamsManager;
+
 
 public class MyApplication extends Application {
     private static Context mContext;
@@ -22,6 +21,7 @@ public class MyApplication extends Application {
                 .getDisplayMetrics();
         screenWidth = mDisplayMetrics.widthPixels;
         screenHeight = mDisplayMetrics.heightPixels;
+        ParamsManager.context = this;
     }
 
     public static Context getContext() {

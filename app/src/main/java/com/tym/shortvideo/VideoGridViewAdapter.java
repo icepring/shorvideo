@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 
 /**
- * Author：J.Chou
- * Date：  2016.08.01 3:45 PM
- * Email： who_know_me@163.com
- * Describe:
+ * @author Jliuer
+ * @Date 18/03/28 16:26
+ * @Email Jliuer@aliyun.com
+ * @Description 
  */
 public class VideoGridViewAdapter extends RecyclerView.Adapter<VideoGridViewAdapter.VideoViewHolder> {
 

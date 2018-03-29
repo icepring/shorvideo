@@ -16,6 +16,12 @@ import com.tym.shortvideo.view.VideoTrimmerView;
 
 import java.io.File;
 
+/**
+ * @author Jliuer
+ * @Date 18/03/28 11:25
+ * @Email Jliuer@aliyun.com
+ * @Description 
+ */
 public class TrimmerActivity extends AppCompatActivity implements TrimVideoListener {
 
     private static final String TAG = "jason";

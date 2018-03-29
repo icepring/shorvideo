@@ -43,8 +43,9 @@ public class BaseActivity extends Activity {
      * @param tips
      */
     public void showLoading(final String tips) {
-        if (null == loading || loading.isWithTitle())
+        if (null == loading || loading.isWithTitle()) {
             loading = new LoadingDialog(this);
+        }
 
         if (Thread.currentThread() == Looper.getMainLooper().getThread()) {
             loading.setTips(tips);

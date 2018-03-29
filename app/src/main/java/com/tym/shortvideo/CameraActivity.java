@@ -41,7 +41,6 @@ import com.tym.shortvideo.recordcore.multimedia.VideoCombineManager;
 import com.tym.shortvideo.recordcore.multimedia.VideoCombiner;
 import com.tym.shortvideo.utils.BitmapUtils;
 import com.tym.shortvideo.utils.CameraUtils;
-import com.tym.shortvideo.utils.EffectFilterAdapter;
 import com.tym.shortvideo.utils.FileUtils;
 import com.tym.shortvideo.utils.PermissionUtils;
 import com.tym.shortvideo.utils.StringUtils;
@@ -138,7 +137,6 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 持有当前上下文
-        ParamsManager.context = this;
         String phoneName = Build.MODEL;
         if (phoneName.toLowerCase().contains("bullhead")
                 || phoneName.toLowerCase().contains("nexus 5x")) {
@@ -427,7 +425,6 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     protected void onDestroy() {
         DrawerManager.getInstance().destoryTrhead();
         // 在停止时需要释放上下文，防止内存泄漏
-        ParamsManager.context = null;
         if (mFpsHandler != null) {
             mFpsHandler.removeCallbacksAndMessages(null);
             mFpsHandler = null;

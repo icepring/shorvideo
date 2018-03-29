@@ -28,10 +28,11 @@ import java.util.ArrayList;
 import java.util.concurrent.Executors;
 
 /**
- * Created by cj on 2017/10/16.
- * desc: 循环播放选择的视频的页面，可以对视频设置水印和美白效果
+ * @author Jliuer
+ * @Date 18/03/28 10:24
+ * @Email Jliuer@aliyun.com
+ * @Description 预览
  */
-
 public class PreviewActivity extends BaseActivity implements View.OnClickListener, MediaPlayerWrapper.IMediaCallback,
         SlideGpuFilterGroup.OnFilterChangeListener, View.OnTouchListener {
 
@@ -196,10 +197,10 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
                 showLoading("视频处理中", false);
 
                 VideoClipper clipper = new VideoClipper();
-                if (mBeauty.isSelected()) {
-                    clipper.showBeauty();
-                }
-                clipper.setInputVideoPath(mPath);
+//                if (mBeauty.isSelected()) {
+//                    clipper.showBeauty();
+//                }
+                clipper.setInputVideoPath(this,mPath);
                 final String fileName = "tym_" + System.currentTimeMillis() + ".mp4";
                 outputPath = FileUtils.getPath("tym/tym/", fileName);
                 clipper.setFilterType(filterType);
@@ -255,7 +256,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
             while (!isDestroy) {
                 if (!isPlaying) {
                     try {
-                        Thread.currentThread().sleep(200);
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -263,7 +264,7 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
                 }
                 mHandler.sendEmptyMessage(VIDEO_UPDATE);
                 try {
-                    Thread.currentThread().sleep(200);
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
