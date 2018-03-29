@@ -155,6 +155,7 @@ public class MediaPlayerWrapper implements MediaPlayer.OnCompletionListener, Med
                 break;
             }
         }
+        curIndex = 0;
     }
 
     public boolean isPlaying() {
@@ -166,7 +167,7 @@ public class MediaPlayerWrapper implements MediaPlayer.OnCompletionListener, Med
     public void onCompletion(MediaPlayer mp) {
         curIndex++;
         if (curIndex >= mSrcList.size()) {
-            curIndex = 0;
+
             if (mCallback != null) {
                 mCallback.onCompletion(mp);
             }
