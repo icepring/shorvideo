@@ -1041,65 +1041,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-    /**
-     * 合并视频
-     */
-    private void combineVideo() {
-        final String fileName = "CainCamera_" + System.currentTimeMillis() + ".mp4";
-        final String path = ParamsManager.AlbumPath
-                + fileName;
-        final File file = new File(path);
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
-        }
-        VideoCombineManager.getInstance()
-                .startVideoCombiner(VideoListManager.getInstance().getSubVideoPathList(),
-                        path, new VideoCombiner.VideoCombineListener() {
-                            @Override
-                            public void onCombineStart() {
-                                if (VERBOSE) {
-                                    Log.d(TAG, "开始合并");
-                                }
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Toast.makeText(CameraActivity.this, "开始合并", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
 
-                            }
-
-                            @Override
-                            public void onCombineProcessing(final int current, final int sum) {
-                                if (VERBOSE) {
-                                    Log.d(TAG, "当前视频： " + current + ", 合并视频总数： " + sum);
-                                }
-
-                            }
-
-                            @Override
-                            public void onCombineFinished(final boolean success) {
-                                if (success) {
-                                    Log.d(TAG, "合并成功");
-                                } else {
-                                    Log.d(TAG, "合并失败");
-                                }
-
-                                VideoListManager.getInstance().removeAllSubVideo();
-                                // 更更新媒体库
-                                FileUtils.updateMediaStore(CameraActivity.this, path, fileName);
-                                // 跳转至视频编辑页面
-
-//                                TrimmerActivity.go(CameraActivity.this,path);
-
-                                Intent intent = new Intent(CameraActivity.this,
-                                        PreviewActivity.class);
-                                intent.putExtra("path", path);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
-    }
 
 
 }

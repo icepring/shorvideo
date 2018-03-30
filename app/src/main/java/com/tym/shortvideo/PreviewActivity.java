@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -19,10 +20,15 @@ import com.tym.shortvideo.filter.helper.MagicFilterType;
 import com.tym.shortvideo.media.MediaPlayerWrapper;
 import com.tym.shortvideo.media.VideoInfo;
 import com.tym.shortvideo.mediacodec.VideoClipper;
+import com.tym.shortvideo.recodrender.ParamsManager;
+import com.tym.shortvideo.recordcore.VideoListManager;
+import com.tym.shortvideo.recordcore.multimedia.VideoCombineManager;
+import com.tym.shortvideo.recordcore.multimedia.VideoCombiner;
 import com.tym.shortvideo.utils.FileUtils;
 import com.tym.shortvideo.filter.helper.SlideGpuFilterGroup;
 import com.tym.shortvideo.view.VideoPreviewView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
@@ -195,27 +201,8 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
                 }
                 mVideoView.pause();
                 showLoading("视频处理中", false);
+                combineVideo();
 
-                VideoClipper clipper = new VideoClipper();
-//                if (mBeauty.isSelected()) {
-//                    clipper.showBeauty();
-//                }
-                clipper.setInputVideoPath(this,mPath);
-                final String fileName = "tym_" + System.currentTimeMillis() + ".mp4";
-                outputPath = FileUtils.getPath("tym/tym/", fileName);
-                clipper.setFilterType(filterType);
-                clipper.setOutputVideoPath(outputPath);
-                clipper.setOnVideoCutFinishListener(new VideoClipper.OnVideoCutFinishListener() {
-                    @Override
-                    public void onFinish() {
-                        mHandler.sendMessage(mHandler.obtainMessage(VIDEO_CUT_FINISH, fileName));
-                    }
-                });
-                try {
-                    clipper.clipVideo(0, mVideoView.getVideoDuration() * 1000);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
 
                 break;
@@ -287,5 +274,66 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
     public boolean onTouch(View v, MotionEvent event) {
         mVideoView.onTouch(event);
         return true;
+    }
+
+    /**
+     * 合并视频
+     */
+    private void combineVideo() {
+        final String fileName = "CainCamera_" + System.currentTimeMillis() + ".mp4";
+        final String path = ParamsManager.AlbumPath
+                + fileName;
+        final File file = new File(path);
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        VideoCombineManager.getInstance()
+                .startVideoCombiner(VideoListManager.getInstance().getSubVideoPathList(),
+                        path, new VideoCombiner.VideoCombineListener() {
+                            @Override
+                            public void onCombineStart() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(PreviewActivity.this, "开始合并", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                            }
+
+                            @Override
+                            public void onCombineProcessing(final int current, final int sum) {
+
+
+                            }
+
+                            @Override
+                            public void onCombineFinished(final boolean success) {
+
+
+                                VideoListManager.getInstance().removeAllSubVideo();
+                                // 更更新媒体库
+                                FileUtils.updateMediaStore(PreviewActivity.this, path, fileName);
+
+                                VideoClipper clipper = new VideoClipper();
+                                clipper.setInputVideoPath(PreviewActivity.this,path);
+                                final String fileName = "tym_" + System.currentTimeMillis() + ".mp4";
+                                outputPath = FileUtils.getPath("tym/tym/", fileName);
+                                clipper.setFilterType(filterType);
+                                clipper.setOutputVideoPath(outputPath);
+                                clipper.setOnVideoCutFinishListener(new VideoClipper.OnVideoCutFinishListener() {
+                                    @Override
+                                    public void onFinish() {
+                                        mHandler.sendMessage(mHandler.obtainMessage(VIDEO_CUT_FINISH, fileName));
+                                    }
+                                });
+                                try {
+                                    clipper.clipVideo(0, mVideoView.getVideoDuration() * 1000);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
     }
 }
