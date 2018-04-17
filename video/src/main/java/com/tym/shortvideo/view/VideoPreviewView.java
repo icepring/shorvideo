@@ -132,6 +132,11 @@ public class VideoPreviewView extends GLSurfaceView implements GLSurfaceView.Ren
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+    }
+
+    @Override
     public void onVideoChanged(final VideoInfo info) {
         queueEvent(new Runnable() {
             @Override

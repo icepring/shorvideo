@@ -27,8 +27,8 @@ public class TextureRotationUtils {
     public static final float TextureVertices[] = {
             0.0f, 0.0f,     // 0 bottom left
             1.0f, 0.0f,     // 1 bottom right
-            0.0f, 1.0f,     // 2 top left
-            1.0f, 1.0f      // 3 top right
+            0.0f, 0.875f,     // 2 top left
+            1.0f, 0.875f      // 3 top right
     };
 
     public static final float TextureVertices_90[] = {

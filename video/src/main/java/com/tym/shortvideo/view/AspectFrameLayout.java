@@ -41,9 +41,6 @@ public class AspectFrameLayout extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth());
-
 //        if (mTargetAspect > 0) {
 //            int initialWidth = MeasureSpec.getSize(widthMeasureSpec);
 //            int initialHeight = MeasureSpec.getSize(heightMeasureSpec);
@@ -65,6 +62,6 @@ public class AspectFrameLayout extends FrameLayout {
 //            widthMeasureSpec = MeasureSpec.makeMeasureSpec(initialWidth, MeasureSpec.EXACTLY);
 //            heightMeasureSpec = MeasureSpec.makeMeasureSpec(initialHeight, MeasureSpec.EXACTLY);
 //        }
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
     }
 }

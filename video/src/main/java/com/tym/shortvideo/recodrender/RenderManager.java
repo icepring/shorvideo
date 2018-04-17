@@ -313,7 +313,7 @@ public final class RenderManager {
         }
         // 如果存在滤镜，则绘制滤镜
         if (mRealTimeFilter != null) {
-            mCurrentTextureId = mRealTimeFilter.drawFrameBuffer(mCurrentTextureId, mVertexBuffer, mTextureBuffer);
+            mCurrentTextureId = mRealTimeFilter.drawFrameBuffer(mCurrentTextureId);
         }
         // 显示输出，需要调整视口大小
         if (mDisplayFilter != null) {

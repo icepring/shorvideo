@@ -49,7 +49,7 @@ public class CameraUtils {
     private static int mOrientation = 0;
 
     // 当前的宽高比
-    private static float mCurrentRatio = Ratio_16_9;
+    private static float mCurrentRatio = Ratio_4_3;
 
     // 当前摄像头是否支持闪光灯
     private static boolean mCurrentCameraSupportFlash = false;
