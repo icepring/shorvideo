@@ -164,8 +164,6 @@ public class ProgressView extends View {
         canvas.drawRect(left, 0.0F, width * mCurrentLenght, height,
                 mProgressPaint);
 
-        Log.d("onDraw:",mCurrentLenght+"");
-
         if (isDeleteMode()) {
             if (mSplitList.size() > 0) {
                 float split = mSplitList.get(mSplitList.size() - 1);

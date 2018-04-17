@@ -3,6 +3,7 @@ package com.tym.shortvideo.media;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.util.Log;
 import android.view.Surface;
 
 import java.io.IOException;
@@ -42,14 +43,14 @@ public class MediaPlayerWrapper implements MediaPlayer.OnCompletionListener, Med
         MediaMetadataRetriever retr = new MediaMetadataRetriever();
         for (int i = 0; i < dataSource.size(); i++) {
             VideoInfo info = new VideoInfo();
-            String path=dataSource.get(i);
+            String path = dataSource.get(i);
             retr.setDataSource(path);
             String rotation = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
             String width = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
             String height = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
             String duration = retr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
 
-            info.path=path;
+            info.path = path;
             info.rotation = Integer.parseInt(rotation);
             info.width = Integer.parseInt(width);
             info.height = Integer.parseInt(height);
@@ -58,7 +59,8 @@ public class MediaPlayerWrapper implements MediaPlayer.OnCompletionListener, Med
             mInfoList.add(info);
         }
     }
-    public List<VideoInfo> getVideoInfo(){
+
+    public List<VideoInfo> getVideoInfo() {
         return mInfoList;
     }
 
@@ -102,7 +104,8 @@ public class MediaPlayerWrapper implements MediaPlayer.OnCompletionListener, Med
             mCallback.onVideoPause();
         }
     }
-    public int getCurVideoDuration(){
+
+    public int getCurVideoDuration() {
         return mInfoList.get(curIndex).duration;
     }
 
@@ -134,14 +137,14 @@ public class MediaPlayerWrapper implements MediaPlayer.OnCompletionListener, Med
                 int ti = time - (duration - mInfoList.get(i).duration);
                 if (curIndex == i) {
                     mCurMediaPlayer.seekTo(ti);
-                    if(mCurMediaPlayer.isPlaying()){
+                    if (mCurMediaPlayer.isPlaying()) {
                         pause();
                     }
                 } else {
                     curIndex = i;
                     mCurMediaPlayer.setSurface(null);
                     mCurMediaPlayer.seekTo(0);
-                    if(mCurMediaPlayer.isPlaying()){
+                    if (mCurMediaPlayer.isPlaying()) {
                         pause();
                     }
                     if (mCallback != null) {
@@ -203,13 +206,13 @@ public class MediaPlayerWrapper implements MediaPlayer.OnCompletionListener, Med
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-
+        Log.d("onPrepared::",""+mPlayerList.indexOf(mp));
     }
 
     public void setVolume(float volume) {
-        for(int i=0;i<mPlayerList.size();i++){
+        for (int i = 0; i < mPlayerList.size(); i++) {
             MediaPlayer mediaPlayer = mPlayerList.get(i);
-            mediaPlayer.setVolume(volume,volume);
+            mediaPlayer.setVolume(volume, volume);
         }
     }
 

@@ -41,27 +41,30 @@ public class AspectFrameLayout extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-        if (mTargetAspect > 0) {
-            int initialWidth = MeasureSpec.getSize(widthMeasureSpec);
-            int initialHeight = MeasureSpec.getSize(heightMeasureSpec);
-
-            int horizPadding = getPaddingLeft() + getPaddingRight();
-            int vertPadding = getPaddingTop() + getPaddingBottom();
-
-            initialWidth -= horizPadding;
-            initialHeight -= vertPadding;
-
-            double viewAspectRatio = (double) initialWidth / initialHeight;
-            double aspectDiff = mTargetAspect / viewAspectRatio - 1;
-
-            if (Math.abs(aspectDiff) >= 0.01) {
-                initialHeight = (int)(initialWidth / mTargetAspect);
-            }
-            initialWidth += horizPadding;
-            initialHeight += vertPadding;
-            widthMeasureSpec = MeasureSpec.makeMeasureSpec(initialWidth, MeasureSpec.EXACTLY);
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(initialHeight, MeasureSpec.EXACTLY);
-        }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth());
+
+//        if (mTargetAspect > 0) {
+//            int initialWidth = MeasureSpec.getSize(widthMeasureSpec);
+//            int initialHeight = MeasureSpec.getSize(heightMeasureSpec);
+//
+//            int horizPadding = getPaddingLeft() + getPaddingRight();
+//            int vertPadding = getPaddingTop() + getPaddingBottom();
+//
+//            initialWidth -= horizPadding;
+//            initialHeight -= vertPadding;
+//
+//            double viewAspectRatio = (double) initialWidth / initialHeight;
+//            double aspectDiff = mTargetAspect / viewAspectRatio - 1;
+//
+//            if (Math.abs(aspectDiff) >= 0.01) {
+//                initialHeight = (int)(initialWidth / mTargetAspect);
+//            }
+//            initialWidth += horizPadding;
+//            initialHeight += vertPadding;
+//            widthMeasureSpec = MeasureSpec.makeMeasureSpec(initialWidth, MeasureSpec.EXACTLY);
+//            heightMeasureSpec = MeasureSpec.makeMeasureSpec(initialHeight, MeasureSpec.EXACTLY);
+//        }
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }

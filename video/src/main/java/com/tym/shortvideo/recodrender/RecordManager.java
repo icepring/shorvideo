@@ -22,8 +22,8 @@ public final class RecordManager {
     private static final String TAG = "RecordManager";
     private static final boolean VERBOSE = false;
 
-    public static final int RECORD_WIDTH = 540;
-    public static final int RECORD_HEIGHT = 960;
+    public static final int RECORD_WIDTH = 1280;
+    public static final int RECORD_HEIGHT = 1280;
 
     private static RecordManager mInstance;
 
