@@ -2,7 +2,9 @@ package com.tym.shortvideo.filter.helper.type;
 
 import android.hardware.Camera;
 
+import com.tym.shortvideo.recodrender.RecordManager;
 import com.tym.shortvideo.utils.CameraUtils;
+import com.tym.shortvideo.utils.Size;
 
 import java.nio.FloatBuffer;
 
@@ -19,10 +21,42 @@ public class TextureRotationUtils {
 
     public static final float CubeVertices[] = {
             -1.0f, -1.0f,  // 0 bottom left
-            1.0f,  -1.0f,  // 1 bottom right
-            -1.0f,  1.0f,  // 2 top left
-            1.0f,   1.0f,  // 3 top right
+            1.0f, -1.0f,  // 1 bottom right
+            -1.0f, 1.0f,  // 2 top left
+            1.0f, 1.0f,  // 3 top right
     };
+
+    public static void setRatio_1_1(boolean b, Size size) {
+        if (b) {
+            TextureVertices[0] = 0.0f;
+            TextureVertices[1] = 0.0f;
+
+            TextureVertices[2] = 1.0f;
+            TextureVertices[3] = 0.0f;
+
+            TextureVertices[4] = 0.0f;
+            TextureVertices[5] = 0.875f;
+
+            TextureVertices[6] = 1.0f;
+            TextureVertices[7] = 0.875f;
+            RecordManager.RECORD_HEIGHT = RecordManager.RECORD_WIDTH = Math.min(size.getHeight(), size.getWidth());
+        } else {
+            TextureVertices[0] = 0.0f;
+            TextureVertices[1] = 0.0f;
+
+            TextureVertices[2] = 1.0f;
+            TextureVertices[3] = 0.0f;
+
+            TextureVertices[4] = 0.0f;
+            TextureVertices[5] = 1.0f;
+
+            TextureVertices[6] = 1.0f;
+            TextureVertices[7] = 1.0f;
+
+            RecordManager.RECORD_HEIGHT = Math.max(size.getHeight(), size.getWidth());
+            RecordManager.RECORD_WIDTH = Math.min(size.getHeight(), size.getWidth());
+        }
+    }
 
     public static final float TextureVertices[] = {
             0.0f, 0.0f,     // 0 bottom left

@@ -126,7 +126,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
     private AspectRatioType mCurrentRatioType = AspectRatioType.Ratio_16_9;
 
     // 当前长宽比值
-    private float mCurrentRatio;
+    private CameraUtils.Ratio mCurrentRatio;
 
     private int mColorIndex = 0;
 
@@ -243,7 +243,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
      * 调整底部视图
      */
     private void adjustBottomView() {
-        if (CameraUtils.getCurrentRatio() < CameraUtils.Ratio_4_3) {
+        if (CameraUtils.getCurrentRatio().getRatio() < CameraUtils.Ratio.RATIO_4_3.getRatio()) {
             mBtnRecordDelete.setBackgroundResource(R.mipmap.preview_video_delete_white);
             mBtnRecordPreview.setBackgroundResource(R.mipmap.preview_video_done_white);
         } else {
