@@ -39,7 +39,21 @@ public class TextureRotationUtils {
 
             TextureVertices[6] = 1.0f;
             TextureVertices[7] = 0.119375f;
-            RecordManager.RECORD_HEIGHT = RecordManager.RECORD_WIDTH = Math.min(size.getHeight(), size.getWidth());
+
+
+//            TextureVertices[0] = 0.0f;
+//            TextureVertices[1] = 0.0625f;
+//
+//            TextureVertices[2] = 1.0f;
+//            TextureVertices[3] = 0.0625f;
+//
+//            TextureVertices[4] = 0.0f;
+//            TextureVertices[5] = 0.9375f;
+//
+//            TextureVertices[6] = 1.0f;
+//            TextureVertices[7] = 0.9375f;
+
+//            RecordManager.RECORD_HEIGHT = RecordManager.RECORD_WIDTH = Math.min(size.getHeight(), size.getWidth());
         } else {
             TextureVertices[0] = 0.0f;
             TextureVertices[1] = 0.0f;

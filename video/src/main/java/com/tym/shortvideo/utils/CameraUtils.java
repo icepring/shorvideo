@@ -30,8 +30,8 @@ public class CameraUtils {
 
     // 默认宽高不存在则重新计算比这个值稍微大一点的宽高
     // 16:9的默认宽高（理想值），相机的宽度和高度跟屏幕坐标不一样，手机屏幕的宽度和高度是反过来的。
-    public static final int DEFAULT_16_9_WIDTH = 1920;
-    public static final int DEFAULT_16_9_HEIGHT = 1080;
+    public static final int DEFAULT_16_9_WIDTH = 1280;
+    public static final int DEFAULT_16_9_HEIGHT = 720;
     // 4:3的默认宽高(理想值)
     public static final int DEFAULT_4_3_WIDTH = 1024;
     public static final int DEFAULT_4_3_HEIGHT = 768;
@@ -101,7 +101,7 @@ public class CameraUtils {
         mCamera.setParameters(parameters);
         int width = DEFAULT_16_9_WIDTH;
         int height = DEFAULT_16_9_HEIGHT;
-        if (mRatio == Ratio.RATIO_4_3 ) {
+        if (mRatio == Ratio.RATIO_4_3) {
             width = DEFAULT_4_3_WIDTH;
             height = DEFAULT_4_3_HEIGHT;
         }
@@ -449,7 +449,7 @@ public class CameraUtils {
     private static void setPreviewSize(Camera camera, int expectWidth, int expectHeight) {
         Camera.Parameters parameters = camera.getParameters();
         Camera.Size size = calculatePerfectSize(parameters.getSupportedPreviewSizes(),
-                expectWidth, expectHeight, CalculateType.Min);
+                expectWidth, expectHeight, CalculateType.Lower);
         parameters.setPreviewSize(size.width, size.height);
         camera.setParameters(parameters);
     }
