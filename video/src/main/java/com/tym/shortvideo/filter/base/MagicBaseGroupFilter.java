@@ -1,7 +1,7 @@
 package com.tym.shortvideo.filter.base;
 
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 
 import com.tym.shortvideo.filter.helper.OpenGlUtils;
@@ -54,27 +54,27 @@ public class MagicBaseGroupFilter extends GPUImageFilter {
             frameBufferTextures = new int[size - 1];
 
             for (int i = 0; i < size - 1; i++) {
-                GLES20.glGenFramebuffers(1, frameBuffers, i);
+                GLES30.glGenFramebuffers(1, frameBuffers, i);
 
-                GLES20.glGenTextures(1, frameBufferTextures, i);
-                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, frameBufferTextures[i]);
-                GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, width, height, 0,
-                        GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, null);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                        GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                        GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                        GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                        GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+                GLES30.glGenTextures(1, frameBufferTextures, i);
+                GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, frameBufferTextures[i]);
+                GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RGBA, width, height, 0,
+                        GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, null);
+                GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+                        GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
+                GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+                        GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR);
+                GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+                        GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_CLAMP_TO_EDGE);
+                GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+                        GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_CLAMP_TO_EDGE);
 
-                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, frameBuffers[i]);
-                GLES20.glFramebufferTexture2D(GLES20.GL_FRAMEBUFFER, GLES20.GL_COLOR_ATTACHMENT0,
-                        GLES20.GL_TEXTURE_2D, frameBufferTextures[i], 0);
+                GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, frameBuffers[i]);
+                GLES30.glFramebufferTexture2D(GLES30.GL_FRAMEBUFFER, GLES30.GL_COLOR_ATTACHMENT0,
+                        GLES30.GL_TEXTURE_2D, frameBufferTextures[i], 0);
 
-                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+                GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+                GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
             }
         }
     }
@@ -91,14 +91,14 @@ public class MagicBaseGroupFilter extends GPUImageFilter {
             GPUImageFilter filter = filters.get(i);
             boolean isNotLast = i < size - 1;
             if (isNotLast) {
-                GLES20.glViewport(0, 0, mIntputWidth, mIntputHeight);
-                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, frameBuffers[i]);
-                GLES20.glClearColor(0, 0, 0, 0);
+                GLES30.glViewport(0, 0, mIntputWidth, mIntputHeight);
+                GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, frameBuffers[i]);
+                GLES30.glClearColor(0, 0, 0, 0);
                 filter.onDrawFrame(previousTexture, mGLCubeBuffer, mGLTextureBuffer);
-                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+                GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
                 previousTexture = frameBufferTextures[i];
             } else {
-                GLES20.glViewport(0, 0, mOutputWidth, mOutputHeight);
+                GLES30.glViewport(0, 0, mOutputWidth, mOutputHeight);
                 filter.onDrawFrame(previousTexture, cubeBuffer, textureBuffer);
             }
         }
@@ -116,10 +116,10 @@ public class MagicBaseGroupFilter extends GPUImageFilter {
             GPUImageFilter filter = filters.get(i);
             boolean isNotLast = i < size - 1;
             if (isNotLast) {
-                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, frameBuffers[i]);
-                GLES20.glClearColor(0, 0, 0, 0);
+                GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, frameBuffers[i]);
+                GLES30.glClearColor(0, 0, 0, 0);
                 filter.onDrawFrame(previousTexture, mGLCubeBuffer, mGLTextureBuffer);
-                GLES20.glBindFramebuffer(GLES20.GL_FRAMEBUFFER, 0);
+                GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
                 previousTexture = frameBufferTextures[i];
             } else {
                 filter.onDrawFrame(previousTexture, mGLCubeBuffer, mGLTextureBuffer);
@@ -130,11 +130,11 @@ public class MagicBaseGroupFilter extends GPUImageFilter {
 
     private void destroyFramebuffers() {
         if (frameBufferTextures != null) {
-            GLES20.glDeleteTextures(frameBufferTextures.length, frameBufferTextures, 0);
+            GLES30.glDeleteTextures(frameBufferTextures.length, frameBufferTextures, 0);
             frameBufferTextures = null;
         }
         if (frameBuffers != null) {
-            GLES20.glDeleteFramebuffers(frameBuffers.length, frameBuffers, 0);
+            GLES30.glDeleteFramebuffers(frameBuffers.length, frameBuffers, 0);
             frameBuffers = null;
         }
     }

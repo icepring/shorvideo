@@ -16,7 +16,7 @@
 
 package com.tym.shortvideo.filter.base.gpuimage;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import com.tym.video.R;
 import com.tym.shortvideo.filter.base.GPUImageFilter;
@@ -39,7 +39,7 @@ public class GPUImageHueFilter extends GPUImageFilter {
     @Override
     public void onInit() {
         super.onInit();
-        mHueLocation = GLES20.glGetUniformLocation(getProgram(), "hueAdjust");
+        mHueLocation = GLES30.glGetUniformLocation(getProgram(), "hueAdjust");
     }
 
     @Override

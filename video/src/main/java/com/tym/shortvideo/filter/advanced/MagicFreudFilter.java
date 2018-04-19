@@ -1,6 +1,6 @@
 package com.tym.shortvideo.filter.advanced;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import com.tym.video.R;
 import com.tym.shortvideo.filter.base.GPUImageFilter;
@@ -21,7 +21,7 @@ public class MagicFreudFilter extends GPUImageFilter {
 	@Override
 	protected void onDestroy() {
         super.onDestroy();
-        GLES20.glDeleteTextures(1, inputTextureHandles, 0);
+        GLES30.glDeleteTextures(1, inputTextureHandles, 0);
         for(int i = 0; i < inputTextureHandles.length; i++) {
 			inputTextureHandles[i] = -1;
 		}
@@ -31,9 +31,9 @@ public class MagicFreudFilter extends GPUImageFilter {
 	protected void onDrawArraysAfter(){
 		for(int i = 0; i < inputTextureHandles.length
 				&& inputTextureHandles[i] != OpenGlUtils.NO_TEXTURE; i++){
-			GLES20.glActiveTexture(GLES20.GL_TEXTURE0 + (i+3));
-			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-			GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+			GLES30.glActiveTexture(GLES30.GL_TEXTURE0 + (i+3));
+			GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+			GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
 		}
 	}
 	  
@@ -41,21 +41,21 @@ public class MagicFreudFilter extends GPUImageFilter {
 	protected void onDrawArraysPre(){
 		for(int i = 0; i < inputTextureHandles.length 
 				&& inputTextureHandles[i] != OpenGlUtils.NO_TEXTURE; i++){
-			GLES20.glActiveTexture(GLES20.GL_TEXTURE0 + (i+3) );
-			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, inputTextureHandles[i]);
-			GLES20.glUniform1i(inputTextureUniformLocations[i], (i+3));
+			GLES30.glActiveTexture(GLES30.GL_TEXTURE0 + (i+3) );
+			GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, inputTextureHandles[i]);
+			GLES30.glUniform1i(inputTextureUniformLocations[i], (i+3));
 		}
 	}
 	
 	@Override
 	protected void onInit(){
 		super.onInit();
-		inputTextureUniformLocations[0] = GLES20.glGetUniformLocation(getProgram(), "inputImageTexture2");
+		inputTextureUniformLocations[0] = GLES30.glGetUniformLocation(getProgram(), "inputImageTexture2");
 		
-		mTexelWidthUniformLocation = GLES20.glGetUniformLocation(getProgram(), "inputImageTextureWidth");
-        mTexelHeightUniformLocation = GLES20.glGetUniformLocation(getProgram(), "inputImageTextureHeight");
+		mTexelWidthUniformLocation = GLES30.glGetUniformLocation(getProgram(), "inputImageTextureWidth");
+        mTexelHeightUniformLocation = GLES30.glGetUniformLocation(getProgram(), "inputImageTextureHeight");
 
-		mGLStrengthLocation = GLES20.glGetUniformLocation(mGLProgId,
+		mGLStrengthLocation = GLES30.glGetUniformLocation(mGLProgId,
 				"strength");
 	}
 	
@@ -74,7 +74,7 @@ public class MagicFreudFilter extends GPUImageFilter {
 	@Override
 	public void onInputSizeChanged(int width, int height) {
         super.onInputSizeChanged(width, height);
-        GLES20.glUniform1f(mTexelWidthUniformLocation, (float)width);
-        GLES20.glUniform1f(mTexelHeightUniformLocation, (float)height);
+        GLES30.glUniform1f(mTexelWidthUniformLocation, (float)width);
+        GLES30.glUniform1f(mTexelHeightUniformLocation, (float)height);
     }
 }

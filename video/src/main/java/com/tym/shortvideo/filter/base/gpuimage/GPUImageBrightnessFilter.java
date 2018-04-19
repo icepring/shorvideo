@@ -16,7 +16,7 @@
 
 package com.tym.shortvideo.filter.base.gpuimage;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import com.tym.video.R;
 import com.tym.shortvideo.filter.base.GPUImageFilter;
@@ -41,7 +41,7 @@ public class GPUImageBrightnessFilter extends GPUImageFilter {
     @Override
     public void onInit() {
         super.onInit();
-        mBrightnessLocation = GLES20.glGetUniformLocation(getProgram(), "brightness");
+        mBrightnessLocation = GLES30.glGetUniformLocation(getProgram(), "brightness");
     }
 
     @Override

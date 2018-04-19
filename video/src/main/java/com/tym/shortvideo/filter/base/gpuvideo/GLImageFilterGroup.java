@@ -123,9 +123,11 @@ public abstract class GLImageFilterGroup extends GLImageFilter {
         for (int i = 0; i < size; i++) {
             GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, mFramebuffers[i]);
             GLES30.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            if (mFilters.get(i).drawFrame(mCurrentTextureId)) {
-                mCurrentTextureId = mFrameBufferTextures[i];
-            }
+            mFilters.get(0).drawFrame(mCurrentTextureId);
+//            if (mFilters.get(i).drawFrame(mCurrentTextureId)) {
+//                mCurrentTextureId = mFrameBufferTextures[i];
+//            }
+            mCurrentTextureId = mFrameBufferTextures[i];
             GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, 0);
         }
         return mCurrentTextureId;

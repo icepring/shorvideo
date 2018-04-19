@@ -1,6 +1,6 @@
 package com.tym.shortvideo.filter.advanced;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import com.tym.video.R;
 import com.tym.shortvideo.filter.base.GPUImageFilter;
@@ -17,8 +17,8 @@ public class MagicSketchFilter extends GPUImageFilter {
     @Override
     protected void onInit() {
         super.onInit();
-        mSingleStepOffsetLocation = GLES20.glGetUniformLocation(getProgram(), "singleStepOffset");
-        mStrengthLocation = GLES20.glGetUniformLocation(getProgram(), "strength");
+        mSingleStepOffsetLocation = GLES30.glGetUniformLocation(getProgram(), "singleStepOffset");
+        mStrengthLocation = GLES30.glGetUniformLocation(getProgram(), "strength");
     }
 
     @Override

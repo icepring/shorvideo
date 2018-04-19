@@ -1,6 +1,6 @@
 package com.tym.shortvideo.filter.advanced;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import com.tym.shortvideo.filter.base.GPUImageFilter;
 import com.tym.shortvideo.filter.helper.OpenGlUtils;
@@ -21,7 +21,7 @@ public class MagicAmaroFilter extends GPUImageFilter {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        GLES20.glDeleteTextures(inputTextureHandles.length, inputTextureHandles, 0);
+        GLES30.glDeleteTextures(inputTextureHandles.length, inputTextureHandles, 0);
         for (int i = 0; i < inputTextureHandles.length; i++) {
             inputTextureHandles[i] = -1;
         }
@@ -31,9 +31,9 @@ public class MagicAmaroFilter extends GPUImageFilter {
     protected void onDrawArraysAfter() {
         for (int i = 0; i < inputTextureHandles.length
                 && inputTextureHandles[i] != OpenGlUtils.NO_TEXTURE; i++) {
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE0 + (i + 3));
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE0 + (i + 3));
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         }
     }
 
@@ -41,9 +41,9 @@ public class MagicAmaroFilter extends GPUImageFilter {
     protected void onDrawArraysPre() {
         for (int i = 0; i < inputTextureHandles.length
                 && inputTextureHandles[i] != OpenGlUtils.NO_TEXTURE; i++) {
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE0 + (i + 3));
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, inputTextureHandles[i]);
-            GLES20.glUniform1i(inputTextureUniformLocations[i], (i + 3));
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE0 + (i + 3));
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, inputTextureHandles[i]);
+            GLES30.glUniform1i(inputTextureUniformLocations[i], (i + 3));
         }
     }
 
@@ -51,9 +51,9 @@ public class MagicAmaroFilter extends GPUImageFilter {
     protected void onInit() {
         super.onInit();
         for (int i = 0; i < inputTextureUniformLocations.length; i++) {
-            inputTextureUniformLocations[i] = GLES20.glGetUniformLocation(getProgram(), "inputImageTexture" + (2 + i));
+            inputTextureUniformLocations[i] = GLES30.glGetUniformLocation(getProgram(), "inputImageTexture" + (2 + i));
         }
-        mGLStrengthLocation = GLES20.glGetUniformLocation(mGLProgId,
+        mGLStrengthLocation = GLES30.glGetUniformLocation(mGLProgId,
                 "strength");
     }
 

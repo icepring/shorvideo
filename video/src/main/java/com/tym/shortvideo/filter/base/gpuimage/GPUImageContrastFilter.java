@@ -16,7 +16,7 @@
 
 package com.tym.shortvideo.filter.base.gpuimage;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 
 /**
@@ -43,7 +43,7 @@ public class GPUImageContrastFilter extends GPUImageFilter {
     @Override
     public void onInit() {
         super.onInit();
-        mContrastLocation = GLES20.glGetUniformLocation(getProgram(), "contrast");
+        mContrastLocation = GLES30.glGetUniformLocation(getProgram(), "contrast");
     }
 
     @Override

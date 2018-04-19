@@ -1,7 +1,7 @@
 package com.tym.shortvideo.filter.base.avfilter;
 
 import android.content.res.Resources;
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import com.tym.shortvideo.utils.MatrixUtils;
 import com.tym.shortvideo.filter.helper.type.GlUtil;
@@ -49,19 +49,19 @@ public class ProcessFilter extends AFilter {
 
     @Override
     public void draw() {
-        boolean b= GLES20.glIsEnabled(GLES20.GL_CULL_FACE);
+        boolean b= GLES30.glIsEnabled(GLES30.GL_CULL_FACE);
         if(b){
-            GLES20.glDisable(GLES20.GL_CULL_FACE);
+            GLES30.glDisable(GLES30.GL_CULL_FACE);
         }
-        GLES20.glViewport(0,0,width,height);
+        GLES30.glViewport(0,0,width,height);
         GlUtil.bindFrameTexture(fFrame[0],fTexture[0]);
-        GLES20.glFramebufferRenderbuffer(GLES20.GL_FRAMEBUFFER, GLES20.GL_DEPTH_ATTACHMENT,
-            GLES20.GL_RENDERBUFFER, fRender[0]);
+        GLES30.glFramebufferRenderbuffer(GLES30.GL_FRAMEBUFFER, GLES30.GL_DEPTH_ATTACHMENT,
+            GLES30.GL_RENDERBUFFER, fRender[0]);
         mFilter.setTextureId(getTextureId());
         mFilter.draw();
         GlUtil.unBindFrameBuffer();
         if(b){
-            GLES20.glEnable(GLES20.GL_CULL_FACE);
+            GLES30.glEnable(GLES30.GL_CULL_FACE);
         }
     }
 
@@ -72,22 +72,22 @@ public class ProcessFilter extends AFilter {
             this.height=height;
             mFilter.setSize(width,height);
             deleteFrameBuffer();
-            GLES20.glGenFramebuffers(1,fFrame,0);
-            GLES20.glGenRenderbuffers(1,fRender,0);
-            GLES20.glBindRenderbuffer(GLES20.GL_RENDERBUFFER,fRender[0]);
-            GLES20.glRenderbufferStorage(GLES20.GL_RENDERBUFFER, GLES20.GL_DEPTH_COMPONENT16,
+            GLES30.glGenFramebuffers(1,fFrame,0);
+            GLES30.glGenRenderbuffers(1,fRender,0);
+            GLES30.glBindRenderbuffer(GLES30.GL_RENDERBUFFER,fRender[0]);
+            GLES30.glRenderbufferStorage(GLES30.GL_RENDERBUFFER, GLES30.GL_DEPTH_COMPONENT16,
                 width, height);
-            GLES20.glFramebufferRenderbuffer(GLES20.GL_FRAMEBUFFER, GLES20.GL_DEPTH_ATTACHMENT,
-                GLES20.GL_RENDERBUFFER, fRender[0]);
-            GLES20.glBindRenderbuffer(GLES20.GL_RENDERBUFFER,0);
-            GlUtil.genTexturesWithParameter(1,fTexture,0, GLES20.GL_RGBA,width,height);
+            GLES30.glFramebufferRenderbuffer(GLES30.GL_FRAMEBUFFER, GLES30.GL_DEPTH_ATTACHMENT,
+                GLES30.GL_RENDERBUFFER, fRender[0]);
+            GLES30.glBindRenderbuffer(GLES30.GL_RENDERBUFFER,0);
+            GlUtil.genTexturesWithParameter(1,fTexture,0, GLES30.GL_RGBA,width,height);
         }
     }
 
     private void deleteFrameBuffer() {
-        GLES20.glDeleteRenderbuffers(1, fRender, 0);
-        GLES20.glDeleteFramebuffers(1, fFrame, 0);
-        GLES20.glDeleteTextures(1, fTexture, 0);
+        GLES30.glDeleteRenderbuffers(1, fRender, 0);
+        GLES30.glDeleteFramebuffers(1, fFrame, 0);
+        GLES30.glDeleteTextures(1, fTexture, 0);
     }
 
 }

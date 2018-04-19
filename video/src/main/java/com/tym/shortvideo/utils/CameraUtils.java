@@ -449,7 +449,7 @@ public class CameraUtils {
     private static void setPreviewSize(Camera camera, int expectWidth, int expectHeight) {
         Camera.Parameters parameters = camera.getParameters();
         Camera.Size size = calculatePerfectSize(parameters.getSupportedPreviewSizes(),
-                expectWidth, expectHeight, CalculateType.Max);
+                expectWidth, expectHeight, CalculateType.Min);
         parameters.setPreviewSize(size.width, size.height);
         camera.setParameters(parameters);
     }

@@ -5,7 +5,7 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.SurfaceTexture;
 import android.opengl.GLES11Ext;
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
@@ -113,11 +113,11 @@ public class VideoDrawer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         int texture[] = new int[1];
-        GLES20.glGenTextures(1, texture, 0);
-        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, texture[0]);
-        GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+        GLES30.glGenTextures(1, texture, 0);
+        GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, texture[0]);
+        GLES30.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
                 GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_LINEAR);
-        GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
+        GLES30.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,
                 GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
         surfaceTexture = new SurfaceTexture(texture[0]);
         mPreFilter.create();
@@ -146,11 +146,11 @@ public class VideoDrawer implements GLSurfaceView.Renderer {
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         viewWidth = width;
         viewHeight = height;
-        GLES20.glDeleteFramebuffers(1, fFrame, 0);
-        GLES20.glDeleteTextures(1, fTexture, 0);
+        GLES30.glDeleteFramebuffers(1, fFrame, 0);
+        GLES30.glDeleteTextures(1, fTexture, 0);
 
-        GLES20.glGenFramebuffers(1, fFrame, 0);
-        GlUtil.genTexturesWithParameter(1, fTexture, 0, GLES20.GL_RGBA, viewWidth, viewHeight);
+        GLES30.glGenFramebuffers(1, fFrame, 0);
+        GlUtil.genTexturesWithParameter(1, fTexture, 0, GLES30.GL_RGBA, viewWidth, viewHeight);
 
         mBeFilter.setSize(viewWidth, viewHeight);
         mProcessFilter.setSize(viewWidth, viewHeight);
@@ -163,7 +163,7 @@ public class VideoDrawer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 gl) {
         surfaceTexture.updateTexImage();
         GlUtil.bindFrameTexture(fFrame[0], fTexture[0]);
-        GLES20.glViewport(0, 0, viewWidth, viewHeight);
+        GLES30.glViewport(0, 0, viewWidth, viewHeight);
         mPreFilter.draw();
         GlUtil.unBindFrameBuffer();
 
@@ -172,7 +172,7 @@ public class VideoDrawer implements GLSurfaceView.Renderer {
 
         if (mBeautyFilter != null && isBeauty && mBeautyFilter.getBeautyLevel() != 0) {
             GlUtil.bindFrameTexture(fFrame[0], fTexture[0]);
-            GLES20.glViewport(0, 0, viewWidth, viewHeight);
+            GLES30.glViewport(0, 0, viewWidth, viewHeight);
             mBeautyFilter.onDrawFrame(mBeFilter.getOutputTexture());
             GlUtil.unBindFrameBuffer();
             mProcessFilter.setTextureId(fTexture[0]);
@@ -184,7 +184,7 @@ public class VideoDrawer implements GLSurfaceView.Renderer {
         mSlideFilterGroup.onDrawFrame(mProcessFilter.getOutputTexture());
         if (mGroupFilter != null) {
             GlUtil.bindFrameTexture(fFrame[0], fTexture[0]);
-            GLES20.glViewport(0, 0, viewWidth, viewHeight);
+            GLES30.glViewport(0, 0, viewWidth, viewHeight);
             mGroupFilter.onDrawFrame(mSlideFilterGroup.getOutputTexture());
             GlUtil.unBindFrameBuffer();
             mProcessFilter.setTextureId(fTexture[0]);
@@ -193,7 +193,7 @@ public class VideoDrawer implements GLSurfaceView.Renderer {
         }
         mProcessFilter.draw();
 
-        GLES20.glViewport(0, 0, viewWidth, viewHeight);
+        GLES30.glViewport(0, 0, viewWidth, viewHeight);
 
         mShow.setTextureId(mProcessFilter.getOutputTexture());
         mShow.draw();
@@ -240,7 +240,7 @@ public class VideoDrawer implements GLSurfaceView.Renderer {
 
     public void checkGlError(String s) {
         int error;
-        while ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
+        while ((error = GLES30.glGetError()) != GLES30.GL_NO_ERROR) {
             throw new RuntimeException(s + ": glError " + error);
         }
     }

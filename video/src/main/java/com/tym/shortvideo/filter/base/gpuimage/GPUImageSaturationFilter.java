@@ -16,7 +16,7 @@
 
 package com.tym.shortvideo.filter.base.gpuimage;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import com.tym.video.R;
 import com.tym.shortvideo.filter.base.GPUImageFilter;
@@ -42,7 +42,7 @@ public class GPUImageSaturationFilter extends GPUImageFilter {
     @Override
     public void onInit() {
         super.onInit();
-        mSaturationLocation = GLES20.glGetUniformLocation(getProgram(), "saturation");
+        mSaturationLocation = GLES30.glGetUniformLocation(getProgram(), "saturation");
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.tym.shortvideo.recodrender;
 
 import android.opengl.GLES30;
+import android.util.Log;
 
 
 import com.tym.shortvideo.filter.base.GLDisplayFilter;
@@ -311,15 +312,18 @@ public final class RenderManager {
         if (mCameraFilter != null) {
             mCurrentTextureId = mCameraFilter.drawFrameBuffer(mCurrentTextureId);
         }
+        long time=System.currentTimeMillis();
         // 如果存在滤镜，则绘制滤镜
         if (mRealTimeFilter != null) {
             mCurrentTextureId = mRealTimeFilter.drawFrameBuffer(mCurrentTextureId);
         }
+
         // 显示输出，需要调整视口大小
         if (mDisplayFilter != null) {
             GLES30.glViewport(0, 0, mDisplayWidth, mDisplayHeight);
             mDisplayFilter.drawFrame(mCurrentTextureId);
         }
+        Log.d("filter::",System.currentTimeMillis()-time+"");
     }
 
     /**

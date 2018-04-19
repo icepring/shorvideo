@@ -2,7 +2,7 @@ package com.tym.shortvideo.filter.base.avfilter;
 
 import android.content.res.Resources;
 import android.opengl.GLES11Ext;
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 /**
  * @author Jliuer
@@ -23,9 +23,9 @@ public class OesFilter extends AFilter{
 
     @Override
     protected void onBindTexture() {
-        GLES20.glActiveTexture(GLES20.GL_TEXTURE0+getTextureType());
-        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,getTextureId());
-        GLES20.glUniform1i(mHTexture,getTextureType());
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE0+getTextureType());
+        GLES30.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,getTextureId());
+        GLES30.glUniform1i(mHTexture,getTextureType());
     }
 
     @Override

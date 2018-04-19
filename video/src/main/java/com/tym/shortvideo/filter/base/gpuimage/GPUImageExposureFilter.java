@@ -16,7 +16,7 @@
 
 package com.tym.shortvideo.filter.base.gpuimage;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import com.tym.video.R;
 import com.tym.shortvideo.filter.base.GPUImageFilter;
@@ -42,7 +42,7 @@ public class GPUImageExposureFilter extends GPUImageFilter {
     @Override
     public void onInit() {
         super.onInit();
-        mExposureLocation = GLES20.glGetUniformLocation(getProgram(), "exposure");
+        mExposureLocation = GLES30.glGetUniformLocation(getProgram(), "exposure");
     }
 
     @Override

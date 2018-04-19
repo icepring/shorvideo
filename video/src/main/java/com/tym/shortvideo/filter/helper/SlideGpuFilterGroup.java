@@ -1,6 +1,6 @@
 package com.tym.shortvideo.filter.helper;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.widget.Scroller;
@@ -73,8 +73,8 @@ public class SlideGpuFilterGroup {
     public void onSizeChanged(int width, int height) {
         this.width = width;
         this.height = height;
-        GLES20.glGenFramebuffers(1, fFrame, 0);
-        GlUtil.genTexturesWithParameter(1, fTexture, 0, GLES20.GL_RGBA, width, height);
+        GLES30.glGenFramebuffers(1, fFrame, 0);
+        GlUtil.genTexturesWithParameter(1, fTexture, 0, GLES30.GL_RGBA, width, height);
         onFilterSizeChanged(width, height);
     }
 
@@ -144,29 +144,29 @@ public class SlideGpuFilterGroup {
     }
 
     private void drawSlideLeft(int textureId) {
-        GLES20.glViewport(0, 0, width, height);
-        GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
-        GLES20.glScissor(0, 0, offset, height);
+        GLES30.glViewport(0, 0, width, height);
+        GLES30.glEnable(GLES30.GL_SCISSOR_TEST);
+        GLES30.glScissor(0, 0, offset, height);
         leftFilter.onDrawFrame(textureId);
-        GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
-        GLES20.glViewport(0, 0, width, height);
-        GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
-        GLES20.glScissor(offset, 0, width - offset, height);
+        GLES30.glDisable(GLES30.GL_SCISSOR_TEST);
+        GLES30.glViewport(0, 0, width, height);
+        GLES30.glEnable(GLES30.GL_SCISSOR_TEST);
+        GLES30.glScissor(offset, 0, width - offset, height);
         curFilter.onDrawFrame(textureId);
-        GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
+        GLES30.glDisable(GLES30.GL_SCISSOR_TEST);
     }
 
     private void drawSlideRight(int textureId) {
-        GLES20.glViewport(0, 0, width, height);
-        GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
-        GLES20.glScissor(0, 0, width - offset, height);
+        GLES30.glViewport(0, 0, width, height);
+        GLES30.glEnable(GLES30.GL_SCISSOR_TEST);
+        GLES30.glScissor(0, 0, width - offset, height);
         curFilter.onDrawFrame(textureId);
-        GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
-        GLES20.glViewport(0, 0, width, height);
-        GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
-        GLES20.glScissor(width - offset, 0, offset, height);
+        GLES30.glDisable(GLES30.GL_SCISSOR_TEST);
+        GLES30.glViewport(0, 0, width, height);
+        GLES30.glEnable(GLES30.GL_SCISSOR_TEST);
+        GLES30.glScissor(width - offset, 0, offset, height);
         rightFilter.onDrawFrame(textureId);
-        GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
+        GLES30.glDisable(GLES30.GL_SCISSOR_TEST);
     }
 
     private void reCreateRightFilter() {

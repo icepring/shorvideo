@@ -1,6 +1,6 @@
 package com.tym.shortvideo.filter.advanced;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 
 import com.tym.video.R;
@@ -23,7 +23,7 @@ public class MagicCalmFilter extends GPUImageFilter {
 	@Override
 	protected void onDestroy(){
 		super.onDestroy();	  
-	    GLES20.glDeleteTextures(3, new int[]{mToneCurveTexture[0], mMaskGrey1TextureId, mMaskGrey2TextureId}, 0);	    
+	    GLES30.glDeleteTextures(3, new int[]{mToneCurveTexture[0], mMaskGrey1TextureId, mMaskGrey2TextureId}, 0);
 	    mToneCurveTexture[0] = -1;
 	    mMaskGrey1TextureId = -1;
 	    mMaskGrey2TextureId = -1;
@@ -32,47 +32,47 @@ public class MagicCalmFilter extends GPUImageFilter {
 	@Override
 	protected void onDrawArraysAfter(){
 		if (mToneCurveTexture[0] != -1){
-			GLES20.glActiveTexture(GLES20.GL_TEXTURE3);
-			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-			GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+			GLES30.glActiveTexture(GLES30.GL_TEXTURE3);
+			GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+			GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
 	    }
 		if (mMaskGrey1TextureId != -1){
-			GLES20.glActiveTexture(GLES20.GL_TEXTURE4);
-			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-			GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+			GLES30.glActiveTexture(GLES30.GL_TEXTURE4);
+			GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+			GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
 	    }
 	    if (mMaskGrey2TextureId != -1){
-	    	GLES20.glActiveTexture(GLES20.GL_TEXTURE5);
-	    	GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-	    	GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+	    	GLES30.glActiveTexture(GLES30.GL_TEXTURE5);
+	    	GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+	    	GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
 	    }
 	}
 	  
 	@Override
 	protected void onDrawArraysPre(){
 		if (mToneCurveTexture[0] != -1){
-			GLES20.glActiveTexture(GLES20.GL_TEXTURE3);
-			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mToneCurveTexture[0]);
-			GLES20.glUniform1i(mToneCurveTextureUniformLocation, 3);
+			GLES30.glActiveTexture(GLES30.GL_TEXTURE3);
+			GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mToneCurveTexture[0]);
+			GLES30.glUniform1i(mToneCurveTextureUniformLocation, 3);
 	    }
 		if (mMaskGrey1TextureId != -1){
-			GLES20.glActiveTexture(GLES20.GL_TEXTURE4);
-			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mMaskGrey1TextureId);
-			GLES20.glUniform1i(mMaskGrey1UniformLocation, 4);
+			GLES30.glActiveTexture(GLES30.GL_TEXTURE4);
+			GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mMaskGrey1TextureId);
+			GLES30.glUniform1i(mMaskGrey1UniformLocation, 4);
 	    }
 	    if (mMaskGrey2TextureId != -1){
-	    	GLES20.glActiveTexture(GLES20.GL_TEXTURE5);
-	    	GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mMaskGrey2TextureId);
-	     	GLES20.glUniform1i(mMaskGrey2UniformLocation, 5);
+	    	GLES30.glActiveTexture(GLES30.GL_TEXTURE5);
+	    	GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mMaskGrey2TextureId);
+	     	GLES30.glUniform1i(mMaskGrey2UniformLocation, 5);
 	    }
 	}
 	  
 	@Override
 	protected void onInit(){
 		super.onInit();
-	    mToneCurveTextureUniformLocation = GLES20.glGetUniformLocation(mGLProgId, "curve");
-        mMaskGrey1UniformLocation = GLES20.glGetUniformLocation(getProgram(), "grey1Frame");
-        mMaskGrey2UniformLocation = GLES20.glGetUniformLocation(getProgram(), "grey2Frame");
+	    mToneCurveTextureUniformLocation = GLES30.glGetUniformLocation(mGLProgId, "curve");
+        mMaskGrey1UniformLocation = GLES30.glGetUniformLocation(getProgram(), "grey1Frame");
+        mMaskGrey2UniformLocation = GLES30.glGetUniformLocation(getProgram(), "grey2Frame");
 	}
 	  
 	@Override
@@ -81,16 +81,16 @@ public class MagicCalmFilter extends GPUImageFilter {
 	    runOnDraw(new Runnable(){
 		    @Override
 			public void run(){
-			    GLES20.glGenTextures(1, mToneCurveTexture, 0);
-			    GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mToneCurveTexture[0]);
-			    GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-		                GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-		        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-		                GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-		        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-		                GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-		        GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-		                GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);					
+			    GLES30.glGenTextures(1, mToneCurveTexture, 0);
+			    GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mToneCurveTexture[0]);
+			    GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+		                GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
+		        GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+		                GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR);
+		        GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+		                GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_CLAMP_TO_EDGE);
+		        GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+		                GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_CLAMP_TO_EDGE);
 		        byte[] arrayOfByte = new byte[3072];
 		        int[] arrayOfInt1 = { 38, 39, 40, 41, 41, 42, 43, 44, 45, 46, 47, 47, 48, 49, 50, 51, 52, 52, 53, 54, 55, 56, 57, 58, 58, 59, 60, 61, 62, 63, 64, 64, 65, 66, 67, 68, 69, 69, 70, 71, 72, 73, 74, 75, 75, 76, 77, 78, 79, 80, 81, 81, 82, 83, 84, 85, 86, 87, 87, 88, 89, 90, 91, 92, 92, 93, 94, 95, 96, 97, 98, 98, 99, 100, 101, 102, 103, 104, 104, 105, 106, 107, 108, 109, 109, 110, 111, 112, 113, 114, 115, 115, 116, 117, 118, 119, 120, 121, 121, 122, 123, 124, 125, 126, 127, 127, 128, 129, 130, 131, 132, 132, 133, 134, 135, 136, 137, 138, 138, 139, 140, 141, 142, 143, 144, 144, 145, 146, 147, 148, 149, 149, 150, 151, 152, 153, 154, 155, 155, 156, 157, 158, 159, 160, 161, 161, 162, 163, 164, 165, 166, 166, 167, 168, 169, 170, 171, 172, 172, 173, 174, 175, 176, 177, 178, 178, 179, 180, 181, 182, 183, 184, 184, 185, 186, 187, 188, 189, 189, 190, 191, 192, 193, 194, 195, 195, 196, 197, 198, 199, 200, 201, 201, 202, 203, 204, 205, 206, 206, 207, 208, 209, 210, 211, 212, 212, 213, 214, 215, 216, 217, 218, 218, 219, 220, 221, 222, 223, 224, 224, 225, 226, 227, 228, 229, 229, 230, 231, 232, 233, 234, 235, 235, 236, 237, 238, 239, 240, 241, 241, 242, 243, 244, 245, 246, 246, 247, 248, 249, 250, 251, 252, 252, 253, 254, 255 };
 		        for (int i = 0; i < 256; i++){
@@ -116,7 +116,7 @@ public class MagicCalmFilter extends GPUImageFilter {
 		          arrayOfByte[(2 + (2048 + k * 4))] = ((byte)arrayOfInt6[k]);
 		          arrayOfByte[(3 + (2048 + k * 4))] = -1;
 		        }
-		        GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, 256, 3, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, ByteBuffer.wrap(arrayOfByte));
+		        GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RGBA, 256, 3, 0, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, ByteBuffer.wrap(arrayOfByte));
 		        mMaskGrey1TextureId = GlUtil.createTextureFromAssets(ParamsManager.context, "filter/calm_mask1.jpg");
 		        mMaskGrey2TextureId = GlUtil.createTextureFromAssets(ParamsManager.context, "filter/calm_mask2.jpg");
 		    }

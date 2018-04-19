@@ -1,6 +1,6 @@
 package com.tym.shortvideo.filter.advanced;
 
-import android.opengl.GLES20;
+import android.opengl.GLES30;
 
 import com.tym.video.R;
 import com.tym.shortvideo.filter.base.GPUImageFilter;
@@ -22,7 +22,7 @@ public class MagicSunsetFilter extends GPUImageFilter {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        GLES20.glDeleteTextures(3, new int[]{mToneCurveTexture[0], mMaskGrey1TextureId, mMaskGrey2TextureId}, 0);
+        GLES30.glDeleteTextures(3, new int[]{mToneCurveTexture[0], mMaskGrey1TextureId, mMaskGrey2TextureId}, 0);
         mToneCurveTexture[0] = -1;
         mMaskGrey1TextureId = -1;
         mMaskGrey2TextureId = -1;
@@ -31,47 +31,47 @@ public class MagicSunsetFilter extends GPUImageFilter {
     @Override
     protected void onDrawArraysAfter() {
         if (mToneCurveTexture[0] != -1) {
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE3);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE3);
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         }
         if (mMaskGrey1TextureId != -1) {
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE4);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE4);
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         }
         if (mMaskGrey2TextureId != -1) {
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE5);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE5);
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0);
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE0);
         }
     }
 
     @Override
     protected void onDrawArraysPre() {
         if (mToneCurveTexture[0] != -1) {
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE3);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mToneCurveTexture[0]);
-            GLES20.glUniform1i(mToneCurveTextureUniformLocation, 3);
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE3);
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mToneCurveTexture[0]);
+            GLES30.glUniform1i(mToneCurveTextureUniformLocation, 3);
         }
         if (mMaskGrey1TextureId != -1) {
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE4);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mMaskGrey1TextureId);
-            GLES20.glUniform1i(mMaskGrey1UniformLocation, 4);
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE4);
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mMaskGrey1TextureId);
+            GLES30.glUniform1i(mMaskGrey1UniformLocation, 4);
         }
         if (mMaskGrey2TextureId != -1) {
-            GLES20.glActiveTexture(GLES20.GL_TEXTURE5);
-            GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mMaskGrey2TextureId);
-            GLES20.glUniform1i(mMaskGrey2UniformLocation, 5);
+            GLES30.glActiveTexture(GLES30.GL_TEXTURE5);
+            GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mMaskGrey2TextureId);
+            GLES30.glUniform1i(mMaskGrey2UniformLocation, 5);
         }
     }
 
     @Override
     public void onInit() {
         super.onInit();
-        mToneCurveTextureUniformLocation = GLES20.glGetUniformLocation(mGLProgId, "curve");
-        mMaskGrey1UniformLocation = GLES20.glGetUniformLocation(getProgram(), "grey1Frame");
-        mMaskGrey2UniformLocation = GLES20.glGetUniformLocation(getProgram(), "grey2Frame");
+        mToneCurveTextureUniformLocation = GLES30.glGetUniformLocation(mGLProgId, "curve");
+        mMaskGrey1UniformLocation = GLES30.glGetUniformLocation(getProgram(), "grey1Frame");
+        mMaskGrey2UniformLocation = GLES30.glGetUniformLocation(getProgram(), "grey2Frame");
     }
 
     @Override
@@ -80,16 +80,16 @@ public class MagicSunsetFilter extends GPUImageFilter {
         runOnDraw(new Runnable() {
             @Override
             public void run() {
-                GLES20.glGenTextures(1, mToneCurveTexture, 0);
-                GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mToneCurveTexture[0]);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                        GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                        GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_LINEAR);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                        GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
-                GLES20.glTexParameterf(GLES20.GL_TEXTURE_2D,
-                        GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+                GLES30.glGenTextures(1, mToneCurveTexture, 0);
+                GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, mToneCurveTexture[0]);
+                GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+                        GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR);
+                GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+                        GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR);
+                GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+                        GLES30.GL_TEXTURE_WRAP_S, GLES30.GL_CLAMP_TO_EDGE);
+                GLES30.glTexParameterf(GLES30.GL_TEXTURE_2D,
+                        GLES30.GL_TEXTURE_WRAP_T, GLES30.GL_CLAMP_TO_EDGE);
                 byte[] arrayOfByte = new byte[2048];
                 int[] arrayOfInt1 = {0, 1, 2, 3, 5, 5, 7, 8, 9, 10, 11, 12, 13, 15, 16, 16, 18, 19, 20, 21, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 35, 36, 38, 39, 40, 41, 42, 44, 45, 47, 48, 49, 51, 52, 54, 55, 56, 59, 60, 62, 63, 64, 66, 67, 70, 71, 72, 74, 76, 78, 79, 80, 83, 84, 85, 88, 89, 90, 93, 94, 95, 98, 99, 100, 102, 104, 106, 107, 108, 109, 112, 113, 114, 116, 117, 118, 119, 120, 122, 124, 125, 126, 128, 129, 130, 131, 132, 132, 133, 135, 136, 137, 138, 139, 140, 141, 142, 142, 143, 145, 146, 147, 148, 148, 149, 150, 151, 151, 152, 153, 154, 155, 155, 156, 157, 157, 158, 159, 160, 160, 161, 162, 162, 163, 164, 165, 165, 166, 167, 167, 168, 169, 169, 170, 171, 171, 172, 173, 173, 174, 175, 175, 176, 177, 177, 178, 178, 179, 179, 180, 181, 181, 182, 183, 183, 184, 185, 185, 186, 187, 188, 188, 189, 190, 190, 191, 192, 193, 193, 194, 194, 194, 195, 196, 197, 197, 198, 199, 200, 201, 201, 202, 203, 204, 204, 205, 206, 207, 208, 208, 208, 209, 210, 211, 212, 212, 213, 214, 215, 216, 217, 218, 218, 219, 220, 221, 222, 222, 223, 224, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 234, 235, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 247, 248, 248, 249, 250, 251, 252, 253, 254, 255};
                 int[] arrayOfInt2 = {0, 1, 2, 3, 4, 5, 6, 7, 9, 9, 10, 12, 12, 13, 14, 16, 16, 17, 19, 20, 20, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 35, 36, 37, 39, 40, 41, 42, 43, 44, 46, 47, 49, 50, 51, 53, 54, 56, 57, 59, 61, 62, 64, 65, 66, 69, 70, 72, 73, 76, 77, 78, 80, 82, 84, 85, 87, 89, 90, 93, 94, 95, 98, 99, 100, 103, 104, 106, 108, 109, 111, 112, 114, 116, 117, 118, 120, 122, 123, 124, 125, 126, 129, 130, 131, 132, 133, 135, 136, 137, 138, 139, 140, 141, 142, 143, 145, 146, 147, 148, 149, 150, 151, 152, 152, 153, 154, 155, 156, 157, 158, 158, 159, 160, 161, 162, 162, 163, 164, 165, 165, 166, 167, 167, 168, 169, 170, 170, 171, 172, 172, 173, 173, 174, 175, 175, 176, 177, 177, 178, 178, 178, 179, 179, 180, 181, 181, 182, 182, 183, 184, 184, 185, 185, 186, 187, 187, 188, 188, 189, 190, 190, 191, 191, 192, 193, 193, 194, 194, 194, 195, 195, 196, 197, 197, 198, 199, 199, 200, 201, 202, 202, 203, 204, 204, 205, 206, 207, 208, 208, 208, 209, 210, 210, 211, 212, 213, 214, 215, 215, 216, 217, 218, 219, 220, 221, 222, 222, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 234, 235, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 248, 249, 250, 251, 252, 253, 254, 255};
@@ -108,7 +108,7 @@ public class MagicSunsetFilter extends GPUImageFilter {
                     arrayOfByte[(2 + (1024 + j * 4))] = ((byte) arrayOfInt5[j]);
                     arrayOfByte[(3 + (1024 + j * 4))] = -1;
                 }
-                GLES20.glTexImage2D(GLES20.GL_TEXTURE_2D, 0, GLES20.GL_RGBA, 256, 2, 0, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, ByteBuffer.wrap(arrayOfByte));
+                GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RGBA, 256, 2, 0, GLES30.GL_RGBA, GLES30.GL_UNSIGNED_BYTE, ByteBuffer.wrap(arrayOfByte));
                 mMaskGrey1TextureId = GlUtil.createTextureFromAssets(ParamsManager.context, "filter/rise_mask1.jpg");
                 mMaskGrey2TextureId = GlUtil.createTextureFromAssets(ParamsManager.context, "filter/rise_mask2.jpg");
             }

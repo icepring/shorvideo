@@ -35,7 +35,7 @@ public class RenderThread extends HandlerThread implements SurfaceTexture.OnFram
 
     private static final String TAG = "RenderThread";
 
-    private boolean isDebug = false;
+    private boolean isDebug = true;
     // 操作锁
     private final Object mSynOperation = new Object();
     // Looping锁
