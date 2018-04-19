@@ -7,8 +7,10 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 
 import com.tym.shortvideo.filter.helper.type.TextureRotationUtils;
+import com.tym.shortvideo.recodrender.ParamsManager;
 import com.tym.shortvideo.utils.Size;
 
+import android.support.annotation.NonNull;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
@@ -28,8 +30,8 @@ public class CameraUtils {
 
     // 默认宽高不存在则重新计算比这个值稍微大一点的宽高
     // 16:9的默认宽高（理想值），相机的宽度和高度跟屏幕坐标不一样，手机屏幕的宽度和高度是反过来的。
-    public static final int DEFAULT_16_9_WIDTH = 1280;
-    public static final int DEFAULT_16_9_HEIGHT = 720;
+    public static final int DEFAULT_16_9_WIDTH = 1920;
+    public static final int DEFAULT_16_9_HEIGHT = 1080;
     // 4:3的默认宽高(理想值)
     public static final int DEFAULT_4_3_WIDTH = 1024;
     public static final int DEFAULT_4_3_HEIGHT = 768;
@@ -46,7 +48,7 @@ public class CameraUtils {
     public enum Ratio {
         RATIO_16_9(0.5625f),
         RATIO_4_3(0.75f),
-        RATIO_1_1(0.75f);
+        RATIO_1_1(0.5625f);
         private float ratio;
 
         Ratio(float ratio) {
@@ -99,7 +101,7 @@ public class CameraUtils {
         mCamera.setParameters(parameters);
         int width = DEFAULT_16_9_WIDTH;
         int height = DEFAULT_16_9_HEIGHT;
-        if (mRatio == Ratio.RATIO_4_3 || mRatio == Ratio.RATIO_1_1) {
+        if (mRatio == Ratio.RATIO_4_3 ) {
             width = DEFAULT_4_3_WIDTH;
             height = DEFAULT_4_3_HEIGHT;
         }
@@ -825,7 +827,7 @@ public class CameraUtils {
                 // 如果bigEnough只有一个元素，使用Collections.max就会因越界报NoSuchElementException
                 // 因此，当只有一个元素时，直接使用该元素
                 if (bigEnough.size() > 1) {
-                    perfectSize = Collections.max(bigEnough, new CompareAreaSize());
+                    perfectSize = getSize(bigEnough, Collections.max(bigEnough, new CompareAreaSize()));
                 } else if (bigEnough.size() == 1) {
                     perfectSize = bigEnough.get(0);
                 }
@@ -914,6 +916,22 @@ public class CameraUtils {
             perfectSize = result;
         }
         return perfectSize;
+    }
+
+    @NonNull
+    private static Camera.Size getSize(List<Camera.Size> bigEnough, Camera.Size absolutelyMaxSize) {
+        if (absolutelyMaxSize.height > DeviceUtils.getScreenWidth()) {
+            int max = bigEnough.indexOf(absolutelyMaxSize);
+            if (max > 0) {
+                max --;
+            } else {
+                return absolutelyMaxSize;
+            }
+            absolutelyMaxSize = bigEnough.get(max);
+            return getSize(bigEnough, absolutelyMaxSize);
+        } else {
+            return absolutelyMaxSize;
+        }
     }
 
     /**

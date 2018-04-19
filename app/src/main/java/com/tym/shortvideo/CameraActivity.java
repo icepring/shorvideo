@@ -25,7 +25,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.tym.shortvideo.recodrender.CaptureFrameCallback;
 import com.tym.shortvideo.recodrender.ColorFilterManager;
@@ -37,8 +36,6 @@ import com.tym.shortvideo.recodrender.RenderStateChangedListener;
 import com.tym.shortvideo.recordcore.CountDownManager;
 import com.tym.shortvideo.recordcore.VideoListManager;
 import com.tym.shortvideo.recordcore.multimedia.MediaEncoder;
-import com.tym.shortvideo.recordcore.multimedia.VideoCombineManager;
-import com.tym.shortvideo.recordcore.multimedia.VideoCombiner;
 import com.tym.shortvideo.utils.BitmapUtils;
 import com.tym.shortvideo.utils.CameraUtils;
 import com.tym.shortvideo.utils.FileUtils;
@@ -49,7 +46,7 @@ import com.tym.shortvideo.filter.helper.type.GLType;
 import com.tym.shortvideo.filter.helper.type.TextureRotationUtils;
 import com.tym.shortvideo.view.AspectFrameLayout;
 import com.tym.shortvideo.view.AsyncRecyclerview;
-import com.tym.shortvideo.view.CainSurfaceView;
+import com.tym.shortvideo.view.RecordSurfaceView;
 import com.tym.shortvideo.view.ProgressView;
 import com.tym.shortvideo.view.ShutterButton;
 
@@ -62,7 +59,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 public class CameraActivity extends AppCompatActivity implements View.OnClickListener,
-        SurfaceHolder.Callback, CainSurfaceView.OnClickListener, CainSurfaceView.OnTouchScroller, RenderStateChangedListener,
+        SurfaceHolder.Callback, RecordSurfaceView.OnClickListener, RecordSurfaceView.OnTouchScroller, RenderStateChangedListener,
         SeekBar.OnSeekBarChangeListener, CaptureFrameCallback, ShutterButton.GestureListener {
 
     private static final String TAG = "CameraActivity";
@@ -94,7 +91,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
 
     // 预览部分
     private AspectFrameLayout mAspectLayout;
-    private CainSurfaceView mCameraSurfaceView;
+    private RecordSurfaceView mCameraSurfaceView;
     // fps显示
 
     private TextView mFpsView;
@@ -177,7 +174,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
         mAspectLayout = findViewById(R.id.layout_aspect);
 
         mAspectLayout.setAspectRatio(mCurrentRatio);
-        mCameraSurfaceView = new CainSurfaceView(this);
+        mCameraSurfaceView = new RecordSurfaceView(this);
         mCameraSurfaceView.getHolder().addCallback(this);
 //        mCameraSurfaceView.addScroller(this);
         mCameraSurfaceView.addClickListener(this);

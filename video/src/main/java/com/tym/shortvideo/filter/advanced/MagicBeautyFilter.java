@@ -239,13 +239,9 @@ public class MagicBeautyFilter extends GPUImageFilter {
     @Override
     protected void onInit() {
         super.onInit();
-
-
         mWidthLoc = GLES30.glGetUniformLocation(getProgram(), "width");
         mHeightLoc = GLES30.glGetUniformLocation(getProgram(), "height");
         mOpacityLoc = GLES30.glGetUniformLocation(getProgram(), "opacity");
-
-//        setBeautyLevel(3);
     }
 
 

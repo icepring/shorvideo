@@ -39,7 +39,7 @@ public class GLDefaultFilterGroup extends GLImageFilterGroup {
     private static List<GPUImageFilter> initFilters() {
         List<GPUImageFilter> filters = new ArrayList<>();
         filters.add(BeautyfyIndex, MagicFilterFactory.initFilters(MagicFilterType.BEAUTY));
-        filters.add(ColorIndex, MagicFilterFactory.initFilters(MagicFilterType.COOL));
+        filters.add(ColorIndex, MagicFilterFactory.initFilters(MagicFilterType.WHITENORREDDEN));
 //        filters.add(FaceStretchIndex, FilterManager.getFilter(GLFilterType.FACESTRETCH));
 //        filters.add(StickersIndex, FilterManager.getFilter(GLFilterType.STICKER));
         for (GPUImageFilter filter:filters){

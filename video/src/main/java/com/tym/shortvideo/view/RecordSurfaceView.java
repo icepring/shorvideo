@@ -16,13 +16,10 @@ import com.tym.shortvideo.utils.CameraUtils;
 
 import java.util.List;
 
-/**
- * Created by cain on 2017/7/9.
- */
 
-public class CainSurfaceView extends SurfaceView {
+public class RecordSurfaceView extends SurfaceView {
 
-    private static final String TAG = "CameraSurfaceView";
+    private static final String TAG = "RecordSurfaceView";
 
     // 触摸点击默认值，触摸差值小于该值算点击事件
     private final static float MAX_TOUCH_SIZE_FOR_CLICK = 15f;
@@ -47,17 +44,17 @@ public class CainSurfaceView extends SurfaceView {
     private OnTouchScroller mScroller;
     private OnClickListener mClickListener;
 
-    public CainSurfaceView(Context context) {
+    public RecordSurfaceView(Context context) {
         super(context);
         init();
     }
 
-    public CainSurfaceView(Context context, AttributeSet attrs) {
+    public RecordSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public CainSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RecordSurfaceView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

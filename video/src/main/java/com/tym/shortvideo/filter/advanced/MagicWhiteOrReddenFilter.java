@@ -76,9 +76,9 @@ public class MagicWhiteOrReddenFilter extends GPUImageFilter {
     @Override
     protected void onInitialized() {
         super.onInitialized();
-        setReddenValue(1.0f);
-        setWhitenValue(1.0f);
-        setPinkingValue(1.0f);
+        setReddenValue(1.2f);
+        setWhitenValue(1.2f);
+        setPinkingValue(1.2f);
     }
 
     /**
