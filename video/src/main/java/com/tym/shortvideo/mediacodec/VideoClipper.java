@@ -468,6 +468,11 @@ public class VideoClipper {
                     encoderOutputBuffers = encoder.getOutputBuffers();
                 } else if (encoderStatus == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
                     MediaFormat newFormat = encoder.getOutputFormat();
+                    if (videoFormat.containsKey("rotation-degrees")) {
+                        int rotation = videoFormat.getInteger("rotation-degrees");
+                        mMediaMuxer.setOrientationHint(rotation);
+                    }
+
                     startMux(newFormat, 0);
                 } else if (encoderStatus < 0) {
                 } else {

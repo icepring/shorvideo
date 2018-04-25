@@ -29,16 +29,16 @@ public class TextureRotationUtils {
     public static void setRatio_1_1(boolean b, Size size) {
         if (b) {
             TextureVertices[0] = 0.0f;
-            TextureVertices[1] = 0.880625f;
+            TextureVertices[1] = 0.890625f;
 
             TextureVertices[2] = 1.0f;
-            TextureVertices[3] = 0.880625f;
+            TextureVertices[3] = 0.890625f;
 
             TextureVertices[4] = 0.0f;
-            TextureVertices[5] = 0.119375f;
+            TextureVertices[5] = 0.129375f;
 
             TextureVertices[6] = 1.0f;
-            TextureVertices[7] = 0.119375f;
+            TextureVertices[7] = 0.129375f;
 
 
 //            TextureVertices[0] = 0.0f;

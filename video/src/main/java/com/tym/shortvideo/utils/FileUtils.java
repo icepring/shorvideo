@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 
+import com.tym.shortvideo.interfaces.SingleCallback;
 import com.tym.shortvideo.recodrender.ParamsManager;
 
 import java.io.BufferedReader;
@@ -34,6 +35,7 @@ public class FileUtils {
     private static final String TAG = "FileUtils";
 
     private static final int BUFFER_SIZE = 1024 * 8;
+    private static MediaScannerConnection msc;
 
     private FileUtils() {
     }
@@ -402,5 +404,23 @@ public class FileUtils {
             }
         }
         return data;
+    }
+
+    public static void updateMediaStore(Context context, final String path, final SingleCallback<String, Uri> callBack) {
+        msc = new MediaScannerConnection(context, new MediaScannerConnection.MediaScannerConnectionClient() {
+            @Override
+            public void onMediaScannerConnected() {
+
+                msc.scanFile(path, null);
+            }
+
+            @Override
+            public void onScanCompleted(String path, Uri uri) {
+                msc.disconnect();
+                callBack.onSingleCallback(path, uri);
+                msc = null;
+            }
+        });
+        msc.connect();
     }
 }

@@ -10,7 +10,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
+import com.tym.shortvideo.interfaces.SingleCallback;
 import com.tym.shortvideo.interfaces.TrimVideoListener;
+import com.tym.shortvideo.utils.FileUtils;
 import com.tym.shortvideo.utils.TrimVideoUtil;
 import com.tym.shortvideo.view.VideoTrimmerView;
 
@@ -84,7 +86,13 @@ public class TrimmerActivity extends AppCompatActivity implements TrimVideoListe
         //TODO: please handle your trimmed video url here!!!
         String out = "/storage/emulated/0/Android/data/com.iknow.android/cache/compress.mp4";
         Log.d("onFinishTrim::",in);
-        mProgressDialog.dismiss();
+
+        FileUtils.updateMediaStore(this, in, new SingleCallback<String, Uri>() {
+            @Override
+            public void onSingleCallback(String s, Uri uri) {
+                mProgressDialog.dismiss();
+            }
+        });
     }
 
     @Override
