@@ -1,6 +1,7 @@
 package com.tym.shortvideo.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
 import android.opengl.GLSurfaceView;
@@ -9,10 +10,12 @@ import android.view.MotionEvent;
 import android.view.Surface;
 
 
+import com.tym.shortvideo.interfaces.SingleCallback;
 import com.tym.shortvideo.media.MediaPlayerWrapper;
 import com.tym.shortvideo.media.VideoInfo;
 import com.tym.shortvideo.filter.helper.SlideGpuFilterGroup;
 import com.tym.shortvideo.filter.helper.VideoDrawer;
+import com.tym.shortvideo.utils.CameraUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,6 +42,7 @@ public class VideoPreviewView extends GLSurfaceView implements GLSurfaceView.Ren
     public VideoPreviewView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
+
     }
 
     private void init(Context context) {
@@ -131,10 +135,6 @@ public class VideoPreviewView extends GLSurfaceView implements GLSurfaceView.Ren
         }
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
-    }
 
     @Override
     public void onVideoChanged(final VideoInfo info) {
@@ -189,5 +189,9 @@ public class VideoPreviewView extends GLSurfaceView implements GLSurfaceView.Ren
 
     public void setIMediaCallback(MediaPlayerWrapper.IMediaCallback callback){
         this.callback=callback;
+    }
+
+    public void takePic(SingleCallback<Bitmap, Integer> singleCallback){
+        mDrawer.takePic(singleCallback);
     }
 }

@@ -528,7 +528,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                 break;
 
             case R.id.btn_local:
-                startActivity(new Intent(this, VideoSelectActivity.class));
+                startActivity(new Intent(this, VideoDetailActivity.class));
                 break;
 
             // 显示滤镜

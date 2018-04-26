@@ -26,18 +26,16 @@ public class TrimVideoUtil {
     public static final int MIN_TIME_FRAME = 3;
     private static final int thumb_Width = (DeviceUtils.getScreenWidth() - DeviceUtils.dipToPX(20)) / VIDEO_MAX_DURATION;
     private static final int thumb_Height = DeviceUtils.dipToPX(60);
+    private static final int space = DeviceUtils.dipToPX(2);
     private static final long one_frame_time = 1000000;
 
     public static void trim(Context context, Uri inputFile, String outputFile, long startMs, long endMs, final TrimVideoListener callback) {
         VideoClipper clipper = new VideoClipper();
         clipper.setFilterType(MagicFilterType.NONE);
-        clipper.setInputVideoPath(context,inputFile);
+        clipper.setInputVideoPath(context, inputFile);
         outputFile = FileUtils.getPath("tym/out/", System.currentTimeMillis() + ".mp4");
         clipper.setOutputVideoPath(outputFile);
         final String tempOutFile = outputFile;
-
-
-
 
 
         clipper.setOnVideoCutFinishListener(new VideoClipper.OnVideoCutFinishListener() {
@@ -56,6 +54,42 @@ public class TrimVideoUtil {
 
     }
 
+    public static void backgroundShootVideoThumb(final Context context, final Uri videoUri, final
+    long frame_time, final SingleCallback<Bitmap, Integer> callback) {
+        BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0L, "") {
+                                       @Override
+                                       public void execute() {
+                                           try {
+                                               MediaMetadataRetriever mediaMetadataRetriever =
+                                                       new MediaMetadataRetriever();
+                                               mediaMetadataRetriever.setDataSource(context,
+                                                       videoUri);
+                                               // 微秒
+                                               Bitmap bitmap = mediaMetadataRetriever
+                                                       .getFrameAtTime(frame_time,
+                                                               MediaMetadataRetriever
+                                                                       .OPTION_CLOSEST_SYNC);
+
+                                               try {
+                                                   bitmap = Bitmap.createScaledBitmap(bitmap, thumb_Height, thumb_Height, false);
+                                               } catch (Exception e) {
+                                                   e.printStackTrace();
+                                               }
+
+                                               callback.onSingleCallback(bitmap, 1);
+
+                                               mediaMetadataRetriever.release();
+                                           } catch (final Throwable e) {
+                                               Thread.getDefaultUncaughtExceptionHandler()
+                                                       .uncaughtException(Thread.currentThread(),
+                                                               e);
+                                           }
+                                       }
+                                   }
+        );
+
+    }
+
     public static void backgroundShootVideoThumb(final Context context, final Uri videoUri, final SingleCallback<ArrayList<Bitmap>, Integer> callback) {
         final ArrayList<Bitmap> thumbnailList = new ArrayList<>();
         BackgroundExecutor.execute(new BackgroundExecutor.Task("", 0L, "") {
@@ -67,13 +101,13 @@ public class TrimVideoUtil {
                                                // Retrieve media data use microsecond
                                                long videoLengthInMs = Long.parseLong(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) * 1000;
                                                long numThumbs = videoLengthInMs < one_frame_time ? 1 : (videoLengthInMs / one_frame_time);
+                                               numThumbs += numThumbs;
                                                final long interval = videoLengthInMs / numThumbs;
 
-                                               //每次截取到3帧之后上报
                                                for (long i = 0; i < numThumbs; ++i) {
                                                    Bitmap bitmap = mediaMetadataRetriever.getFrameAtTime(i * interval, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
                                                    try {
-                                                       bitmap = Bitmap.createScaledBitmap(bitmap, thumb_Width, thumb_Height, false);
+                                                       bitmap = Bitmap.createScaledBitmap(bitmap, thumb_Height, thumb_Height, false);
                                                    } catch (Exception e) {
                                                        e.printStackTrace();
                                                    }
@@ -155,7 +189,6 @@ public class TrimVideoUtil {
                                            ArrayList<VideoInfo> videos = new ArrayList<>();
 
 
-
                                            ContentResolver contentResolver = mContext.getContentResolver();
                                            try {
                                                Cursor cursor = contentResolver.query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null,
@@ -175,7 +208,7 @@ public class TrimVideoUtil {
                                                }
                                                callback.onSingleCallback(videos, 1);
                                            } catch (Exception e) {
-                                               callback.onSingleCallback(videos, 0 );
+                                               callback.onSingleCallback(videos, 0);
                                                e.printStackTrace();
                                            }
                                        }

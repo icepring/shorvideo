@@ -15,4 +15,9 @@
         android:padding="20dp"
         android:text="gogogo"/>
 
+    <include layout="@layout/video_cover_view"
+             android:layout_width="match_parent"
+             android:layout_marginBottom="@dimen/dp20"
+             android:layout_height="match_parent"/>
+
 </LinearLayout>

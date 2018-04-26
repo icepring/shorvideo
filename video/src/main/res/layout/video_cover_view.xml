@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_surfaceview_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout"
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.tym.shortvideo.view.VideoPreviewView
+            android:id="@+id/videoView"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </RelativeLayout>
+
+    <com.tym.shortvideo.view.VideoCoverView
+        android:id="@+id/rl_bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/video_shoot_tip"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center"
+            android:text="拖动选择你要发表的10秒以内片段"
+            android:textColor="#444444"
+            android:textSize="12dp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rl_cover_list"
+            android:layout_width="match_parent"
+            android:overScrollMode="never"
+            android:layout_height="60dp"
+            android:layout_below="@+id/video_shoot_tip"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="36dp"
+            android:paddingRight="36dp"/>
+
+        <com.tym.shortvideo.view.StrokeImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/video_shoot_tip"
+            android:layout_marginLeft="36dp"
+            android:layout_marginRight="36dp"
+            android:layout_marginTop="15dp"
+            android:src="@mipmap/ic_launcher"/>
+
+    </com.tym.shortvideo.view.VideoCoverView>
+</RelativeLayout>

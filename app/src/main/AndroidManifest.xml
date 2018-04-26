@@ -32,7 +32,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:screenOrientation="portrait"
-            android:name=".VideoDetailActivity">
+            android:theme="@style/CameraTheme"
+            android:name=".CameraActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -42,9 +43,9 @@
         <activity android:name=".PreviewActivity"/>
         <activity android:name=".TrimmerActivity"/>
         <activity android:name=".VideoSelectActivity"/>
-        <activity android:name=".CameraActivity"
-                  android:theme="@style/CameraTheme"/>
-        <!--<activity android:name=".CameraActivity"/>-->
+        <activity android:name=".VideoDetailActivity"/>
+        <!--<activity android:name=".CameraActivity"-->
+                  <!--android:theme="@style/CameraTheme"/>-->
     </application>
 
 </manifest>

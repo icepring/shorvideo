@@ -115,7 +115,6 @@ public class PreviewActivity extends BaseActivity implements View.OnClickListene
     private void initView() {
         mVideoView = (VideoPreviewView) findViewById(R.id.videoView);
 
-
         mBtnSwitch = findViewById(R.id.btn_switch);
         mBtnSwitch.setOnClickListener(this);
 
